@@ -150,7 +150,7 @@ async function drawTeamOnCanvas(team, teamName, isBlueTeam) {
 				ctx.strokeStyle = "black";
 				ctx.lineWidth = 3;
 				ctx.fillStyle = "#ffffffff";
-				wrapText(ctx, championName, x + champSize / 2, y + champSize + 15, champSize, 15);
+				wrapText(ctx, championName, x + champSize / 2, y + champSize + 17, champSize, 15);
 			} catch (error) {
 				console.error(`❌ Error with ${championName}:`, error.message);
 				drawPlaceholder(ctx, x, y, champSize, championName);
