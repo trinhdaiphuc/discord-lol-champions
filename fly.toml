@@ -1,0 +1,18 @@
+# fly.toml app configuration file generated for mr-gold-lol-bot on 2025-11-09T20:09:47+07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'mr-gold-lol-bot'
+primary_region = 'sin'
+
+[build]
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  min_machines_running = 1
+  processes = ['app']
+
+[[vm]]
+  size = 'shared-cpu-1x'
