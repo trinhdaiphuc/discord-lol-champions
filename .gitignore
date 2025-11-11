@@ -1,6 +1,3 @@
 node_modules
 .env
-champions.json
-config.json
-team.png
 cache
