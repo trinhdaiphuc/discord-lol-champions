@@ -66,8 +66,8 @@ async function drawTeamOnCanvas(team, teamName, isBlueTeam) {
 			gradient.addColorStop(0, "#02307f19");
 			gradient.addColorStop(1, "#022255ff");
 		} else {
-			gradient.addColorStop(0, "#490000c8");
-			gradient.addColorStop(1, "#7700006a");
+			gradient.addColorStop(0, "#40000039");
+			gradient.addColorStop(1, "#87000007");
 		}
 		ctx.fillStyle = gradient;
 		ctx.fillRect(0, 0, canvasWidth, canvasHeight);
