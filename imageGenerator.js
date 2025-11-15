@@ -1,32 +1,13 @@
 const { createCanvas, loadImage } = require("canvas");
-const axios = require("axios");
-const fs = require("fs");
 const { readConfig } = require("./configManager");
 const championsData = require("./champions.json");
+const { getChampionImage } = require("./imageManager");
 
 // Create a mapping from champion ID to champion name
 const championIdToName = {};
 for (const key in championsData) {
 	const champion = championsData[key];
 	championIdToName[champion.id] = champion.name;
-}
-
-async function downloadImage(url, filepath) {
-	try {
-		const response = await axios.get(url, {
-			responseType: "arraybuffer",
-			timeout: 5000,
-		});
-		if (!response.data) {
-			console.error(`❌ Download failed for ${url}: Response data is empty.`);
-			return null;
-		}
-		fs.writeFileSync(filepath, response.data);
-		return filepath;
-	} catch (error) {
-		console.error(`❌ Download failed for ${url}:`, error.message);
-		return null;
-	}
 }
 
 function drawPlaceholder(ctx, x, y, size, champName) {
@@ -97,10 +78,6 @@ async function drawTeamOnCanvas(team, teamName, isBlueTeam) {
 		ctx.textAlign = "center";
 		ctx.fillText(teamName, canvasWidth / 2 - (teamName.length / 2) * 15, 40);
 
-		if (!fs.existsSync(config.CHAMPION_IMAGE_PATH)) {
-			fs.mkdirSync(config.CHAMPION_IMAGE_PATH, { recursive: true });
-		}
-
 		const champSize = 80;
 		const startX = 120;
 		const startY = 80;
@@ -111,6 +88,7 @@ async function drawTeamOnCanvas(team, teamName, isBlueTeam) {
 		for (let i = 0; i < team.length; i++) {
 			const championId = team[i];
 			const championName = championIdToName[championId] || championId;
+			const championImageFile = `${championId}.png`;
 
 			const rowIndex = Math.floor(i / colsPerRow);
 			const colIndex = i % colsPerRow;
@@ -118,21 +96,15 @@ async function drawTeamOnCanvas(team, teamName, isBlueTeam) {
 			const x = startX + colIndex * spacingX;
 			const y = startY + rowIndex * spacingY;
 
-			const champImagePath = `${config.CHAMPION_IMAGE_PATH}/${championId.replace(/'/g, "")}.png`;
-
 			try {
-				if (!fs.existsSync(champImagePath)) {
-					const imageUrl = `https://ddragon.leagueoflegends.com/cdn/${config.DRAGON_VERSION}/img/champion/${championId}.png`;
+				const imageBuffer = await getChampionImage(championImageFile);
 
-					const downloaded = await downloadImage(imageUrl, champImagePath);
-
-					if (!downloaded) {
-						drawPlaceholder(ctx, x, y, champSize, championName);
-						continue;
-					}
+				if (!imageBuffer) {
+					drawPlaceholder(ctx, x, y, champSize, championName);
+					continue;
 				}
 
-				const image = await loadImage(champImagePath);
+				const image = await loadImage(imageBuffer);
 
 				if (!image) {
 					drawPlaceholder(ctx, x, y, champSize, championName);

@@ -2,42 +2,58 @@ const { readConfig } = require('./configManager');
 
 async function generateTeams() {
     const config = await readConfig();
-	const usedChampions = {
-		Fighter: new Set(),
-		Mage: new Set(),
-		Tank: new Set(),
-		Marksman: new Set(),
-		Assassin: new Set(),
-		Support: new Set(),
-	};
+    let usedChampions = new Set();
+    let blueTeam = [];
+    let redTeam = [];
 
-	let blueTeam = [];
-	let redTeam = [];
+    function selectChampion(roleChampions, usedChamps) {
+        const available = roleChampions.filter(champ => !usedChamps.has(champ));
+        if (available.length === 0) {
+            return null; // No available champions
+        }
+        const randomIndex = Math.floor(Math.random() * available.length);
+        return available[randomIndex];
+    }
 
-	const selectFromRole = (roleChampions, team, roleName) => {
-		const available = roleChampions.filter((champ) => !usedChampions[roleName].has(champ));
-		if (available.length < 3) {
-			usedChampions[roleName].clear();
-			return selectFromRole(roleChampions, team, roleName);
-		}
+    function generateTeam(roles, usedChamps) {
+        const team = [];
+        for (const role in roles) {
+            const roleChampions = roles[role];
+            let champion;
+            do {
+                champion = selectChampion(roleChampions, usedChamps);
+            } while (champion && usedChamps.has(champion));
 
-		const shuffled = [...available].sort(() => 0.5 - Math.random());
-		const selected = shuffled.slice(0, 3);
-		selected.forEach((champ) => {
-			usedChampions[roleName].add(champ);
-			team.push(champ);
-		});
-	};
+            if (champion) {
+                team.push(champion);
+                usedChamps.add(champion);
+            }
+        }
+        return team;
+    }
 
-	Object.keys(config.CHAMPION_ROLES).forEach((role) => {
-		selectFromRole(config.CHAMPION_ROLES[role], blueTeam, role);
-	});
+    let allChampions = new Set();
+    Object.values(config.CHAMPION_ROLES).forEach(champions => {
+        champions.forEach(champion => allChampions.add(champion));
+    });
 
-	Object.keys(config.CHAMPION_ROLES).forEach((role) => {
-		selectFromRole(config.CHAMPION_ROLES[role], redTeam, role);
-	});
+    if (allChampions.size < 10) {
+        throw new Error("Not enough unique champions to generate two teams.");
+    }
 
-	return { blueTeam, redTeam };
+    blueTeam = generateTeam(config.CHAMPION_ROLES, usedChampions);
+    redTeam = generateTeam(config.CHAMPION_ROLES, usedChampions);
+
+    // Ensure teams are unique
+    let allGeneratedChamps = new Set([...blueTeam, ...redTeam]);
+    while (allGeneratedChamps.size < blueTeam.length + redTeam.length) {
+        usedChampions = new Set();
+        blueTeam = generateTeam(config.CHAMPION_ROLES, usedChampions);
+        redTeam = generateTeam(config.CHAMPION_ROLES, usedChampions);
+        allGeneratedChamps = new Set([...blueTeam, ...redTeam]);
+    }
+
+    return { blueTeam, redTeam };
 }
 
 module.exports = { generateTeams };

@@ -13,7 +13,7 @@ async function readConfig() {
 		return {
 			DRAGON_VERSION: process.env.DRAGON_VERSION || "15.22.1",
 			CHAMPION_ROLES: {},
-			CHAMPION_IMAGE_PATH: "./cache",
+			CHAMPION_IMAGE_PATH: "./images",
 		};
 	}
 }

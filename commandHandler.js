@@ -22,12 +22,4 @@ async function handleGenCommand(message) {
 	}
 }
 
-function handleMessage(message) {
-	if (message.author.bot) return;
-
-	if (message.content.toLowerCase() === "/gen") {
-		handleGenCommand(message);
-	}
-}
-
-module.exports = { handleMessage, handleGenCommand };
+module.exports = { handleGenCommand };

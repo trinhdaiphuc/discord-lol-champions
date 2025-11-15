@@ -1,4 +1,4 @@
-const { handleGenCommand, handleMessage } = require("./commandHandler");
+const { handleGenCommand } = require("./commandHandler");
 const { SlashCommandBuilder } = require("discord.js");
 
 function registerEventHandlers(client) {
@@ -21,8 +21,6 @@ function registerEventHandlers(client) {
 		client.application.commands.create(echo);
 		client.application.commands.create(gen);
 	});
-
-	client.on("messageCreate", handleMessage);
 
 	client.on("interactionCreate", async (interaction) => {
 		if (!interaction.isChatInputCommand()) return;
