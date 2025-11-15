@@ -30,4 +30,4 @@ function handleMessage(message) {
 	}
 }
 
-module.exports = { handleMessage };
+module.exports = { handleMessage, handleGenCommand };
