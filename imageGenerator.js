@@ -63,11 +63,11 @@ async function drawTeamOnCanvas(team, teamName, isBlueTeam) {
 			canvasHeight / 2,
 		);
 		if (isBlueTeam) {
-			gradient.addColorStop(0, "#0e49afff");
-			gradient.addColorStop(1, "#3c79ddff");
+			gradient.addColorStop(0, "#02307f19");
+			gradient.addColorStop(1, "#022255ff");
 		} else {
-			gradient.addColorStop(0, "#bc2525ff");
-			gradient.addColorStop(1, "#e36b6bff");
+			gradient.addColorStop(0, "#490000c8");
+			gradient.addColorStop(1, "#7700006a");
 		}
 		ctx.fillStyle = gradient;
 		ctx.fillRect(0, 0, canvasWidth, canvasHeight);
