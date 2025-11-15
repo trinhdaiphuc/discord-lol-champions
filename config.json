@@ -314,5 +314,5 @@
             "Zyra"
         ]
     },
-    "CHAMPION_IMAGE_PATH": "./cache"
+    "CHAMPION_IMAGE_PATH": "images"
 }
