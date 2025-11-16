@@ -7,9 +7,10 @@ const { start } = require("./app");
 const app = express();
 const port = 3000;
 
-app.get("/gen-champions", async (req, res) => {
+app.get("/gen-champions/:guildId", async (req, res) => {
 	try {
-		const { blueTeam, redTeam } = await generateTeams();
+		const guildId = req.params.guildId;
+		const { blueTeam, redTeam } = await generateTeams(guildId);
 		const imageBuffer = await generateTeamImage(blueTeam, redTeam);
 
 		res.set("Content-Type", "image/png");

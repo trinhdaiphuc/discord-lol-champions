@@ -3,22 +3,25 @@ const { generateTeamImage } = require("./imageGenerator");
 const { generateTeams } = require("./teamGenerator");
 const { AttachmentBuilder } = require("discord.js");
 
-async function handleGenCommand(message) {
-	let sentMessage;
+async function handleGenCommand(interaction) {
 	try {
-		sentMessage = await message.reply("🎲 Generating teams...");
+		await interaction.reply("🎲 Generating teams...");
 
-		const { blueTeam, redTeam } = await generateTeams();
+		const { blueTeam, redTeam } = await generateTeams(interaction.guildId);
 		const imageBuffer = await generateTeamImage(blueTeam, redTeam);
 		const attachment = new AttachmentBuilder(imageBuffer, { name: "team.png" });
 
-		await sentMessage.edit({
+		await interaction.editReply({
 			files: [attachment],
 			content: "⚔️ ARAM Teams (6 roles × 3 champions)",
 		});
 	} catch (error) {
 		console.error("❌ Bot error:", error);
-		sentMessage.edit(`❌ Error: ${error.message}`);
+		if (interaction.deferred || interaction.replied) {
+			await interaction.editReply(`❌ Error: ${error.message}`);
+		} else {
+			await interaction.reply(`❌ Error: ${error.message}`);
+		}
 	}
 }
 

@@ -1,1 +1,1 @@
-GET http://localhost:3000/gen-champions
+GET http://localhost:3000/gen-champions/test-guild-id-123
