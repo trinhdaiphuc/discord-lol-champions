@@ -1,14 +1,7 @@
 const { createCanvas, loadImage } = require("canvas");
 const { readConfig } = require("./configManager");
-const championsData = require("./champions.json");
 const { getChampionImage } = require("./imageManager");
-
-// Create a mapping from champion ID to champion name
-const championIdToName = {};
-for (const key in championsData) {
-	const champion = championsData[key];
-	championIdToName[champion.id] = champion.name;
-}
+const { getChampions } = require("./championManager");
 
 function drawPlaceholder(ctx, x, y, size, champName) {
 	ctx.fillStyle = "#888888";
@@ -48,7 +41,7 @@ function wrapText(context, text, x, y, maxWidth, lineHeight) {
 
 async function drawTeamOnCanvas(team, teamName, isBlueTeam) {
 	try {
-		const config = await readConfig();
+		const championsData = await getChampions();
 		const canvasWidth = 800;
 		const canvasHeight = 800;
 		const canvas = createCanvas(canvasWidth, canvasHeight);
@@ -87,7 +80,7 @@ async function drawTeamOnCanvas(team, teamName, isBlueTeam) {
 
 		for (let i = 0; i < team.length; i++) {
 			const championId = team[i];
-			const championName = championIdToName[championId] || championId;
+			const championName = championsData[championId]?.name || championId;
 			const championImageFile = `${championId}.png`;
 
 			const rowIndex = Math.floor(i / colsPerRow);

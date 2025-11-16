@@ -1,8 +1,10 @@
 const axios = require("axios");
-const fs = require("fs").promises;
+const fs = require("fs");
 const path = require("path");
 const { readConfig, writeConfig } = require("./configManager");
 const { createChecksum, saveChecksum, verifyChecksum } = require("./checksum");
+const toAwait = require("./promise");
+const { reloadChampions } = require("./championManager");
 
 const CHAMPIONS_PATH = path.join(__dirname, "champions.json");
 const IMAGES_PATH = path.join(__dirname, "images");
@@ -53,11 +55,14 @@ function groupChampionsByRole(champions) {
 async function updateChampionImages(champions, version) {
 	console.log("Updating champion images...");
 	if (!fs.existsSync(IMAGES_PATH)) {
-		await fs.mkdir(IMAGES_PATH);
+		fs.mkdirSync(IMAGES_PATH);
 	}
 
-	for (const championId in champions.data) {
-		const champion = champions.data[championId];
+	let totalSuccess = 0;
+	let totalFailed = 0;
+
+	for (const championId in champions) {
+		const champion = champions[championId];
 		const championImage = champion.image.full;
 		const championImageUrl = `https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${championImage}`;
 		const imagePath = path.join(IMAGES_PATH, championImage);
@@ -67,19 +72,22 @@ async function updateChampionImages(champions, version) {
 			const checksum = createChecksum(imageBuffer);
 
 			if (!verifyChecksum(championImage, checksum)) {
-				await fs.writeFile(imagePath, imageBuffer);
+				fs.writeFileSync(imagePath, imageBuffer);
 				saveChecksum(championImage, checksum);
 				console.log(`Updated ${championImage}`);
+				totalSuccess++;
 			}
 		} catch (error) {
 			console.error(`Failed to download ${championImage}: ${error.message}`);
+			totalFailed++;
 		}
 	}
+	console.log(`Champion images updated. Success: ${totalSuccess}, Failed: ${totalFailed}`);
 }
 
 async function updateChampions() {
 	console.log("Checking for new champion data...");
-	const config = await readConfig();
+	const [config] = await toAwait(readConfig());
 	const latestVersion = await getLatestVersion();
 
 	if (!latestVersion) {
@@ -87,7 +95,7 @@ async function updateChampions() {
 		return;
 	}
 
-	if (latestVersion === config.DRAGON_VERSION) {
+	if (latestVersion === config?.DRAGON_VERSION) {
 		console.log("Champion data is up to date.");
 		return;
 	}
@@ -100,21 +108,28 @@ async function updateChampions() {
 		return;
 	}
 
+	console.log(`Get champions successfully. ${Object.keys(champions).length} champions found.`);
+
 	const newRoles = groupChampionsByRole(champions);
 
-	config.DRAGON_VERSION = latestVersion;
-	config.CHAMPION_ROLES = newRoles;
+	const newConfig = {
+		DRAGON_VERSION: latestVersion,
+		CHAMPION_ROLES: newRoles,
+	};
 
-	await writeConfig(config);
+	await writeConfig(newConfig);
 
 	// Also, update the champions.json file for the bot to use
 	try {
-		await fs.writeFile(CHAMPIONS_PATH, JSON.stringify(championsData, null, 4));
+		console.log("Writing champions.json file...");
+		fs.writeFileSync(CHAMPIONS_PATH, JSON.stringify(champions, null, 4));
 		console.log("Champions data updated successfully.");
 	} catch (error) {
 		console.error("Error writing champions.json file:", error);
 	}
-	await updateChampionImages(championsData, latestVersion);
+
+	reloadChampions();
+	await updateChampionImages(champions, latestVersion);
 }
 
 // Run the update function directly if the script is executed from the command line

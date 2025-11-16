@@ -1,13 +1,13 @@
-const { loadChampions } = require('./championLoader');
+const { loadChampions } = require("./championLoader");
 
 let champions = loadChampions();
 
 function getChampions() {
-    return champions;
+	return champions;
 }
 
 function reloadChampions() {
-    champions = loadChampions();
+	champions = loadChampions();
 }
 
 module.exports = { getChampions, reloadChampions };
