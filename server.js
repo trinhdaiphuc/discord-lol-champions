@@ -1,11 +1,25 @@
 const express = require("express");
 const { generateTeams, generateTeamsByRole } = require("./teamGenerator");
+const { createRandomTeams } = require("./memberShuffler");
 const { generateTeamImage } = require("./imageGenerator");
 const { updateChampionJob } = require("./botManager");
 const { start } = require("./app");
 
 const app = express();
 const port = 3000;
+
+app.use(express.json());
+
+app.post("/random-team", (req, res) => {
+	try {
+		const members = req.body.members || [];
+		const { teamA, teamB } = createRandomTeams(members);
+		res.json({ teamA, teamB });
+	} catch (error) {
+		console.error("Error creating random teams:", error);
+		res.status(500).send("Error creating random teams");
+	}
+});
 
 app.get("/gen-champions/role/:roleName", async (req, res) => {
 	try {

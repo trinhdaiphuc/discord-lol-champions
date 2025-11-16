@@ -1,5 +1,9 @@
-const { handleGenCommand, handleGenRoleCommand } = require("./commandHandler");
-const { SlashCommandBuilder } = require("discord.js");
+const {
+	handleGenCommand,
+	handleGenRoleCommand,
+	handleRandomTeamCommand,
+} = require("./commandHandler");
+const { SlashCommandBuilder, ChannelType } = require("discord.js");
 
 function registerEventHandlers(client) {
 	client.on("clientReady", () => {
@@ -35,10 +39,22 @@ function registerEventHandlers(client) {
 					),
 			);
 
+		const randomTeam = new SlashCommandBuilder()
+			.setName("random-team")
+			.setDescription("Generates random teams from a voice channel")
+			.addChannelOption((option) =>
+				option
+					.setName("channel")
+					.setDescription("The voice channel to get members from")
+					.setRequired(true)
+					.addChannelTypes(ChannelType.GuildVoice),
+			);
+
 		client.application.commands.create(ping);
 		client.application.commands.create(echo);
 		client.application.commands.create(gen);
 		client.application.commands.create(genRole);
+		client.application.commands.create(randomTeam);
 	});
 
 	client.on("interactionCreate", async (interaction) => {
@@ -57,6 +73,9 @@ function registerEventHandlers(client) {
 				break;
 			case "gen-role":
 				await handleGenRoleCommand(interaction);
+				break;
+			case "random-team":
+				await handleRandomTeamCommand(interaction);
 				break;
 			default:
 				await interaction.reply("Unknown command!");

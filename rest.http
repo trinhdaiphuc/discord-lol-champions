@@ -1,6 +1,17 @@
-GET http://localhost:3000/gen-champions/test-guild-id-123
+#### Get champions for a guild
+### Replace 'test-guild-id-123' with your actual guild ID
+@guildId = test-guild-id-123
+GET http://localhost:3000/gen-champions/{{guildId}}
 
 ### Get champions by role
 ### roleName: Fighter | Mage | Tank | Marksman | Support | Assassin 
 @roleName = Assassin
 GET http://localhost:3000/gen-champions/role/{{roleName}}
+
+### Generate random team
+POST http://localhost:3000/random-team
+Content-Type: application/json
+
+{
+  "members": ["member1", "member2", "member3", "member4", "member5", "member6", "member7", "member8", "member9", "member10"]
+}

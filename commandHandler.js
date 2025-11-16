@@ -1,7 +1,8 @@
 const fs = require("fs");
 const { generateTeamImage } = require("./imageGenerator");
 const { generateTeams, generateTeamsByRole } = require("./teamGenerator");
-const { AttachmentBuilder } = require("discord.js");
+const { createRandomTeams } = require("./memberShuffler");
+const { AttachmentBuilder, EmbedBuilder } = require("discord.js");
 
 async function handleGenCommand(interaction) {
 	try {
@@ -48,4 +49,35 @@ async function handleGenRoleCommand(interaction) {
 	}
 }
 
-module.exports = { handleGenCommand, handleGenRoleCommand };
+async function handleRandomTeamCommand(interaction) {
+	try {
+		await interaction.reply("🎲 Shuffling members into teams...");
+		const channel = interaction.options.getChannel("channel");
+		const members = channel.members.map((member) => member.displayName);
+
+		const { teamA, teamB } = createRandomTeams(members);
+
+		const embed = new EmbedBuilder()
+			.setTitle("⚔️ Random Teams")
+			.addFields(
+				{ name: "Team A", value: teamA.join("\n"), inline: true },
+				{ name: "Team B", value: teamB.join("\n"), inline: true },
+			)
+			.setColor("#0099ff");
+
+		await interaction.editReply({ embeds: [embed] });
+	} catch (error) {
+		console.error("❌ Bot error:", error);
+		if (interaction.deferred || interaction.replied) {
+			await interaction.editReply(`❌ Error: ${error.message}`);
+		} else {
+			await interaction.reply(`❌ Error: ${error.message}`);
+		}
+	}
+}
+
+module.exports = {
+	handleGenCommand,
+	handleGenRoleCommand,
+	handleRandomTeamCommand,
+};
