@@ -70,6 +70,29 @@ async function generateTeams(guildId) {
 	return { blueTeam, redTeam };
 }
 
+async function generateTeamsByRole(role) {
+	const config = await readConfig();
+	const roleChampions = config.CHAMPION_ROLES[role];
+
+	if (!roleChampions) {
+		throw new Error(`Invalid role: ${role}`);
+	}
+
+	let selectedChampions;
+	if (roleChampions.length <= 24) {
+		selectedChampions = [...roleChampions];
+	} else {
+		selectedChampions = [...roleChampions].sort(() => 0.5 - Math.random()).slice(0, 24);
+	}
+
+	const shuffledChampions = selectedChampions.sort(() => 0.5 - Math.random());
+	const midPoint = Math.ceil(shuffledChampions.length / 2);
+	const blueTeam = shuffledChampions.slice(0, midPoint);
+	const redTeam = shuffledChampions.slice(midPoint);
+
+	return { blueTeam, redTeam };
+}
+
 const verifyUniqueTeams = (teamA, teamB) => {
 	const setA = new Set(teamA);
 	for (const champ of teamB) {
@@ -80,4 +103,4 @@ const verifyUniqueTeams = (teamA, teamB) => {
 	return true;
 };
 
-module.exports = { generateTeams, verifyUniqueTeams };
+module.exports = { generateTeams, generateTeamsByRole, verifyUniqueTeams };

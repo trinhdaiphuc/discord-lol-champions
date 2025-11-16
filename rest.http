@@ -1,1 +1,6 @@
 GET http://localhost:3000/gen-champions/test-guild-id-123
+
+### Get champions by role
+### roleName: Fighter | Mage | Tank | Marksman | Support | Assassin 
+@roleName = Assassin
+GET http://localhost:3000/gen-champions/role/{{roleName}}
