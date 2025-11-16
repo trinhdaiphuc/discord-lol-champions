@@ -31,15 +31,10 @@ COPY . .
 # Final stage for app image
 FROM base
 
-# Install packages needed for deployment
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y chromium chromium-sandbox && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
-
 # Copy built application
 COPY --from=build /app /app
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
 ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/chromium"
-CMD [ "node", "bot.js" ]
+CMD [ "node", "server.js" ]
