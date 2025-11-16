@@ -50,6 +50,10 @@ function registerEventHandlers(client) {
 					.addChannelTypes(ChannelType.GuildVoice),
 			);
 
+		const goodNight = new SlashCommandBuilder()
+			.setName("g9")
+			.setDescription("Says good night to the server");
+
 		client.application.commands.create(ping);
 		client.application.commands.create(echo);
 		client.application.commands.create(gen);
@@ -76,6 +80,9 @@ function registerEventHandlers(client) {
 				break;
 			case "random-team":
 				await handleRandomTeamCommand(interaction);
+				break;
+			case "g9":
+				await interaction.reply("Good night, everyone! 🌙");
 				break;
 			default:
 				await interaction.reply("Unknown command!");
