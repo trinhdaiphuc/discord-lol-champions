@@ -59,6 +59,7 @@ function registerEventHandlers(client) {
 		client.application.commands.create(gen);
 		client.application.commands.create(genRole);
 		client.application.commands.create(randomTeam);
+		client.application.commands.create(goodNight);
 	});
 
 	client.on("interactionCreate", async (interaction) => {
