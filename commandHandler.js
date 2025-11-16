@@ -51,21 +51,20 @@ async function handleGenRoleCommand(interaction) {
 
 async function handleRandomTeamCommand(interaction) {
 	try {
-		await interaction.reply("🎲 Shuffling members into teams...");
 		const channel = interaction.options.getChannel("channel");
 		const members = channel.members.map((member) => member.displayName);
 
 		const { teamA, teamB } = createRandomTeams(members);
 
 		const embed = new EmbedBuilder()
-			.setTitle("⚔️ Random Teams")
+			.setTitle(`⚔️ Random Teams from ${channel.name}`)
 			.addFields(
 				{ name: "Team A", value: teamA.join("\n"), inline: true },
 				{ name: "Team B", value: teamB.join("\n"), inline: true },
 			)
 			.setColor("#0099ff");
 
-		await interaction.editReply({ embeds: [embed] });
+		await interaction.reply({ embeds: [embed] });
 	} catch (error) {
 		console.error("❌ Bot error:", error);
 		if (interaction.deferred || interaction.replied) {
