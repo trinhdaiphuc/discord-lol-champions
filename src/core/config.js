@@ -1,7 +1,7 @@
 const fs = require("fs").promises;
 const path = require("path");
 
-const CONFIG_PATH = path.join(__dirname, "config.json");
+const CONFIG_PATH = path.join(__dirname, "..", "..", "config.json");
 
 async function readConfig() {
 	const configData = await fs.readFile(CONFIG_PATH, "utf-8");

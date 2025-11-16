@@ -2,6 +2,8 @@
 
 This Discord bot generates random teams of League of Legends champions and displays them in an image format. It's designed to be a fun tool for custom games or for challenging yourself with random champion picks.
 
+You can use this url to invite the bot to your server: [Invite Bot](https://discord.com/oauth2/authorize?client_id=1437063850976477254&permissions=1374389603344&integration_type=0&scope=bot).
+
 ## File Structure
 
 Here's a breakdown of the important files in this project:

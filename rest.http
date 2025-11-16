@@ -5,7 +5,7 @@ GET http://localhost:3000/gen-champions/{{guildId}}
 
 ### Get champions by role
 ### roleName: Fighter | Mage | Tank | Marksman | Support | Assassin 
-@roleName = Assassin
+@roleName = Mage
 GET http://localhost:3000/gen-champions/role/{{roleName}}
 
 ### Generate random team

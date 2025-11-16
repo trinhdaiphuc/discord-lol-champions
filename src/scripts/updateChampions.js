@@ -1,13 +1,12 @@
 const axios = require("axios");
-const fs = require("fs");
+const fs = require("fs").promises;
 const path = require("path");
-const { readConfig, writeConfig } = require("./configManager");
-const { createChecksum, saveChecksum, verifyChecksum } = require("./checksum");
-const toAwait = require("./promise");
-const { reloadChampions } = require("./championManager");
+const { readConfig, writeConfig } = require("../core/config");
+const championRepository = require("../data/championRepository");
+const championService = require("../services/championService");
+const toAwait = require("../core/promise");
 
-const CHAMPIONS_PATH = path.join(__dirname, "champions.json");
-const IMAGES_PATH = path.join(__dirname, "images");
+const IMAGES_PATH = path.join(__dirname, "..", "..", "images");
 
 async function getLatestVersion() {
 	try {
@@ -54,8 +53,10 @@ function groupChampionsByRole(champions) {
 
 async function updateChampionImages(champions, version) {
 	console.log("Updating champion images...");
-	if (!fs.existsSync(IMAGES_PATH)) {
-		fs.mkdirSync(IMAGES_PATH);
+	try {
+		await fs.mkdir(IMAGES_PATH, { recursive: true });
+	} catch (error) {
+		// Ignore if the directory already exists
 	}
 
 	let totalSuccess = 0;
@@ -69,11 +70,11 @@ async function updateChampionImages(champions, version) {
 		try {
 			const response = await axios.get(championImageUrl, { responseType: "arraybuffer" });
 			const imageBuffer = Buffer.from(response.data, "binary");
-			const checksum = createChecksum(imageBuffer);
+			const checksum = championRepository.createChecksum(imageBuffer);
 
-			if (!verifyChecksum(championImage, checksum)) {
-				fs.writeFileSync(imagePath, imageBuffer);
-				saveChecksum(championImage, checksum);
+			if (!(await championRepository.verifyChecksum(championImage, checksum))) {
+				await fs.writeFile(imagePath, imageBuffer);
+				await championRepository.saveChecksum(championImage, checksum);
 				console.log(`Updated ${championImage}`);
 				totalSuccess++;
 			}
@@ -113,6 +114,7 @@ async function updateChampions() {
 	const newRoles = groupChampionsByRole(champions);
 
 	const newConfig = {
+		...config,
 		DRAGON_VERSION: latestVersion,
 		CHAMPION_ROLES: newRoles,
 	};
@@ -122,13 +124,13 @@ async function updateChampions() {
 	// Also, update the champions.json file for the bot to use
 	try {
 		console.log("Writing champions.json file...");
-		fs.writeFileSync(CHAMPIONS_PATH, JSON.stringify(champions, null, 4));
+		await championRepository.writeChampions(champions);
 		console.log("Champions data updated successfully.");
 	} catch (error) {
 		console.error("Error writing champions.json file:", error);
 	}
 
-	reloadChampions();
+	await championService.reloadChampions();
 	await updateChampionImages(champions, latestVersion);
 }
 

@@ -1,7 +1,26 @@
 const { createCanvas, loadImage } = require("canvas");
-const { readConfig } = require("./configManager");
-const { getChampionImage } = require("./imageManager");
-const { getChampions } = require("./championManager");
+const fs = require("fs").promises;
+const path = require("path");
+const championService = require("./championService");
+
+const imageCache = new Map();
+const imagesDir = path.join(__dirname, "..", "..", "images");
+
+async function getChampionImage(championImage) {
+	if (imageCache.has(championImage)) {
+		return imageCache.get(championImage);
+	}
+
+	const imagePath = path.join(imagesDir, championImage);
+	try {
+		const imageBuffer = await fs.readFile(imagePath);
+		imageCache.set(championImage, imageBuffer);
+		return imageBuffer;
+	} catch (error) {
+		console.error(`Failed to read image ${championImage}: ${error.message}`);
+		return null;
+	}
+}
 
 function drawPlaceholder(ctx, x, y, size, champName) {
 	ctx.fillStyle = "#888888";
@@ -41,7 +60,7 @@ function wrapText(context, text, x, y, maxWidth, lineHeight) {
 
 async function drawTeamOnCanvas(team, teamName, isBlueTeam) {
 	try {
-		const championsData = await getChampions();
+		const championsData = championService.getChampions();
 		const canvasWidth = 800;
 		const canvasHeight = 800;
 		const canvas = createCanvas(canvasWidth, canvasHeight);
@@ -166,4 +185,4 @@ async function generateTeamImage(blueTeam, redTeam) {
 	}
 }
 
-module.exports = { generateTeamImage };
+module.exports = { generateTeamImage, getChampionImage };

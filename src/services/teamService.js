@@ -1,11 +1,25 @@
-const { readConfig } = require("./configManager");
-const {
-	getUsedChampions,
-	addUsedChampions,
-	resetUsedChampions,
-} = require("./cacheManager");
+const { readConfig } = require("../core/config");
+const championService = require("./championService");
 
 const MIN_CHAMPIONS_REQUIRED = 36;
+
+const cache = new Map();
+
+function getUsedChampions(guildId) {
+  return cache.get(guildId) || new Set();
+}
+
+function addUsedChampions(guildId, champions) {
+  const usedChampions = getUsedChampions(guildId);
+  for (const champion of champions) {
+    usedChampions.add(champion);
+  }
+  cache.set(guildId, usedChampions);
+}
+
+function resetUsedChampions(guildId) {
+  cache.delete(guildId);
+}
 
 async function generateTeams(guildId) {
 	const config = await readConfig();
@@ -93,6 +107,30 @@ async function generateTeamsByRole(role) {
 	return { blueTeam, redTeam };
 }
 
+function createRandomTeams(members) {
+  const totalPlayers = 10;
+  const memberNames = [...members];
+
+  while (memberNames.length < totalPlayers) {
+    memberNames.push(`World-${memberNames.length + 1 - members.length}`);
+  }
+
+  const shuffledMembers = memberNames.sort(() => 0.5 - Math.random());
+
+  const teamA = [];
+  const teamB = [];
+
+  shuffledMembers.forEach((member, index) => {
+    if (index % 2 === 0) {
+      teamA.push(member);
+    } else {
+      teamB.push(member);
+    }
+  });
+
+  return { teamA, teamB };
+}
+
 const verifyUniqueTeams = (teamA, teamB) => {
 	const setA = new Set(teamA);
 	for (const champ of teamB) {
@@ -103,4 +141,12 @@ const verifyUniqueTeams = (teamA, teamB) => {
 	return true;
 };
 
-module.exports = { generateTeams, generateTeamsByRole, verifyUniqueTeams };
+module.exports = {
+	generateTeams,
+	generateTeamsByRole,
+	verifyUniqueTeams,
+	createRandomTeams,
+	getUsedChampions,
+	addUsedChampions,
+	resetUsedChampions,
+};
