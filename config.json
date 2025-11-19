@@ -1,5 +1,5 @@
 {
-    "DRAGON_VERSION": "15.22.1",
+    "DRAGON_VERSION": "15.23.1",
     "CHAMPION_ROLES": {
         "Fighter": [
             "Aatrox",
@@ -60,6 +60,7 @@
             "Yasuo",
             "Yone",
             "Yorick",
+            "Zaahen",
             "Zac"
         ],
         "Mage": [
@@ -266,6 +267,7 @@
             "Viego",
             "Yasuo",
             "Yone",
+            "Zaahen",
             "Zed"
         ],
         "Support": [
