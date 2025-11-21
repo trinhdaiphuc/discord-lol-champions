@@ -1,3 +1,4 @@
+require("dotenv").config();
 const fs = require("node:fs");
 const path = require("node:path");
 const { Collection } = require("discord.js");
@@ -7,7 +8,6 @@ const { createClient } = require("./src/core/bot");
 const { createServer } = require("./src/core/server");
 const { readConfig } = require("./src/core/config");
 const championService = require("./src/services/championService");
-require("dotenv").config();
 
 async function main() {
 	// Load config and champions

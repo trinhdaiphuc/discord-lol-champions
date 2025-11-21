@@ -1,6 +1,7 @@
 const express = require("express");
 const teamService = require("../services/teamService");
 const imageService = require("../services/imageService");
+const { askAI } = require("../services/aiService");
 
 function createServer() {
 	const app = express();
@@ -8,6 +9,20 @@ function createServer() {
 
 	app.get("/", (req, res) => {
 		res.send("League of Legends Champions Image Generator is running.");
+	});
+
+	app.post("/ask", async (req, res) => {
+		try {
+			const question = req.body.question;
+			if (!question) {
+				return res.status(400).json({ error: "Question is required" });
+			}
+			const answer = await askAI(question);
+			res.json({ answer });
+		} catch (error) {
+			console.error("Error processing ask request:", error);
+			res.status(500).json({ error: error.message || "Internal server error" });
+		}
 	});
 
 	app.post("/random-team", (req, res) => {

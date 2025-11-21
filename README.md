@@ -96,5 +96,56 @@ You can also run the bot inside a Docker container.
     Make sure you have your `.env` file created with the necessary environment variables.
 
     ```bash
+    ```bash
     docker run --env-file .env discord-lol-champions
     ```
+
+## Self Hosting
+
+To host this bot yourself, follow the installation steps above. Ensure you have the necessary API keys:
+
+-   **Discord Bot Token**: Required for the bot to function.
+-   **Riot Data Dragon Version**: Required for champion data.
+-   **OpenAI Key** (Optional): Set `OPENAI_KEY` to enable AI features using OpenAI.
+-   **Google API Key** (Optional): Set `GOOGLE_API_KEY` to enable AI features using Google Gemini (fallback if OpenAI is missing or fails).
+
+### API Endpoints
+
+The bot also exposes a REST API for interacting with its features.
+
+#### POST /ask
+
+Ask a question to the AI.
+
+**Request:**
+```json
+{
+  "question": "What is the best build for Yasuo?"
+}
+```
+
+**Response:**
+```json
+{
+  "answer": "The best build for Yasuo typically involves..."
+}
+```
+
+#### POST /random-team
+
+Generate random teams.
+
+**Request:**
+```json
+{
+  "members": ["Player1", "Player2", ...]
+}
+```
+
+#### GET /gen-champions/:guildId
+
+Generate champion image for a guild.
+
+#### GET /gen-champions/role/:roleName
+
+Generate champion image by role.
