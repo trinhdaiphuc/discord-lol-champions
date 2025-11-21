@@ -18,7 +18,7 @@ function createServer() {
 				return res.status(400).json({ error: "Question is required" });
 			}
 			const answer = await askAI(question);
-			res.json({ answer });
+			res.json({ question, answer });
 		} catch (error) {
 			console.error("Error processing ask request:", error);
 			res.status(500).json({ error: error.message || "Internal server error" });

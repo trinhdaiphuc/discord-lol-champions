@@ -14,7 +14,7 @@ module.exports = {
 
 		try {
 			const answer = await askAI(question);
-			await interaction.editReply(answer);
+			await interaction.editReply(`> **Question:** ${question}\n\n${answer}`);
 		} catch (error) {
 			console.error(error);
 			await interaction.editReply(
