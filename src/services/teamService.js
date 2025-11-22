@@ -50,23 +50,23 @@ function getCache(guildId) {
 // 		2.2 Nếu tướng còn lại + tướng đã chọn < 3 thì lấy random tướng còn lại đã được sử dụng trong role đó mà không trùng với tướng đã gen ở total và đã chọn
 const getPoll = (role, usedChampions, selectedChampions, availableChampionsByRole, config) => {
 	if (availableChampionsByRole[role].length < 3) {
-		let pool = availableChampionsByRole[role].filter((champ) => !(
-			selectedChampions.has(champ)
-		));
+		let pool = availableChampionsByRole[role].filter((champ) => !selectedChampions.has(champ));
 		usedChampions.resetRole(role);
-		let remainingChampions = config.CHAMPION_ROLES[role].filter((champ) => !(
-			usedChampions.getTotal().has(champ) ||
-			selectedChampions.has(champ) ||
-			pool.includes(champ)
-		));
+		let remainingChampions = config.CHAMPION_ROLES[role].filter(
+			(champ) =>
+				!(
+					usedChampions.getTotal().has(champ) ||
+					selectedChampions.has(champ) ||
+					pool.includes(champ)
+				),
+		);
 		if (remainingChampions.length + pool.length >= 3) {
 			return [...pool, ...remainingChampions.sort(() => 0.5 - Math.random())].slice(0, 3);
 		}
 
-		remainingChampions = config.CHAMPION_ROLES[role].filter((champ) => !(
-			selectedChampions.has(champ) ||
-			pool.includes(champ)
-		));
+		remainingChampions = config.CHAMPION_ROLES[role].filter(
+			(champ) => !(selectedChampions.has(champ) || pool.includes(champ)),
+		);
 
 		if (remainingChampions.length + pool.length < 3) {
 			console.log(`⚠️ Not enough champions for role ${role}`);
@@ -75,11 +75,14 @@ const getPoll = (role, usedChampions, selectedChampions, availableChampionsByRol
 		return [...pool, ...remainingChampions.sort(() => 0.5 - Math.random())].slice(0, 3);
 	}
 
-	let pool = availableChampionsByRole[role].filter((champ) => !(
-		selectedChampions.has(champ) ||
-		usedChampions.getTotal().has(champ) ||
-		usedChampions.getRole(role).has(champ)
-	));
+	let pool = availableChampionsByRole[role].filter(
+		(champ) =>
+			!(
+				selectedChampions.has(champ) ||
+				usedChampions.getTotal().has(champ) ||
+				usedChampions.getRole(role).has(champ)
+			),
+	);
 	if (pool.length >= 3) {
 		pool = pool.sort(() => 0.5 - Math.random());
 		return pool.slice(0, 3);
@@ -87,26 +90,34 @@ const getPoll = (role, usedChampions, selectedChampions, availableChampionsByRol
 
 	usedChampions.resetRole(role);
 
-	let remainingChampions = config.CHAMPION_ROLES[role].filter((champ) => !(
-		usedChampions.getTotal().has(champ) ||
-		selectedChampions.has(champ) ||
-		pool.includes(champ)
-	));
+	let remainingChampions = config.CHAMPION_ROLES[role].filter(
+		(champ) =>
+			!(
+				usedChampions.getTotal().has(champ) ||
+				selectedChampions.has(champ) ||
+				pool.includes(champ)
+			),
+	);
 
 	if (pool.length + remainingChampions.length >= 3) {
 		return [...pool, ...remainingChampions.sort(() => crypto.randomInt(2) - 0.5)].slice(0, 3);
 	}
 
-	remainingChampions = config.CHAMPION_ROLES[role].filter((champ) => !(
-		selectedChampions.has(champ) ||
-		pool.includes(champ)
-	)).sort(() => crypto.randomInt(2) - 0.5);
+	remainingChampions = config.CHAMPION_ROLES[role]
+		.filter((champ) => !(selectedChampions.has(champ) || pool.includes(champ)))
+		.sort(() => crypto.randomInt(2) - 0.5);
 
 	return [...pool, ...remainingChampions].slice(0, 3);
-}
+};
 
-
-const selectFromRole = (team, role, usedChampions, selectedChampions, availableChampionsByRole, config) => {
+const selectFromRole = (
+	team,
+	role,
+	usedChampions,
+	selectedChampions,
+	availableChampionsByRole,
+	config,
+) => {
 	const pool = getPoll(role, usedChampions, selectedChampions, availableChampionsByRole, config);
 
 	pool.forEach((champ) => {
@@ -115,7 +126,7 @@ const selectFromRole = (team, role, usedChampions, selectedChampions, availableC
 		usedChampions.getRole(role).add(champ);
 		usedChampions.getTotal().add(champ);
 	});
-}
+};
 
 async function generateTeams(guildId) {
 	const config = await readConfig();
@@ -136,11 +147,25 @@ async function generateTeams(guildId) {
 	const redTeam = [];
 
 	for (const role of Object.keys(config.CHAMPION_ROLES)) {
-		selectFromRole(blueTeam, role, usedChampions, selectedChampions, availableChampionsByRole, config);
+		selectFromRole(
+			blueTeam,
+			role,
+			usedChampions,
+			selectedChampions,
+			availableChampionsByRole,
+			config,
+		);
 	}
 
 	for (const role of Object.keys(config.CHAMPION_ROLES)) {
-		selectFromRole(redTeam, role, usedChampions, selectedChampions, availableChampionsByRole, config);
+		selectFromRole(
+			redTeam,
+			role,
+			usedChampions,
+			selectedChampions,
+			availableChampionsByRole,
+			config,
+		);
 	}
 
 	if (usedChampions.getTotal().size >= Object.keys(championService.getChampions()).length) {
@@ -148,7 +173,7 @@ async function generateTeams(guildId) {
 		usedChampions.resetTotal();
 	}
 
-	verifyUniqueTeams(blueTeam, redTeam)
+	verifyUniqueTeams(blueTeam, redTeam);
 	return { blueTeam, redTeam };
 }
 
