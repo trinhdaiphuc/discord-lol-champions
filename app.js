@@ -13,7 +13,7 @@ async function main() {
 	// Load config and champions
 	const config = await readConfig();
 	await championService.loadChampions();
-	console.log("✅ Champion data loaded.");
+	console.log(`✅ Champion data loaded. (${Object.keys(championService.getChampions()).length} champions)`);
 
 	// Create Discord client
 	const client = createClient();
