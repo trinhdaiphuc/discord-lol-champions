@@ -134,14 +134,15 @@ async function drawTeamOnCanvas(team, teamName, isBlueTeam) {
 			const cardRadius = 25;
 
 			// Drop Shadow for the card
-			ctx.shadowColor = "rgba(0, 0, 0, 0.6)"; // Darker shadow for contrast
-			ctx.shadowBlur = 25;
-			ctx.shadowOffsetY = 15;
+			ctx.shadowColor = "rgba(0, 0, 0, 0.7)"; // Darker shadow
+			ctx.shadowBlur = 30; // Increased blur
+			ctx.shadowOffsetY = 20;
 			
 			// Glass Gradient Fill
 			const cardGradient = ctx.createLinearGradient(cardX, cardY, cardX + cardWidth, cardY + cardHeight);
-			cardGradient.addColorStop(0, "rgba(255, 255, 255, 0.2)"); // More opaque
-			cardGradient.addColorStop(1, "rgba(255, 255, 255, 0.1)"); // More opaque
+			cardGradient.addColorStop(0, "rgba(255, 255, 255, 0.25)"); // More opaque
+			cardGradient.addColorStop(0.4, "rgba(255, 255, 255, 0.15)");
+			cardGradient.addColorStop(1, "rgba(255, 255, 255, 0.1)");
 			
 			drawRoundedRect(ctx, cardX, cardY, cardWidth, cardHeight, cardRadius);
 			ctx.fillStyle = cardGradient;
@@ -154,19 +155,19 @@ async function drawTeamOnCanvas(team, teamName, isBlueTeam) {
 
 			// Glass Border (Light to Dark)
 			const borderGradient = ctx.createLinearGradient(cardX, cardY, cardX + cardWidth, cardY + cardHeight);
-			borderGradient.addColorStop(0, "rgba(255, 255, 255, 0.8)"); // Brighter border
-			borderGradient.addColorStop(0.5, "rgba(255, 255, 255, 0.2)");
-			borderGradient.addColorStop(1, "rgba(255, 255, 255, 0.1)");
+			borderGradient.addColorStop(0, "rgba(255, 255, 255, 0.9)"); // Brighter border start
+			borderGradient.addColorStop(0.5, "rgba(255, 255, 255, 0.3)");
+			borderGradient.addColorStop(1, "rgba(255, 255, 255, 0.15)");
 			
 			ctx.strokeStyle = borderGradient;
-			ctx.lineWidth = 1.5;
+			ctx.lineWidth = 2; // Slightly thicker
 			ctx.stroke();
 
 			// Inner Gloss/Highlight
 			ctx.save();
 			ctx.clip(); // Clip to card shape
 			const glossGradient = ctx.createLinearGradient(cardX, cardY, cardX, cardY + cardHeight / 2);
-			glossGradient.addColorStop(0, "rgba(255, 255, 255, 0.1)");
+			glossGradient.addColorStop(0, "rgba(255, 255, 255, 0.2)"); // Stronger gloss
 			glossGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
 			ctx.fillStyle = glossGradient;
 			ctx.fillRect(cardX, cardY, cardWidth, cardHeight / 2);
@@ -247,7 +248,7 @@ async function generateTeamImage(blueTeam, redTeam) {
 		console.log("📐 Combining...");
 		
 		const combinedHeight = Math.max(blueCanvas.height, redCanvas.height) + 20;
-		const combinedCanvas = createCanvas(1680, combinedHeight); // Increased width for gap
+		const combinedCanvas = createCanvas(1900, combinedHeight); // Increased width for more space
 		const ctx = combinedCanvas.getContext("2d");
 
 		// Main Background (Dark Hextech Theme)
@@ -312,8 +313,13 @@ async function generateTeamImage(blueTeam, redTeam) {
 		ctx.lineWidth = 4;
 		ctx.strokeRect(0, 0, combinedCanvas.width, combinedCanvas.height);
 
-		ctx.drawImage(blueCanvas, 10, 10);
-		ctx.drawImage(redCanvas, 870, 10); // Shifted red team to the right
+		// Calculate centered positions
+		const gap = 100;
+		const totalContentWidth = blueCanvas.width + gap + redCanvas.width;
+		const startX = (combinedCanvas.width - totalContentWidth) / 2;
+		
+		ctx.drawImage(blueCanvas, startX, 10);
+		ctx.drawImage(redCanvas, startX + blueCanvas.width + gap, 10);
 
 		// VS Text
 		ctx.fillStyle = "#FFFFFF";
