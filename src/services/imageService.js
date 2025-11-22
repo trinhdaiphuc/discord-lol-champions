@@ -133,16 +133,18 @@ async function drawTeamOnCanvas(team, teamName, isBlueTeam) {
 			const cardY = y - 10;
 			const cardRadius = 25;
 
-			// Drop Shadow for the card
-			ctx.shadowColor = "rgba(0, 0, 0, 0.7)"; // Darker shadow
-			ctx.shadowBlur = 30; // Increased blur
-			ctx.shadowOffsetY = 20;
+			// Drop Shadow for the card - darker with blue tint
+			ctx.shadowColor = "rgba(20, 30, 50, 0.8)"; // Dark blue-black shadow
+			ctx.shadowBlur = 35; // Increased blur
+			ctx.shadowOffsetY = 22;
+			ctx.shadowOffsetX = 5;
 			
-			// Glass Gradient Fill
+			// Glass Gradient Fill - Diagonal for better light simulation
 			const cardGradient = ctx.createLinearGradient(cardX, cardY, cardX + cardWidth, cardY + cardHeight);
-			cardGradient.addColorStop(0, "rgba(255, 255, 255, 0.25)"); // More opaque
-			cardGradient.addColorStop(0.4, "rgba(255, 255, 255, 0.15)");
-			cardGradient.addColorStop(1, "rgba(255, 255, 255, 0.1)");
+			cardGradient.addColorStop(0, "rgba(255, 255, 255, 0.35)"); // Brighter top-left
+			cardGradient.addColorStop(0.3, "rgba(255, 255, 255, 0.20)");
+			cardGradient.addColorStop(0.7, "rgba(255, 255, 255, 0.12)");
+			cardGradient.addColorStop(1, "rgba(255, 255, 255, 0.08)"); // Darker bottom-right
 			
 			drawRoundedRect(ctx, cardX, cardY, cardWidth, cardHeight, cardRadius);
 			ctx.fillStyle = cardGradient;
@@ -152,25 +154,34 @@ async function drawTeamOnCanvas(team, teamName, isBlueTeam) {
 			ctx.shadowColor = "transparent";
 			ctx.shadowBlur = 0;
 			ctx.shadowOffsetY = 0;
+			ctx.shadowOffsetX = 0;
 
-			// Glass Border (Light to Dark)
+			// Glass Border - Elegant light source simulation
 			const borderGradient = ctx.createLinearGradient(cardX, cardY, cardX + cardWidth, cardY + cardHeight);
-			borderGradient.addColorStop(0, "rgba(255, 255, 255, 0.9)"); // Brighter border start
-			borderGradient.addColorStop(0.5, "rgba(255, 255, 255, 0.3)");
-			borderGradient.addColorStop(1, "rgba(255, 255, 255, 0.15)");
+			borderGradient.addColorStop(0, "rgba(255, 255, 255, 1.0)"); // Bright top-left
+			borderGradient.addColorStop(0.4, "rgba(255, 255, 255, 0.5)");
+			borderGradient.addColorStop(1, "rgba(255, 255, 255, 0.1)"); // Fade bottom-right
 			
 			ctx.strokeStyle = borderGradient;
-			ctx.lineWidth = 2; // Slightly thicker
+			ctx.lineWidth = 1.5; // Elegant thin border
 			ctx.stroke();
 
-			// Inner Gloss/Highlight
+			// Inner Gloss/Highlight - Soft diagonal shine
 			ctx.save();
 			ctx.clip(); // Clip to card shape
-			const glossGradient = ctx.createLinearGradient(cardX, cardY, cardX, cardY + cardHeight / 2);
-			glossGradient.addColorStop(0, "rgba(255, 255, 255, 0.2)"); // Stronger gloss
+			const glossGradient = ctx.createRadialGradient(
+				cardX + cardWidth * 0.3, 
+				cardY + cardHeight * 0.2, 
+				0, 
+				cardX + cardWidth * 0.3, 
+				cardY + cardHeight * 0.2, 
+				cardWidth * 0.8
+			);
+			glossGradient.addColorStop(0, "rgba(255, 255, 255, 0.25)"); // Soft center glow
+			glossGradient.addColorStop(0.5, "rgba(255, 255, 255, 0.08)");
 			glossGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
 			ctx.fillStyle = glossGradient;
-			ctx.fillRect(cardX, cardY, cardWidth, cardHeight / 2);
+			ctx.fillRect(cardX, cardY, cardWidth, cardHeight);
 			ctx.restore();
 
 			ctx.restore();
@@ -254,10 +265,11 @@ async function generateTeamImage(blueTeam, redTeam) {
 		// Main Background (Dark Hextech Theme)
 		// Main Background (Dark Hextech Theme - Blue to Red Split)
 		const gradient = ctx.createLinearGradient(0, 0, combinedCanvas.width, 0);
-		gradient.addColorStop(0, "#020617"); // Slate-950 (Darker Blue side)
-		gradient.addColorStop(0.45, "#1e3a8a"); // Blue-900 (Deep Blue meeting point)
-		gradient.addColorStop(0.55, "#991b1b"); // Red-800 (Deep Red meeting point)
-		gradient.addColorStop(1, "#2a0a0a"); // Darker Red side
+		gradient.addColorStop(0, "#3A4F7A"); // Blue side (Pastel/Muted)
+		gradient.addColorStop(0.48, "#3A4F7A"); // Blue meeting point
+		gradient.addColorStop(0.5, "#E0E0E0"); // Middle (Light/White gradient)
+		gradient.addColorStop(0.52, "#7A3A3A"); // Red meeting point
+		gradient.addColorStop(1, "#7A3A3A"); // Red side (Pastel/Muted)
 		
 		ctx.fillStyle = gradient;
 		ctx.fillRect(0, 0, combinedCanvas.width, combinedCanvas.height);
