@@ -7,7 +7,7 @@ const MIN_CHAMPIONS_REQUIRED = 36;
 const cache = new Map();
 
 class UsedChampions {
-	constructor () {
+	constructor() {
 		this.total = new Set();
 		this.roles = new Map();
 	}
@@ -50,7 +50,7 @@ function getCache(guildId) {
 // 		2.2 Nếu tướng còn lại + tướng đã chọn < 3 thì lấy random tướng còn lại đã được sử dụng trong role đó mà không trùng với tướng đã gen ở total và đã chọn
 const getPoll = (role, usedChampions, selectedChampions, availableChampionsByRole, config) => {
 	if (availableChampionsByRole[role].length < 3) {
-		let pool = availableChampionsByRole[role].filter((champ) => !selectedChampions.has(champ));
+		const pool = availableChampionsByRole[role].filter((champ) => !selectedChampions.has(champ));
 		usedChampions.resetRole(role);
 		let remainingChampions = config.CHAMPION_ROLES[role].filter(
 			(champ) =>
@@ -58,14 +58,14 @@ const getPoll = (role, usedChampions, selectedChampions, availableChampionsByRol
 					usedChampions.getTotal().has(champ) ||
 					selectedChampions.has(champ) ||
 					pool.includes(champ)
-				),
+				)
 		);
 		if (remainingChampions.length + pool.length >= 3) {
 			return [...pool, ...remainingChampions.sort(() => 0.5 - Math.random())].slice(0, 3);
 		}
 
 		remainingChampions = config.CHAMPION_ROLES[role].filter(
-			(champ) => !(selectedChampions.has(champ) || pool.includes(champ)),
+			(champ) => !(selectedChampions.has(champ) || pool.includes(champ))
 		);
 
 		if (remainingChampions.length + pool.length < 3) {
@@ -81,7 +81,7 @@ const getPoll = (role, usedChampions, selectedChampions, availableChampionsByRol
 				selectedChampions.has(champ) ||
 				usedChampions.getTotal().has(champ) ||
 				usedChampions.getRole(role).has(champ)
-			),
+			)
 	);
 	if (pool.length >= 3) {
 		pool = pool.sort(() => 0.5 - Math.random());
@@ -92,11 +92,7 @@ const getPoll = (role, usedChampions, selectedChampions, availableChampionsByRol
 
 	let remainingChampions = config.CHAMPION_ROLES[role].filter(
 		(champ) =>
-			!(
-				usedChampions.getTotal().has(champ) ||
-				selectedChampions.has(champ) ||
-				pool.includes(champ)
-			),
+			!(usedChampions.getTotal().has(champ) || selectedChampions.has(champ) || pool.includes(champ))
 	);
 
 	if (pool.length + remainingChampions.length >= 3) {
@@ -116,7 +112,7 @@ const selectFromRole = (
 	usedChampions,
 	selectedChampions,
 	availableChampionsByRole,
-	config,
+	config
 ) => {
 	const pool = getPoll(role, usedChampions, selectedChampions, availableChampionsByRole, config);
 
@@ -137,7 +133,7 @@ async function generateTeams(guildId) {
 	const availableChampionsByRole = {};
 	for (const role in config.CHAMPION_ROLES) {
 		availableChampionsByRole[role] = config.CHAMPION_ROLES[role].filter(
-			(champ) => !(usedChampions.getRole(role).has(champ) || usedChampions.getTotal().has(champ)),
+			(champ) => !(usedChampions.getRole(role).has(champ) || usedChampions.getTotal().has(champ))
 		);
 		console.log(`Available champions for role ${role}: ${availableChampionsByRole[role].length}`);
 	}
@@ -153,7 +149,7 @@ async function generateTeams(guildId) {
 			usedChampions,
 			selectedChampions,
 			availableChampionsByRole,
-			config,
+			config
 		);
 	}
 
@@ -164,7 +160,7 @@ async function generateTeams(guildId) {
 			usedChampions,
 			selectedChampions,
 			availableChampionsByRole,
-			config,
+			config
 		);
 	}
 

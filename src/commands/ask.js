@@ -6,7 +6,7 @@ module.exports = {
 		.setName("ask")
 		.setDescription("Ask a question to AI")
 		.addStringOption((option) =>
-			option.setName("question").setDescription("The question to ask").setRequired(true),
+			option.setName("question").setDescription("The question to ask").setRequired(true)
 		),
 	async execute(interaction) {
 		await interaction.deferReply();
@@ -18,7 +18,7 @@ module.exports = {
 		} catch (error) {
 			console.error(error);
 			await interaction.editReply(
-				error.message || "Sorry, I encountered an error while processing your request.",
+				error.message || "Sorry, I encountered an error while processing your request."
 			);
 		}
 	},

@@ -10,7 +10,7 @@ module.exports = {
 				.setName("channel")
 				.setDescription("The voice channel to get members from")
 				.setRequired(true)
-				.addChannelTypes(ChannelType.GuildVoice),
+				.addChannelTypes(ChannelType.GuildVoice)
 		),
 	authorizedRoles: ["Admin", "Moderator"],
 	async execute(interaction) {
@@ -24,7 +24,7 @@ module.exports = {
 				.setTitle(`⚔️ Random Teams from ${channel.name}`)
 				.addFields(
 					{ name: "Team A", value: teamA.join("\n"), inline: true },
-					{ name: "Team B", value: teamB.join("\n"), inline: true },
+					{ name: "Team B", value: teamB.join("\n"), inline: true }
 				)
 				.setColor("#0099ff");
 

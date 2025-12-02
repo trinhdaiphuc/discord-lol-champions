@@ -21,7 +21,7 @@ async function getLatestVersion() {
 async function getChampions(version) {
 	try {
 		const response = await axios.get(
-			`https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`,
+			`https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`
 		);
 		return response.data.data;
 	} catch (error) {

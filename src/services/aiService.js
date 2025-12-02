@@ -5,7 +5,9 @@ let aiClient = null;
 let aiType = null; // 'openai' or 'gemini'
 
 function initAI() {
-	if (aiClient) return;
+	if (aiClient) {
+		return;
+	}
 
 	if (process.env.OPENAI_KEY) {
 		try {
@@ -39,15 +41,16 @@ function initAI() {
 initAI();
 
 async function askAI(question) {
+	// Return friendly message if AI is not configured
 	if (!aiClient) {
-		throw new Error("AI Service is not configured. Please check your API keys.");
+		return "🤖 Tính năng AI hiện không khả dụng. Vui lòng liên hệ admin để cấu hình.";
 	}
 
 	const systemPrompt =
 		"Bạn là một chuyên gia về Liên minh huyền thoại chuyên trả lời các câu hỏi xoay quanh về game này và trả lời bằng tiếng Việt và ngắn gọn tối đa 100 từ";
 
-	if (aiType === "openai") {
-		try {
+	try {
+		if (aiType === "openai") {
 			const completion = await aiClient.chat.completions.create({
 				messages: [
 					{ role: "system", content: systemPrompt },
@@ -56,23 +59,20 @@ async function askAI(question) {
 				model: "gpt-4o-mini",
 			});
 			return completion.choices[0].message.content;
-		} catch (error) {
-			// If OpenAI fails at runtime, we could try to fallback to Gemini if configured,
-			// but the requirement was "check logic... when init only".
-			// So we just throw the error.
-			throw error;
 		}
-	}
 
-	if (aiType === "gemini") {
-		// For Gemini, we can prepend the system prompt or use systemInstruction if supported.
-		// Prepending is safer for compatibility if we are unsure about the model version support for systemInstruction in this specific call context,
-		// but let's try to pass it in the generation call or just prepend it for simplicity and robustness.
-		// Given the user request "add a prompt", prepending is a safe bet.
-		const fullPrompt = `${systemPrompt}\n\nUser Question: ${question}`;
-		const result = await aiClient.generateContent(fullPrompt);
-		const response = await result.response;
-		return response.text();
+		if (aiType === "gemini") {
+			const fullPrompt = `${systemPrompt}\n\nUser Question: ${question}`;
+			const result = await aiClient.generateContent(fullPrompt);
+			const response = await result.response;
+			return response.text();
+		}
+
+		// Unknown AI type - return friendly message
+		return "🤖 Tính năng AI hiện không khả dụng. Vui lòng liên hệ admin để cấu hình.";
+	} catch (error) {
+		console.error("AI request failed:", error.message);
+		return "🤖 Xin lỗi, tôi không thể xử lý yêu cầu của bạn lúc này. Vui lòng thử lại sau.";
 	}
 }
 
