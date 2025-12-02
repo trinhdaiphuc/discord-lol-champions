@@ -36,7 +36,7 @@ function drawRoundedRect(ctx, x, y, width, height, radius) {
 	ctx.closePath();
 }
 
-function drawPlaceholder(ctx, x, y, size, champName) {
+function drawPlaceholder(ctx, x, y, size, _champName) {
 	ctx.save();
 	drawRoundedRect(ctx, x, y, size, size, 15);
 	ctx.clip();
@@ -56,40 +56,18 @@ function drawPlaceholder(ctx, x, y, size, champName) {
 	ctx.restore();
 }
 
-function wrapText(context, text, x, y, maxWidth, lineHeight) {
-	const words = text.split(" ");
-	let line = "";
-	let testLine;
-	let metrics;
-	let testWidth;
-
-	for (let n = 0; n < words.length; n++) {
-		testLine = line + words[n] + " ";
-		metrics = context.measureText(testLine);
-		testWidth = metrics.width;
-		if (testWidth > maxWidth && n > 0) {
-			context.fillText(line, x, y);
-			line = words[n] + " ";
-			y += lineHeight;
-		} else {
-			line = testLine;
-		}
-	}
-	context.fillText(line, x, y);
-}
-
-async function drawTeamOnCanvas(team, teamName, isBlueTeam) {
+async function drawTeamOnCanvas(team, teamName, _isBlueTeam) {
 	try {
 		const championsData = championService.getChampions();
-		const canvasWidth = 800;
+		const canvasWidth = 850; // Wider to accommodate larger cards
 
 		const colsPerRow = 3;
 		const rows = Math.ceil(team.length / colsPerRow);
-		const startY = 120;
-		const spacingY = 280; // Increased spacing
-		// Calculate required height: startY + (rows-1)*spacingY + cardHeight (approx 180) + bottomPadding
-		const minHeight = 900;
-		const calculatedHeight = startY + (rows > 0 ? (rows - 1) * spacingY : 0) + 250;
+		const startY = 120; // Image starts here, card extends above
+		const spacingY = 265; // Spacing for cards
+		// Calculate height for cards
+		const minHeight = 850;
+		const calculatedHeight = startY + (rows > 0 ? (rows - 1) * spacingY : 0) + 280;
 		const canvasHeight = Math.max(minHeight, calculatedHeight);
 
 		const canvas = createCanvas(canvasWidth, canvasHeight);
@@ -106,9 +84,9 @@ async function drawTeamOnCanvas(team, teamName, isBlueTeam) {
 		ctx.fillText(teamName, canvasWidth / 2, 60);
 		ctx.shadowBlur = 0;
 
-		const champSize = 140; // Reduced size slightly
-		const startX = 100;
-		const spacingX = 250;
+		const champSize = 160; // Larger images with compact text area
+		const startX = 60; // Adjusted for wider cards
+		const spacingX = 270; // More horizontal spacing
 
 		for (let i = 0; i < team.length; i++) {
 			const championId = team[i];
@@ -123,14 +101,16 @@ async function drawTeamOnCanvas(team, teamName, isBlueTeam) {
 
 			// --- Card Background (Glass) ---
 			ctx.save();
-			// Expand card dimensions to fit long names
-			const cardPaddingX = 20; // Reduced padding relative to size
+			// Card padding: moderate top, space for name below
+			const cardPaddingX = 30; // Wider cards for better name display
+			const cardPaddingTop = 25; // Space above champion image
+			const cardPaddingBottom = 45; // Space below for champion name
 			const cardWidth = champSize + cardPaddingX * 2;
-			const cardHeight = champSize + 80; // Adjusted height
+			const cardHeight = champSize + cardPaddingTop + cardPaddingBottom; // 25 + 160 + 45 = 230
 
 			// Center card relative to image (image is at x, y)
 			const cardX = x - cardPaddingX;
-			const cardY = y - 10;
+			const cardY = y - cardPaddingTop;
 			const cardRadius = 25;
 
 			// Drop Shadow for the card - darker with blue tint
@@ -227,15 +207,27 @@ async function drawTeamOnCanvas(team, teamName, isBlueTeam) {
 					drawPlaceholder(ctx, x, y, champSize, championName);
 				}
 
-				// Champion Name
-				ctx.font = "bold 24px Arial";
+				// Champion Name - single line, vertically centered
 				ctx.textAlign = "center";
+				ctx.textBaseline = "middle";
 				ctx.fillStyle = "#f0e6d2"; // Light gold/parchment text
 				ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
 				ctx.shadowBlur = 4;
-				// Wrap text with wider width
-				wrapText(ctx, championName, x + champSize / 2, y + champSize + 35, cardWidth - 10, 28);
+
+				// Dynamic font size - start at 24px, reduce only for long names
+				let fontSize = 24;
+				ctx.font = `bold ${fontSize}px Arial`;
+				while (ctx.measureText(championName).width > cardWidth - 20 && fontSize > 14) {
+					fontSize -= 1;
+					ctx.font = `bold ${fontSize}px Arial`;
+				}
+
+				// Center vertically in the space below the image (cardPaddingY = 45px)
+				const textAreaHeight = 45;
+				const textY = y + champSize + textAreaHeight / 2;
+				ctx.fillText(championName, x + champSize / 2, textY);
 				ctx.shadowBlur = 0;
+				ctx.textBaseline = "alphabetic"; // Reset to default
 			} catch (error) {
 				console.error(`❌ Error with ${championName}:`, error.message);
 				drawPlaceholder(ctx, x, y, champSize, championName);
@@ -340,13 +332,16 @@ async function generateTeamImage(blueTeam, redTeam) {
 		ctx.lineWidth = 4;
 		ctx.strokeRect(0, 0, combinedCanvas.width, combinedCanvas.height);
 
-		// Calculate centered positions
-		const gap = 100;
-		const totalContentWidth = blueCanvas.width + gap + redCanvas.width;
-		const startX = (combinedCanvas.width - totalContentWidth) / 2;
+		// Center each team in their respective half
+		const halfWidth = combinedCanvas.width / 2;
 
-		ctx.drawImage(blueCanvas, startX, 10);
-		ctx.drawImage(redCanvas, startX + blueCanvas.width + gap, 10);
+		// Blue team centered in left half
+		const blueX = (halfWidth - blueCanvas.width) / 2;
+		ctx.drawImage(blueCanvas, blueX, 10);
+
+		// Red team centered in right half
+		const redX = halfWidth + (halfWidth - redCanvas.width) / 2;
+		ctx.drawImage(redCanvas, redX, 10);
 
 		// VS Text
 		ctx.fillStyle = "#FFFFFF";
