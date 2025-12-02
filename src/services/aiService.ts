@@ -1,10 +1,10 @@
-const OpenAI = require("openai");
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+import OpenAI from "openai";
+import { GoogleGenerativeAI, type GenerativeModel } from "@google/generative-ai";
 
-let aiClient = null;
-let aiType = null; // 'openai' or 'gemini'
+let aiClient: OpenAI | GenerativeModel | null = null;
+let aiType: "openai" | "gemini" | null = null;
 
-function initAI() {
+function initAI(): void {
 	if (aiClient) {
 		return;
 	}
@@ -40,7 +40,7 @@ function initAI() {
 // Initialize on module load
 initAI();
 
-async function askAI(question) {
+export async function askAI(question: string): Promise<string> {
 	// Return friendly message if AI is not configured
 	if (!aiClient) {
 		return "🤖 Tính năng AI hiện không khả dụng. Vui lòng liên hệ admin để cấu hình.";
@@ -50,7 +50,7 @@ async function askAI(question) {
 		"Bạn là một chuyên gia về Liên minh huyền thoại chuyên trả lời các câu hỏi xoay quanh về game này và trả lời bằng tiếng Việt và ngắn gọn tối đa 100 từ";
 
 	try {
-		if (aiType === "openai") {
+		if (aiType === "openai" && aiClient instanceof OpenAI) {
 			const completion = await aiClient.chat.completions.create({
 				messages: [
 					{ role: "system", content: systemPrompt },
@@ -58,22 +58,22 @@ async function askAI(question) {
 				],
 				model: "gpt-4o-mini",
 			});
-			return completion.choices[0].message.content;
+			return completion.choices[0].message.content || "";
 		}
 
 		if (aiType === "gemini") {
+			const geminiClient = aiClient as GenerativeModel;
 			const fullPrompt = `${systemPrompt}\n\nUser Question: ${question}`;
-			const result = await aiClient.generateContent(fullPrompt);
-			const response = await result.response;
+			const result = await geminiClient.generateContent(fullPrompt);
+			const response = result.response;
 			return response.text();
 		}
 
 		// Unknown AI type - return friendly message
 		return "🤖 Tính năng AI hiện không khả dụng. Vui lòng liên hệ admin để cấu hình.";
 	} catch (error) {
-		console.error("AI request failed:", error.message);
+		console.error("AI request failed:", (error as Error).message);
 		return "🤖 Xin lỗi, tôi không thể xử lý yêu cầu của bạn lúc này. Vui lòng thử lại sau.";
 	}
 }
 
-module.exports = { askAI };

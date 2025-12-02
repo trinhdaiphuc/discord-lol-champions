@@ -1,45 +1,50 @@
-const js = require("@eslint/js");
-const prettier = require("eslint-config-prettier");
+import js from "@eslint/js";
+import prettier from "eslint-config-prettier";
+import tseslint from "@typescript-eslint/eslint-plugin";
+import tsparser from "@typescript-eslint/parser";
 
-module.exports = [
-	js.configs.recommended,
-	prettier,
+export default [
 	{
+		ignores: ["node_modules/**", "dist/**", "*.js"],
+	},
+	js.configs.recommended,
+	{
+		files: ["src/**/*.ts"],
 		languageOptions: {
-			ecmaVersion: 2022,
-			sourceType: "commonjs",
+			parser: tsparser,
+			parserOptions: {
+				ecmaVersion: 2022,
+				sourceType: "module",
+			},
 			globals: {
-				// Node.js globals
 				console: "readonly",
 				process: "readonly",
-				module: "readonly",
-				require: "readonly",
+				Buffer: "readonly",
 				__dirname: "readonly",
 				__filename: "readonly",
-				Buffer: "readonly",
 				setTimeout: "readonly",
 				clearTimeout: "readonly",
 				setInterval: "readonly",
 				clearInterval: "readonly",
 			},
 		},
+		plugins: {
+			"@typescript-eslint": tseslint,
+		},
 		rules: {
-			// Error prevention
-			"no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
-			"no-console": "off",
-			"no-undef": "error",
-
-			// Best practices
+			...tseslint.configs.recommended.rules,
+			"no-unused-vars": "off",
+			"@typescript-eslint/no-unused-vars": [
+				"error",
+				{ argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+			],
+			"@typescript-eslint/explicit-function-return-type": "off",
+			"@typescript-eslint/no-explicit-any": "warn",
 			eqeqeq: ["error", "always"],
 			curly: ["error", "all"],
 			"no-var": "error",
-			"prefer-const": "warn",
-
-			// Style (non-formatting, Prettier handles formatting)
-			"no-multiple-empty-lines": ["warn", { max: 2 }],
+			"prefer-const": "error",
 		},
 	},
-	{
-		ignores: ["node_modules/", "images/", "*.json"],
-	},
+	prettier,
 ];

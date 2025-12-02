@@ -1,16 +1,19 @@
-const axios = require("axios");
-const fs = require("fs").promises;
-const path = require("path");
-const { readConfig, writeConfig } = require("../core/config");
-const championRepository = require("../data/championRepository");
-const championService = require("../services/championService");
-const toAwait = require("../core/promise");
+import axios from "axios";
+import { mkdir, writeFile } from "fs/promises";
+import { join } from "path";
+import { readConfig, writeConfig } from "../core/config.ts";
+import * as championRepository from "../data/championRepository.ts";
+import * as championService from "../services/championService.ts";
+import { toAwait } from "../core/promise.ts";
+import type { ChampionData, Config } from "../types/index.ts";
 
-const IMAGES_PATH = path.join(__dirname, "..", "..", "images");
+const IMAGES_PATH = join(import.meta.dir, "..", "..", "images");
 
-async function getLatestVersion() {
+async function getLatestVersion(): Promise<string | null> {
 	try {
-		const response = await axios.get("https://ddragon.leagueoflegends.com/api/versions.json");
+		const response = await axios.get<string[]>(
+			"https://ddragon.leagueoflegends.com/api/versions.json"
+		);
 		return response.data[0];
 	} catch (error) {
 		console.error("Error fetching latest version:", error);
@@ -18,9 +21,13 @@ async function getLatestVersion() {
 	}
 }
 
-async function getChampions(version) {
+interface ChampionAPIResponse {
+	data: ChampionData;
+}
+
+async function getChampions(version: string): Promise<ChampionData | null> {
 	try {
-		const response = await axios.get(
+		const response = await axios.get<ChampionAPIResponse>(
 			`https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`
 		);
 		return response.data.data;
@@ -30,8 +37,8 @@ async function getChampions(version) {
 	}
 }
 
-function groupChampionsByRole(champions) {
-	const roles = {
+function groupChampionsByRole(champions: ChampionData): Record<string, string[]> {
+	const roles: Record<string, string[]> = {
 		Fighter: [],
 		Mage: [],
 		Tank: [],
@@ -51,11 +58,11 @@ function groupChampionsByRole(champions) {
 	return roles;
 }
 
-async function updateChampionImages(champions, version) {
+async function updateChampionImages(champions: ChampionData, version: string): Promise<void> {
 	console.log("Updating champion images...");
 	try {
-		await fs.mkdir(IMAGES_PATH, { recursive: true });
-	} catch (error) {
+		await mkdir(IMAGES_PATH, { recursive: true });
+	} catch {
 		// Ignore if the directory already exists
 	}
 
@@ -66,27 +73,29 @@ async function updateChampionImages(champions, version) {
 		const champion = champions[championId];
 		const championImage = champion.image.full;
 		const championImageUrl = `https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${championImage}`;
-		const imagePath = path.join(IMAGES_PATH, championImage);
+		const imagePath = join(IMAGES_PATH, championImage);
 		try {
-			const response = await axios.get(championImageUrl, { responseType: "arraybuffer" });
-			const imageBuffer = Buffer.from(response.data, "binary");
+			const response = await axios.get<ArrayBuffer>(championImageUrl, {
+				responseType: "arraybuffer",
+			});
+			const imageBuffer = Buffer.from(response.data);
 			const checksum = championRepository.createChecksum(imageBuffer);
 
 			if (!(await championRepository.verifyChecksum(championImage, checksum))) {
-				await fs.writeFile(imagePath, imageBuffer);
+				await writeFile(imagePath, imageBuffer);
 				await championRepository.saveChecksum(championImage, checksum);
 				console.log(`Updated ${championImage}`);
 				totalSuccess++;
 			}
 		} catch (error) {
-			console.error(`Failed to download ${championImage}: ${error.message}`);
+			console.error(`Failed to download ${championImage}: ${(error as Error).message}`);
 			totalFailed++;
 		}
 	}
 	console.log(`Champion images updated. Success: ${totalSuccess}, Failed: ${totalFailed}`);
 }
 
-async function updateChampions() {
+export async function updateChampions(): Promise<void> {
 	console.log("Checking for new champion data...");
 	const [config] = await toAwait(readConfig());
 	const latestVersion = await getLatestVersion();
@@ -113,7 +122,7 @@ async function updateChampions() {
 
 	const newRoles = groupChampionsByRole(champions);
 
-	const newConfig = {
+	const newConfig: Config = {
 		...config,
 		DRAGON_VERSION: latestVersion,
 		CHAMPION_ROLES: newRoles,
@@ -135,8 +144,7 @@ async function updateChampions() {
 }
 
 // Run the update function directly if the script is executed from the command line
-if (require.main === module) {
+if (import.meta.main) {
 	updateChampions();
 }
 
-module.exports = { updateChampions };

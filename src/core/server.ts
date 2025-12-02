@@ -1,33 +1,35 @@
-const express = require("express");
-const teamService = require("../services/teamService");
-const imageService = require("../services/imageService");
-const { askAI } = require("../services/aiService");
+import express, { type Express, type Request, type Response } from "express";
+import * as teamService from "../services/teamService.ts";
+import * as imageService from "../services/imageService.ts";
+import { askAI } from "../services/aiService.ts";
 
-function createServer() {
+export function createServer(): Express {
 	const app = express();
 	app.use(express.json());
 
-	app.get("/", (req, res) => {
+	app.get("/", (_req: Request, res: Response) => {
 		res.send("League of Legends Champions Image Generator is running.");
 	});
 
-	app.post("/ask", async (req, res) => {
+	app.post("/ask", async (req: Request, res: Response) => {
 		try {
-			const question = req.body.question;
+			const question = req.body.question as string | undefined;
 			if (!question) {
-				return res.status(400).json({ error: "Question is required" });
+				res.status(400).json({ error: "Question is required" });
+				return;
 			}
 			const answer = await askAI(question);
 			res.json({ question, answer });
 		} catch (error) {
 			console.error("Error processing ask request:", error);
-			res.status(500).json({ error: error.message || "Internal server error" });
+			const err = error as Error;
+			res.status(500).json({ error: err.message || "Internal server error" });
 		}
 	});
 
-	app.post("/random-team", (req, res) => {
+	app.post("/random-team", (req: Request, res: Response) => {
 		try {
-			const members = req.body.members || [];
+			const members = (req.body.members || []) as string[];
 			const { teamA, teamB } = teamService.createRandomTeams(members);
 			res.json({ teamA, teamB });
 		} catch (error) {
@@ -36,7 +38,7 @@ function createServer() {
 		}
 	});
 
-	app.get("/gen-champions/role/:roleName", async (req, res) => {
+	app.get("/gen-champions/role/:roleName", async (req: Request, res: Response) => {
 		try {
 			const roleName = req.params.roleName;
 			const { blueTeam, redTeam } = await teamService.generateTeamsByRole(roleName);
@@ -50,7 +52,7 @@ function createServer() {
 		}
 	});
 
-	app.get("/gen-champions/:guildId", async (req, res) => {
+	app.get("/gen-champions/:guildId", async (req: Request, res: Response) => {
 		try {
 			const guildId = req.params.guildId;
 			const { blueTeam, redTeam } = await teamService.generateTeams(guildId);
@@ -67,4 +69,3 @@ function createServer() {
 	return app;
 }
 
-module.exports = { createServer };

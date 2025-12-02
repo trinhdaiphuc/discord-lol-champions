@@ -1,39 +1,51 @@
 {
-	"name": "discord-bot",
-	"version": "1.0.0",
-	"description": "",
-	"main": "app.js",
-	"scripts": {
-		"start": "node app.js",
-		"dev": "nodemon app.js",
-		"register-commands": "node app.js --register-commands",
-		"update-champions": "node src/scripts/updateChampions.js",
-		"lint": "eslint .",
-		"lint:fix": "eslint . --fix",
-		"format": "prettier --write .",
-		"format:check": "prettier --check .",
-		"check": "npm run lint && npm run format:check",
-		"fix": "npm run lint:fix && npm run format",
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"type": "commonjs",
-	"dependencies": {
-		"@google/generative-ai": "^0.24.1",
-		"axios": "^1.13.2",
-		"canvas": "^3.2.0",
-		"discord.js": "^14.24.2",
-		"dotenv": "^17.2.3",
-		"express": "^5.1.0",
-		"node-cron": "^4.2.1",
-		"openai": "^6.9.1"
-	},
-	"devDependencies": {
-		"@eslint/js": "^9.16.0",
-		"eslint": "^9.16.0",
-		"eslint-config-prettier": "^9.1.0",
-		"prettier": "^3.4.2"
-	}
+  "name": "discord-lol-champions",
+  "version": "1.0.0",
+  "description": "Discord bot for League of Legends team generation",
+  "main": "src/app.ts",
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/app.ts",
+    "dev": "bun --watch run src/app.ts",
+    "register-commands": "bun run src/app.ts --register-commands",
+    "update-champions": "bun run src/scripts/updateChampions.ts",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "bun run lint && bun run format:check",
+    "fix": "bun run lint:fix && bun run format",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "league-of-legends",
+    "bun",
+    "typescript"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.13.2",
+    "canvas": "^3.2.0",
+    "discord.js": "^14.25.1",
+    "express": "^5.1.0",
+    "node-cron": "^4.2.1",
+    "openai": "^6.9.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.16.0",
+    "@types/bun": "latest",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.0",
+    "@types/node-cron": "^3.0.11",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/parser": "^8.17.0",
+    "eslint": "^9.16.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2"
+  }
 }

@@ -1,8 +1,9 @@
-const { SlashCommandBuilder, AttachmentBuilder } = require("discord.js");
-const teamService = require("../services/teamService");
-const imageService = require("../services/imageService");
+import { SlashCommandBuilder, AttachmentBuilder, type ChatInputCommandInteraction } from "discord.js";
+import * as teamService from "../services/teamService.ts";
+import * as imageService from "../services/imageService.ts";
+import type { BotCommand } from "../types/index.ts";
 
-module.exports = {
+const command: BotCommand = {
 	data: new SlashCommandBuilder()
 		.setName("gen-role")
 		.setDescription("Generates a random champion team image for a specific role")
@@ -20,12 +21,12 @@ module.exports = {
 					{ name: "Support", value: "Support" }
 				)
 		),
-	async execute(interaction) {
+	async execute(interaction: ChatInputCommandInteraction) {
 		try {
 			await interaction.reply("🎲 Generating teams for a specific role...");
 			const role = interaction.options.getString("role");
 
-			const { blueTeam, redTeam } = await teamService.generateTeamsByRole(role);
+			const { blueTeam, redTeam } = await teamService.generateTeamsByRole(role!);
 			const imageBuffer = await imageService.generateTeamImage(blueTeam, redTeam);
 			const attachment = new AttachmentBuilder(imageBuffer, { name: "team.png" });
 
@@ -36,10 +37,13 @@ module.exports = {
 		} catch (error) {
 			console.error("❌ Bot error:", error);
 			if (interaction.deferred || interaction.replied) {
-				await interaction.editReply(`❌ Error: ${error.message}`);
+				await interaction.editReply(`❌ Error: ${(error as Error).message}`);
 			} else {
-				await interaction.reply(`❌ Error: ${error.message}`);
+				await interaction.reply(`❌ Error: ${(error as Error).message}`);
 			}
 		}
 	},
 };
+
+export default command;
+

@@ -1,9 +1,15 @@
-module.exports = {
+import type { Interaction } from "discord.js";
+import type { BotEvent, ExtendedClient } from "../types/index.ts";
+
+const event: BotEvent<[Interaction]> = {
 	name: "interactionCreate",
 	async execute(interaction) {
-		if (!interaction.isChatInputCommand()) {return;}
+		if (!interaction.isChatInputCommand()) {
+			return;
+		}
 
-		const command = interaction.client.commands.get(interaction.commandName);
+		const client = interaction.client as ExtendedClient;
+		const command = client.commands.get(interaction.commandName);
 
 		if (!command) {
 			console.error(`No command matching ${interaction.commandName} was found.`);
@@ -29,3 +35,6 @@ module.exports = {
 		}
 	},
 };
+
+export default event;
+

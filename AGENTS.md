@@ -1,45 +1,58 @@
 # Project Overview: Discord LoL Champions Bot
 
-This project is a Discord bot and web server designed to generate League of Legends team compositions and images. It uses `discord.js` for bot interactions and `express` for serving generated images.
+This project is a Discord bot and web server designed to generate League of Legends team compositions and images. It uses `discord.js` for bot interactions and `express` for serving generated images. **Built with Bun runtime and TypeScript.**
 
 ## 📂 Project Structure
 
 ```
 .
-├── app.js                  # Main entry point. Initializes Bot and Server.
-├── ecosystem.config.js     # PM2 configuration for production.
-├── package.json            # Dependencies and scripts.
-├── champions.json          # Data file containing champion information.
-├── Dockerfile              # Multi-stage Docker build with PM2.
-├── .prettierrc             # Prettier configuration.
-├── eslint.config.js        # ESLint configuration (flat config).
-├── images/                 # Directory storing champion images.
-└── src/
-    ├── commands/           # Discord slash command definitions.
-    ├── core/               # Core infrastructure.
-    │   ├── bot.js          # Discord client factory.
-    │   ├── server.js       # Express server setup.
-    │   └── config.js       # Configuration loader.
-    ├── data/               # Data access layer.
-    │   └── championRepository.js # Champion data persistence.
-    ├── events/             # Discord event handlers (e.g., ready, interactionCreate).
-    ├── services/           # Business logic.
-    │   ├── championService.js # Manages champion data.
-    │   ├── imageService.js    # Generates team images using Canvas.
-    │   ├── teamService.js     # Team generation logic.
-    │   └── aiService.js       # AI integration (Gemini/OpenAI).
-    └── scripts/            # Utility scripts (e.g., data updates).
+├── src/
+│   ├── app.ts              # Main entry point
+│   ├── types/              # TypeScript type definitions
+│   │   └── index.ts
+│   ├── commands/           # Discord slash command definitions
+│   │   ├── ask.ts
+│   │   ├── echo.ts
+│   │   ├── g9.ts
+│   │   ├── gen.ts
+│   │   ├── gen-role.ts
+│   │   ├── ping.ts
+│   │   └── random-team.ts
+│   ├── core/               # Core infrastructure
+│   │   ├── bot.ts          # Discord client factory
+│   │   ├── server.ts       # Express server setup
+│   │   ├── config.ts       # Configuration loader
+│   │   └── promise.ts      # Promise utilities
+│   ├── data/               # Data access layer
+│   │   └── championRepository.ts
+│   ├── events/             # Discord event handlers
+│   │   ├── ready.ts
+│   │   └── interactionCreate.ts
+│   ├── services/           # Business logic
+│   │   ├── championService.ts
+│   │   ├── imageService.ts
+│   │   ├── teamService.ts
+│   │   └── aiService.ts
+│   └── scripts/            # Utility scripts
+│       └── updateChampions.ts
+├── images/                 # Champion images
+├── champions.json          # Champion data
+├── config.json             # Bot configuration
+├── package.json            # Dependencies and scripts
+├── tsconfig.json           # TypeScript configuration
+├── Dockerfile              # Multi-stage Docker build with Bun
+└── .prettierrc             # Prettier configuration
 ```
 
 ## 🔑 Key Components
 
-### 1. Discord Bot (`src/core/bot.js`, `src/commands`, `src/events`)
--   Built with `discord.js`.
--   **Commands**: Defined in `src/commands`. Automatically loaded by `app.js`.
--   **Events**: Handled in `src/events`.
--   **Registration**: Run `npm run register-commands` to update slash commands.
+### 1. Discord Bot (`src/core/bot.ts`, `src/commands`, `src/events`)
+-   Built with `discord.js` and TypeScript.
+-   **Commands**: Defined in `src/commands/*.ts`. Automatically loaded by `src/app.ts`.
+-   **Events**: Handled in `src/events/*.ts`.
+-   **Registration**: Run `bun run register-commands` to update slash commands.
 
-### 2. Web Server (`src/core/server.js`, `app.js`)
+### 2. Web Server (`src/core/server.ts`)
 -   Built with `express`.
 -   **Port**: Defaults to 3000.
 -   **Endpoints**:
@@ -48,34 +61,31 @@ This project is a Discord bot and web server designed to generate League of Lege
     -   `/ask`: AI question endpoint.
     -   `/random-team`: Create random teams from members.
 
-### 3. Image Generation (`src/services/imageService.js`)
+### 3. Image Generation (`src/services/imageService.ts`)
 -   Uses `canvas` (node-canvas) to draw images.
 -   **Functionality**: Creates a visual representation of Blue vs. Red teams with a "Hextech" aesthetic.
 -   **Assets**: Loads champion images from the `images/` directory.
--   **Fonts**: Uses Liberation fonts (Arial-compatible) in Docker.
 
-### 4. Data Management (`src/services/championService.js`)
+### 4. Data Management (`src/services/championService.ts`)
 -   Loads champion data from `champions.json`.
 -   Provides methods to get random champions, filter by role, etc.
 
-### 5. AI Service (`src/services/aiService.js`)
+### 5. AI Service (`src/services/aiService.ts`)
 -   Supports both OpenAI and Google Gemini.
 -   **Graceful degradation**: Returns friendly message if AI is not configured.
--   **Priority**: OpenAI > Gemini (checks env vars in order).
 
 ## 🚀 Workflow
 
 ### Development
--   **Start**: `npm run dev` (uses `nodemon` for hot reloading).
--   **Register Commands**: `npm run register-commands`.
--   **Lint**: `npm run lint` (check) or `npm run lint:fix` (auto-fix).
--   **Format**: `npm run format` (format all) or `npm run format:check` (check only).
--   **Fix All**: `npm run fix` (lint + format).
+-   **Start**: `bun run dev` (uses Bun's built-in watch mode)
+-   **Register Commands**: `bun run register-commands`
+-   **Type Check**: `bun run typecheck`
+-   **Lint**: `bun run lint` or `bun run lint:fix`
+-   **Format**: `bun run format` or `bun run format:check`
 
 ### Production (Docker)
 -   **Build**: `docker build -t mr-gold:latest .`
 -   **Run**: `docker run --rm -p 3000:3000 -e BOT_TOKEN=... -e CLIENT_ID=... mr-gold:latest`
--   **Process Manager**: Uses PM2 with `ecosystem.config.js` for graceful shutdown.
 
 ### Configuration
 -   **Environment Variables**: Managed via `.env`.
@@ -86,36 +96,33 @@ This project is a Discord bot and web server designed to generate League of Lege
 
 ## 🐳 Docker
 
-The Dockerfile uses a multi-stage build for optimization:
+The Dockerfile uses a multi-stage build with Bun:
 
-1. **Base stage**: Runtime dependencies (canvas libs, fonts, PM2).
+1. **Base stage**: Bun runtime with canvas dependencies and fonts.
 2. **Build stage**: Compiles native modules (canvas).
 3. **Final stage**: Clean image with just the app.
 
-**Key packages installed**:
--   `libcairo2`, `libpango`, `libjpeg`, `libgif`, `librsvg` - Canvas runtime.
--   `fonts-liberation` - Arial-compatible fonts.
--   `pm2` - Process manager for graceful shutdown.
-
 ## 🛠️ Code Quality
 
+### TypeScript (`tsconfig.json`)
+-   ES2022 target with ESNext modules
+-   Strict mode enabled
+-   Bun types included
+
 ### ESLint (`eslint.config.js`)
--   Uses ESLint 9 flat config.
--   Rules: `eqeqeq`, `curly`, `no-var`, `prefer-const`.
--   Integrated with Prettier via `eslint-config-prettier`.
+-   TypeScript ESLint parser and plugin
+-   Integrated with Prettier
 
 ### Prettier (`.prettierrc`)
--   Tabs for indentation.
--   Double quotes.
--   Trailing commas (ES5).
--   Print width: 100.
+-   Tabs for indentation
+-   Double quotes
+-   Trailing commas (ES5)
+-   Print width: 100
 
 ## 📝 Notes for Agents
 
--   **Image Generation**: When modifying `imageService.js`, remember that it runs on the server. Visual changes usually require checking the generated image URL.
--   **Canvas**: The project uses `canvas`. Ensure you understand the 2D context API for drawing operations.
--   **File Paths**: Always use absolute paths or `path.join` when dealing with file system operations to ensure cross-platform compatibility.
--   **AI Service**: The AI service gracefully handles missing configuration - it returns a friendly message instead of throwing errors.
--   **Docker Fonts**: The Docker image uses Liberation fonts. "Arial" in code will render as Liberation Sans.
--   **Graceful Shutdown**: PM2 handles SIGTERM/SIGINT signals in Docker. The app has a 5-second kill timeout.
--   **Code Style**: Run `npm run fix` before committing to ensure consistent formatting.
+-   **Runtime**: This project uses Bun, not Node.js. Use `bun` commands instead of `npm`/`node`.
+-   **TypeScript**: All source files are TypeScript (`.ts`). No compilation step needed - Bun runs TS natively.
+-   **Imports**: Use `.ts` extensions in imports for Bun compatibility.
+-   **Canvas**: The `canvas` package works with Bun but requires native dependencies.
+-   **Code Style**: Run `bun run fix` before committing to ensure consistent formatting.

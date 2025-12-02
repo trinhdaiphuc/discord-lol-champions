@@ -1,54 +1,58 @@
-const { readConfig } = require("../core/config");
-const championService = require("./championService");
-const crypto = require("crypto");
-
-const MIN_CHAMPIONS_REQUIRED = 36;
-
-const cache = new Map();
+import { readConfig } from "../core/config.ts";
+import * as championService from "./championService.ts";
+import { randomInt } from "crypto";
+import type { Config, TeamResult, RandomTeamResult } from "../types/index.ts";
 
 class UsedChampions {
+	total: Set<string>;
+	roles: Map<string, Set<string>>;
+
 	constructor() {
 		this.total = new Set();
 		this.roles = new Map();
 	}
 
-	getRole(role) {
+	getRole(role: string): Set<string> {
 		if (!this.roles.has(role)) {
 			this.roles.set(role, new Set());
 		}
-		return this.roles.get(role);
+		return this.roles.get(role)!;
 	}
 
-	getTotal() {
+	getTotal(): Set<string> {
 		return this.total;
 	}
 
-	resetTotal() {
+	resetTotal(): void {
 		this.total = new Set();
 	}
 
-	resetRole(role) {
+	resetRole(role: string): void {
 		this.roles.set(role, new Set());
 	}
 
-	reset() {
+	reset(): void {
 		this.total = new Set();
 		this.roles = new Map();
 	}
 }
 
-function getCache(guildId) {
+const cache = new Map<string, UsedChampions>();
+
+function getCache(guildId: string): UsedChampions {
 	if (!cache.has(guildId)) {
 		cache.set(guildId, new UsedChampions());
 	}
-	return cache.get(guildId);
+	return cache.get(guildId)!;
 }
 
-// 1. Nếu tướng dư > 3 thì trả về random 3 tướng
-// 2. Nếu tướng dư < 3 thì bỏ 3 tướng đó vô pool trước. Sau đó lấy random tướng còn lại đã được sử dụng trong role đó mà không trùng với tướng đã gen ở total và đã chọn
-// 		2.1 Nếu tướng đủ thì trả về
-// 		2.2 Nếu tướng còn lại + tướng đã chọn < 3 thì lấy random tướng còn lại đã được sử dụng trong role đó mà không trùng với tướng đã gen ở total và đã chọn
-const getPoll = (role, usedChampions, selectedChampions, availableChampionsByRole, config) => {
+const getPoll = (
+	role: string,
+	usedChampions: UsedChampions,
+	selectedChampions: Set<string>,
+	availableChampionsByRole: Record<string, string[]>,
+	config: Config
+): string[] => {
 	if (availableChampionsByRole[role].length < 3) {
 		const pool = availableChampionsByRole[role].filter((champ) => !selectedChampions.has(champ));
 		usedChampions.resetRole(role);
@@ -96,24 +100,24 @@ const getPoll = (role, usedChampions, selectedChampions, availableChampionsByRol
 	);
 
 	if (pool.length + remainingChampions.length >= 3) {
-		return [...pool, ...remainingChampions.sort(() => crypto.randomInt(2) - 0.5)].slice(0, 3);
+		return [...pool, ...remainingChampions.sort(() => randomInt(2) - 0.5)].slice(0, 3);
 	}
 
 	remainingChampions = config.CHAMPION_ROLES[role]
 		.filter((champ) => !(selectedChampions.has(champ) || pool.includes(champ)))
-		.sort(() => crypto.randomInt(2) - 0.5);
+		.sort(() => randomInt(2) - 0.5);
 
 	return [...pool, ...remainingChampions].slice(0, 3);
 };
 
 const selectFromRole = (
-	team,
-	role,
-	usedChampions,
-	selectedChampions,
-	availableChampionsByRole,
-	config
-) => {
+	team: string[],
+	role: string,
+	usedChampions: UsedChampions,
+	selectedChampions: Set<string>,
+	availableChampionsByRole: Record<string, string[]>,
+	config: Config
+): void => {
 	const pool = getPoll(role, usedChampions, selectedChampions, availableChampionsByRole, config);
 
 	pool.forEach((champ) => {
@@ -124,13 +128,13 @@ const selectFromRole = (
 	});
 };
 
-async function generateTeams(guildId) {
+export async function generateTeams(guildId: string): Promise<TeamResult> {
 	const config = await readConfig();
 	const usedChampions = getCache(guildId);
 
 	console.log(`Used champions: ${usedChampions.getTotal().size}`);
 
-	const availableChampionsByRole = {};
+	const availableChampionsByRole: Record<string, string[]> = {};
 	for (const role in config.CHAMPION_ROLES) {
 		availableChampionsByRole[role] = config.CHAMPION_ROLES[role].filter(
 			(champ) => !(usedChampions.getRole(role).has(champ) || usedChampions.getTotal().has(champ))
@@ -138,9 +142,9 @@ async function generateTeams(guildId) {
 		console.log(`Available champions for role ${role}: ${availableChampionsByRole[role].length}`);
 	}
 
-	const selectedChampions = new Set();
-	const blueTeam = [];
-	const redTeam = [];
+	const selectedChampions = new Set<string>();
+	const blueTeam: string[] = [];
+	const redTeam: string[] = [];
 
 	for (const role of Object.keys(config.CHAMPION_ROLES)) {
 		selectFromRole(
@@ -173,7 +177,7 @@ async function generateTeams(guildId) {
 	return { blueTeam, redTeam };
 }
 
-async function generateTeamsByRole(role) {
+export async function generateTeamsByRole(role: string): Promise<TeamResult> {
 	const config = await readConfig();
 	const roleChampions = config.CHAMPION_ROLES[role];
 
@@ -181,14 +185,14 @@ async function generateTeamsByRole(role) {
 		throw new Error(`Invalid role: ${role}`);
 	}
 
-	let selectedChampions;
+	let selectedChampions: string[];
 	if (roleChampions.length <= 24) {
 		selectedChampions = [...roleChampions];
 	} else {
-		selectedChampions = [...roleChampions].sort(() => crypto.randomInt(2) - 0.5).slice(0, 24);
+		selectedChampions = [...roleChampions].sort(() => randomInt(2) - 0.5).slice(0, 24);
 	}
 
-	const shuffledChampions = selectedChampions.sort(() => crypto.randomInt(2) - 0.5);
+	const shuffledChampions = selectedChampions.sort(() => randomInt(2) - 0.5);
 	const midPoint = Math.ceil(shuffledChampions.length / 2);
 	const blueTeam = shuffledChampions.slice(0, midPoint);
 	const redTeam = shuffledChampions.slice(midPoint);
@@ -196,7 +200,7 @@ async function generateTeamsByRole(role) {
 	return { blueTeam, redTeam };
 }
 
-function createRandomTeams(members) {
+export function createRandomTeams(members: string[]): RandomTeamResult {
 	const totalPlayers = 10;
 	const memberNames = [...members];
 
@@ -204,10 +208,10 @@ function createRandomTeams(members) {
 		memberNames.push(`World-${memberNames.length + 1 - members.length}`);
 	}
 
-	const shuffledMembers = memberNames.sort(() => crypto.randomInt(2) - 0.5);
+	const shuffledMembers = memberNames.sort(() => randomInt(2) - 0.5);
 
-	const teamA = [];
-	const teamB = [];
+	const teamA: string[] = [];
+	const teamB: string[] = [];
 
 	shuffledMembers.forEach((member, index) => {
 		if (index % 2 === 0) {
@@ -220,7 +224,7 @@ function createRandomTeams(members) {
 	return { teamA, teamB };
 }
 
-const verifyUniqueTeams = (teamA, teamB) => {
+export const verifyUniqueTeams = (teamA: string[], teamB: string[]): boolean => {
 	const setA = new Set(teamA);
 	for (const champ of teamB) {
 		if (setA.has(champ)) {
@@ -231,9 +235,3 @@ const verifyUniqueTeams = (teamA, teamB) => {
 	return true;
 };
 
-module.exports = {
-	generateTeams,
-	generateTeamsByRole,
-	verifyUniqueTeams,
-	createRandomTeams,
-};

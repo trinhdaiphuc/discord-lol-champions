@@ -1,17 +1,15 @@
 # syntax = docker/dockerfile:1
 
-ARG NODE_VERSION=22.9.0
-
-# Base image with runtime dependencies (shared by build and final)
-FROM node:${NODE_VERSION}-slim AS base
-LABEL fly_launch_runtime="Node.js"
+# Base image with Bun runtime
+FROM oven/bun:1 AS base
+LABEL fly_launch_runtime="Bun"
 WORKDIR /app
 ENV NODE_ENV="production"
 
-# Install PM2 globally for process management
-RUN npm install -g pm2
+# Install Node.js for PM2 (PM2 requires Node.js)
+RUN bun install -g pm2
 
-# Install runtime dependencies for canvas + fonts (installed once, inherited by all stages)
+# Install runtime dependencies for canvas + fonts
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
     libcairo2 \
@@ -29,13 +27,12 @@ RUN apt-get update -qq && \
 # Build stage - extends base with build tools
 FROM base AS build
 
-# Install ONLY build dependencies (dev headers)
+# Install build dependencies for canvas native module
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
     build-essential \
-    node-gyp \
+    python3 \
     pkg-config \
-    python-is-python3 \
     libcairo2-dev \
     libpango1.0-dev \
     libjpeg-dev \
@@ -43,15 +40,16 @@ RUN apt-get update -qq && \
     librsvg2-dev && \
     rm -rf /var/lib/apt/lists/*
 
-COPY package-lock.json package.json ./
-RUN npm ci
+COPY package.json bun.lock* ./
+RUN bun install --frozen-lockfile
+
 COPY . .
 
 
-# Final stage - clean base with just the app (no apt-get needed!)
+# Final stage - clean base with just the app
 FROM base
 COPY --from=build /app /app
 EXPOSE 3000
 
 # Use pm2-runtime with ecosystem config for proper signal handling
-CMD [ "pm2-runtime", "ecosystem.config.js" ]
+CMD ["pm2-runtime", "pm2.config.js"]
