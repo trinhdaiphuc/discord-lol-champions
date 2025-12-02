@@ -67,12 +67,37 @@ async function main(): Promise<void> {
 	// Login to Discord
 	client.login(process.env.BOT_TOKEN);
 
-	// Start server
-	const app = createServer();
+	// Start server (Bun.serve starts immediately)
 	const port = process.env.PORT || 3000;
-	app.listen(port, () => {
-		console.log(`✅ Server listening at http://localhost:${port}`);
-	});
+	const server = createServer(port);
+	console.log(`✅ Server listening at ${server.url}`);
+
+	// Graceful shutdown handler
+	const shutdown = async (signal: string) => {
+		console.log(`\n⏳ Received ${signal}, shutting down gracefully...`);
+
+		try {
+			// Stop accepting new HTTP connections, wait for active ones to complete
+			console.log("⏳ Stopping HTTP server...");
+			await server.stop();
+			console.log("✅ HTTP server stopped");
+
+			// Destroy Discord client
+			console.log("⏳ Disconnecting Discord client...");
+			client.destroy();
+			console.log("✅ Discord client disconnected");
+
+			console.log("👋 Goodbye!");
+			process.exit(0);
+		} catch (error) {
+			console.error("❌ Error during shutdown:", error);
+			process.exit(1);
+		}
+	};
+
+	// Listen for termination signals
+	process.on("SIGINT", () => shutdown("SIGINT"));
+	process.on("SIGTERM", () => shutdown("SIGTERM"));
 }
 
 main().catch(console.error);

@@ -53,7 +53,7 @@ This project is a Discord bot and web server designed to generate League of Lege
 -   **Registration**: Run `bun run register-commands` to update slash commands.
 
 ### 2. Web Server (`src/core/server.ts`)
--   Built with `express`.
+-   Built with `Bun.serve` (native Bun HTTP server - faster than Express).
 -   **Port**: Defaults to 3000.
 -   **Endpoints**:
     -   `/gen-champions/:guildId`: Generates and displays a team composition image.

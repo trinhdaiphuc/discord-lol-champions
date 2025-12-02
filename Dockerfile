@@ -4,10 +4,6 @@
 FROM oven/bun:1 AS base
 LABEL fly_launch_runtime="Bun"
 WORKDIR /app
-ENV NODE_ENV="production"
-
-# Install Node.js for PM2 (PM2 requires Node.js)
-RUN bun install -g pm2
 
 # Install runtime dependencies for canvas + fonts
 RUN apt-get update -qq && \
@@ -41,7 +37,7 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists/*
 
 COPY package.json bun.lock* ./
-RUN bun install --frozen-lockfile
+RUN  bun install --frozen-lockfile --production
 
 COPY . .
 
@@ -51,5 +47,4 @@ FROM base
 COPY --from=build /app /app
 EXPOSE 3000
 
-# Use pm2-runtime with ecosystem config for proper signal handling
-CMD ["pm2-runtime", "pm2.config.js"]
+CMD ["bun", "start"]
