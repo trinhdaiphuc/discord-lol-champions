@@ -8,6 +8,7 @@ module.exports = {
 			autorestart: true,
 			watch: false,
 			max_memory_restart: "1G",
+			mode: "fork",
 			env: {
 				NODE_ENV: "production",
 				PATH: `${process.env.HOME}/.bun/bin:${process.env.PATH}`,
