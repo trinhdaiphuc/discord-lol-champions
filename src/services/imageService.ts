@@ -352,7 +352,7 @@ export async function generateTeamImage(blueTeam: string[], redTeam: string[]): 
 		ctx.fillText("VS", combinedCanvas.width / 2, combinedCanvas.height / 2);
 
 		console.log("💾 Saving...");
-		const buffer = combinedCanvas.toBuffer("image/png");
+		const buffer = combinedCanvas.toBuffer("image/jpeg", { quality: 0.85 });
 		console.log("✅ Team image generated");
 		return buffer;
 	} catch (error) {
@@ -360,4 +360,3 @@ export async function generateTeamImage(blueTeam: string[], redTeam: string[]): 
 		throw error;
 	}
 }
-

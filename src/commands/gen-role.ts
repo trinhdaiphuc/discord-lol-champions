@@ -28,7 +28,7 @@ const command: BotCommand = {
 
 			const { blueTeam, redTeam } = await teamService.generateTeamsByRole(role!);
 			const imageBuffer = await imageService.generateTeamImage(blueTeam, redTeam);
-			const attachment = new AttachmentBuilder(imageBuffer, { name: "team.png" });
+			const attachment = new AttachmentBuilder(imageBuffer, { name: "team.jpg" });
 
 			await interaction.editReply({
 				files: [attachment],
