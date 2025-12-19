@@ -49,11 +49,23 @@ function groupChampionsByRole(champions: ChampionData): Record<string, string[]>
 
 	for (const champName in champions) {
 		const champ = champions[champName];
-		champ.tags.forEach((tag) => {
-			if (roles[tag]) {
-				roles[tag].push(champ.id);
+
+		// Special case 1: If champion has both Fighter and Assassin tags, prioritize Assassin
+		if (champ.tags.includes('Fighter') && champ.tags.includes('Assassin')) {
+			roles.Assassin.push(champ.id);
+		}
+		// Special case 2: If champion has both Tank and Support tags, add to BOTH roles
+		else if (champ.tags.includes('Tank') && champ.tags.includes('Support')) {
+			roles.Tank.push(champ.id);
+			roles.Support.push(champ.id);
+		}
+		// Default: Use first tag
+		else {
+			const assignedRole = champ.tags[0];
+			if (roles[assignedRole]) {
+				roles[assignedRole].push(champ.id);
 			}
-		});
+		}
 	}
 	return roles;
 }

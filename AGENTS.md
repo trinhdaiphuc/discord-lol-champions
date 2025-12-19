@@ -34,7 +34,10 @@ This project is a Discord bot and web server designed to generate League of Lege
 │   │   ├── teamService.ts
 │   │   └── aiService.ts
 │   └── scripts/            # Utility scripts
-│       └── updateChampions.ts
+│       ├── updateChampions.ts
+│       ├── verifyRoleConfig.ts
+│       ├── compareOldVsNewTags.ts
+│       └── testNewRoleLogic.ts
 ├── images/                 # Champion images
 ├── champions.json          # Champion data
 ├── config.json             # Bot configuration
@@ -73,6 +76,31 @@ This project is a Discord bot and web server designed to generate League of Lege
 ### 5. AI Service (`src/services/aiService.ts`)
 -   Supports both OpenAI and Google Gemini.
 -   **Graceful degradation**: Returns friendly message if AI is not configured.
+
+### 6. Utility Scripts (`src/scripts/`)
+
+#### `updateChampions.ts`
+-   **Purpose**: Fetches the latest champion data from Riot's Data Dragon API and updates `champions.json` and `config.json`.
+-   **Role Logic**: 
+    -   Champions with both Fighter and Assassin tags → assigned to Assassin role
+    -   Champions with both Tank and Support tags → assigned to BOTH roles
+    -   All other champions → assigned to their first tag
+-   **Run**: `bun run src/scripts/updateChampions.ts`
+
+#### `verifyRoleConfig.ts`
+-   **Purpose**: Verifies that `config.json` role assignments match the expected logic based on champion tags from `champions.json`.
+-   **Output**: Shows role distribution and validates that all roles match correctly.
+-   **Run**: `bun run src/scripts/verifyRoleConfig.ts`
+
+#### `compareOldVsNewTags.ts`
+-   **Purpose**: Compares old logic (all tags) vs new logic (first tag only) to show which champions were filtered out.
+-   **Output**: Lists 130 champions that were removed from secondary roles when switching to first-tag-only logic.
+-   **Run**: `bun run src/scripts/compareOldVsNewTags.ts`
+
+#### `testNewRoleLogic.ts`
+-   **Purpose**: Tests and displays the current role assignment logic with special rules for Fighter/Assassin and Tank/Support combinations.
+-   **Output**: Shows role distribution changes and lists all champions in each role.
+-   **Run**: `bun run src/scripts/testNewRoleLogic.ts`
 
 ## 🚀 Workflow
 
