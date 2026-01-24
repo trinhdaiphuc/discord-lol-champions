@@ -135,6 +135,14 @@ export async function updateChampions(): Promise<void> {
 	const newRoles = groupChampionsByRole(champions);
 
 	const newConfig: Config = {
+		FALLBACK_ROLES: {
+			Fighter: ["Tank", "Assassin"],
+			Mage: ["Support", "Assassin"],
+			Tank: ["Fighter", "Support"],
+			Marksman: ["Assassin", "Mage"],
+			Assassin: ["Fighter", "Marksman", "Mage"],
+			Support: ["Mage", "Tank"],
+		},
 		...config,
 		DRAGON_VERSION: latestVersion,
 		CHAMPION_ROLES: newRoles,

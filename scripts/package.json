@@ -1,0 +1,26 @@
+{
+  "name": "yearin-scraper",
+  "version": "1.0.0",
+  "description": "Scraper for yearin.lol profile data",
+  "scripts": {
+    "start": "node yearin-client.js",
+    "api": "node yearin-api.js",
+    "proto": "node yearin-proto-client.js",
+    "scrape": "node yearin-scraper.js",
+    "scrape:lite": "node yearin-scraper-lite.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.2",
+    "cheerio": "^1.0.0-rc.12",
+    "protobufjs": "^7.2.6",
+    "puppeteer": "^21.6.1"
+  },
+  "keywords": [
+    "scraper",
+    "yearin",
+    "lol",
+    "league-of-legends"
+  ],
+  "author": "",
+  "license": "MIT"
+}

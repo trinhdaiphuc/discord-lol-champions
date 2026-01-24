@@ -33,14 +33,17 @@ export interface Config {
 	CHAMPION_ROLES: {
 		[role: string]: string[];
 	};
+	FALLBACK_ROLES: {
+		[role: string]: string[];
+	};
 }
 
 export interface BotCommand {
 	data:
-		| SlashCommandBuilder
-		| SlashCommandOptionsOnlyBuilder
-		| SlashCommandSubcommandsOnlyBuilder
-		| Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand">;
+	| SlashCommandBuilder
+	| SlashCommandOptionsOnlyBuilder
+	| SlashCommandSubcommandsOnlyBuilder
+	| Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand">;
 	execute: (interaction: ChatInputCommandInteraction) => Promise<void>;
 	authorizedRoles?: string[];
 }

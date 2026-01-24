@@ -1,15 +1,10 @@
 {
-    "DRAGON_VERSION": "15.24.1",
+    "DRAGON_VERSION": "16.2.1",
     "CHAMPION_ROLES": {
         "Fighter": [
             "Aatrox",
-            "Ambessa",
             "Belveth",
-            "Briar",
-            "Camille",
             "Darius",
-            "Diana",
-            "Fiora",
             "Gangplank",
             "Garen",
             "Gnar",
@@ -17,41 +12,27 @@
             "Gwen",
             "Hecarim",
             "Illaoi",
-            "Irelia",
             "JarvanIV",
             "Jax",
             "Jayce",
-            "Kayn",
             "Kled",
-            "LeeSin",
             "Lillia",
-            "MasterYi",
             "MonkeyKing",
             "Mordekaiser",
             "Nasus",
-            "Nilah",
-            "Nocturne",
             "Olaf",
-            "Pantheon",
             "RekSai",
             "Renekton",
-            "Riven",
             "Rumble",
             "Sett",
             "Shyvana",
             "Trundle",
-            "Tryndamere",
             "Udyr",
             "Urgot",
-            "Vi",
-            "Viego",
             "Volibear",
             "Warwick",
             "XinZhao",
-            "Yasuo",
-            "Yone",
-            "Yorick",
-            "Zaahen"
+            "Yorick"
         ],
         "Mage": [
             "Ahri",
@@ -115,6 +96,8 @@
             "Sion",
             "Skarner",
             "TahmKench",
+            "Taric",
+            "Thresh",
             "Zac"
         ],
         "Marksman": [
@@ -149,41 +132,96 @@
         ],
         "Assassin": [
             "Akali",
+            "Ambessa",
+            "Briar",
+            "Camille",
+            "Diana",
             "Ekko",
             "Elise",
             "Evelynn",
+            "Fiora",
             "Fizz",
+            "Irelia",
             "Kassadin",
             "Katarina",
+            "Kayn",
             "Khazix",
             "Leblanc",
+            "LeeSin",
+            "MasterYi",
             "Naafiri",
             "Nidalee",
+            "Nilah",
+            "Nocturne",
+            "Pantheon",
             "Qiyana",
             "Rengar",
+            "Riven",
             "Shaco",
             "Talon",
+            "Tryndamere",
+            "Vi",
+            "Viego",
+            "Yasuo",
+            "Yone",
+            "Zaahen",
             "Zed"
         ],
         "Support": [
+            "Alistar",
+            "Amumu",
             "Bard",
+            "Blitzcrank",
+            "Braum",
             "Ivern",
             "Janna",
+            "Leona",
             "Lulu",
+            "Maokai",
             "Milio",
             "Morgana",
             "Nami",
+            "Nautilus",
             "Pyke",
             "Rakan",
+            "Rell",
             "Renata",
             "Senna",
             "Seraphine",
             "Sona",
             "Soraka",
+            "TahmKench",
             "Taric",
             "Thresh",
             "Yuumi",
             "Zilean"
+        ]
+    },
+    "FALLBACK_ROLES": {
+        "Fighter": [
+            "Tank",
+            "Assassin"
+        ],
+        "Mage": [
+            "Support",
+            "Assassin"
+        ],
+        "Tank": [
+            "Fighter",
+            "Support"
+        ],
+        "Marksman": [
+            "Assassin",
+            "Mage"
+        ],
+        "Assassin": [
+            "Fighter",
+            "Marksman",
+            "Mage"
+        ],
+        "Support": [
+            "Mage",
+            "Tank"
         ]
     }
 }

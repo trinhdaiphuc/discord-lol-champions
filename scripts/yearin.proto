@@ -1,0 +1,295 @@
+syntax = "proto3";
+
+package yearin;
+
+option go_package = "yearin/proto";
+
+// ============================================================================
+// ROOT MESSAGE
+// ============================================================================
+
+// Root response from CDN - contains all profile data
+message YearInProfile {
+  // Metadata with version and profile identifier
+  ProfileMetadata metadata = 1;
+
+  // Stats per game mode (Ranked, Normal, ARAM, etc.)
+  repeated GameModeStats game_modes = 2;
+
+  // Achievements/badges earned
+  repeated Achievement achievements = 5;
+
+  // Duo/party statistics
+  DuoStatistics duo_stats = 6;
+}
+
+// ============================================================================
+// METADATA
+// ============================================================================
+
+message ProfileMetadata {
+  // API/data version (e.g., "2025.1", "2026.1")
+  string version = 1;
+
+  // Encrypted profile identifier (used in CDN URL)
+  string profile_id = 2;
+}
+
+// ============================================================================
+// GAME MODE STATS
+// ============================================================================
+
+// Statistics for a specific game mode
+message GameModeStats {
+  // Mode type identifier
+  // 1 = All Games (aggregate)
+  // 2 = Ranked Solo/Duo
+  // 3 = Normal (Blind/Draft)
+  // 4 = ARAM
+  // 5 = Ranked Flex
+  int32 mode_type = 1;
+
+  // Aggregate statistics for this mode
+  AggregateStats aggregate = 2;
+
+  // Per-champion breakdown
+  repeated ChampionStats champions = 3;
+
+  // Reserved/unknown string field
+  string reserved_9 = 9;
+}
+
+// ============================================================================
+// AGGREGATE STATS (Overall stats for a game mode)
+// ============================================================================
+
+message AggregateStats {
+  // Basic game counts
+  int32 total_games = 1;
+  int32 wins = 2;
+  int64 total_time_seconds = 3;  // Total time played in seconds
+
+  // Combat stats (totals)
+  int32 total_kills = 4;
+  int32 total_deaths = 5;
+  int32 total_assists = 6;
+
+  // Performance totals
+  int64 total_damage_dealt = 7;
+  int64 total_damage_taken = 8;
+  int64 total_gold_earned = 9;
+  int64 total_cs = 10;  // Creep Score (minions + monsters)
+
+  // Win rate as integer (multiply by some factor for percentage)
+  int64 win_rate_raw = 11;
+
+  // Vision stats
+  int64 total_vision_score = 15;
+
+  // Multi-kill counts
+  int32 penta_kills = 16;
+  int32 quadra_kills = 17;
+  int32 triple_kills = 18;
+  int32 double_kills = 19;
+
+  // Timestamps (Unix milliseconds)
+  int64 first_game_timestamp = 20;
+  int64 last_game_timestamp = 23;
+
+  // KDA ratio (as fixed point or raw value)
+  int64 kda_raw = 22;
+
+  // Streaks
+  int32 longest_win_streak = 24;
+  int32 longest_lose_streak = 25;
+
+  // Detailed KDA breakdown
+  KDABreakdown best_kda = 36;
+
+  // CS breakdown
+  CSBreakdown cs_breakdown = 37;
+
+  // Performance awards
+  int32 mvp_count = 38;
+  int32 ace_count = 41;
+
+  // Game duration stats
+  int32 avg_game_duration = 42;
+  int32 shortest_game = 43;
+  int32 longest_game = 44;
+
+  // Additional metrics
+  int32 first_blood_count = 45;
+  int32 first_tower_count = 46;
+
+  // Objective stats
+  int64 total_objectives = 48;
+  float objectives_per_game = 49;
+  int64 dragons_killed = 50;
+  int32 barons_killed = 51;
+  int32 heralds_killed = 52;
+  int32 towers_destroyed = 53;
+  int32 inhibitors_destroyed = 54;
+  int32 turret_plates = 55;
+  int32 grubs_killed = 56;
+
+  // Average KDA breakdown
+  KDABreakdown avg_kda = 57;
+
+  // Healing and shielding
+  int64 total_healing = 58;
+  float healing_per_game = 59;
+  int32 total_shielding = 60;
+
+  // CC and control
+  int64 total_cc_time = 63;
+  int64 total_damage_mitigated = 64;
+}
+
+// KDA breakdown (kills/deaths/assists)
+message KDABreakdown {
+  int32 kills = 1;
+  int32 deaths = 2;
+  int32 assists = 3;
+}
+
+// CS (Creep Score) breakdown
+message CSBreakdown {
+  int32 total_cs = 1;
+  int32 cs_per_minute = 2;
+  int32 jungle_cs = 3;
+  int32 lane_cs = 5;
+  int32 cs_at_10 = 6;
+  int32 cs_at_20 = 7;
+  int32 perfect_cs_games = 9;
+  int32 avg_cs_diff_at_10 = 10;
+  int32 cs_advantage_games = 12;
+}
+
+// ============================================================================
+// CHAMPION STATS
+// ============================================================================
+
+// Statistics for a specific champion
+message ChampionStats {
+  // Riot's champion ID (e.g., 420 = Illaoi, 64 = Lee Sin)
+  int32 champion_id = 1;
+
+  // Game counts
+  int32 games_played = 2;
+  int32 wins = 3;
+
+  // Combat stats (totals for this champion)
+  int32 total_kills = 4;
+  int32 total_deaths = 5;
+  int32 total_assists = 6;
+
+  // Performance stats (averages or totals)
+  int64 avg_damage_dealt = 7;
+  int64 avg_damage_taken = 8;
+  int64 avg_gold_earned = 9;
+  int32 avg_cs = 10;
+
+  // Time stats
+  int64 total_time_played_ms = 11;
+
+  // Scoring
+  int64 total_score = 12;
+
+  // Win rate as fixed-point float
+  fixed32 win_rate = 13;
+
+  // Healing done
+  int64 total_healing = 14;
+
+  // Vision
+  int64 total_vision_score = 15;
+
+  // KDA as fixed-point float
+  fixed32 kda_ratio = 16;
+
+  // Gold stats
+  int64 gold_per_minute = 17;
+
+  // Multi-kills
+  int32 penta_kills = 18;
+
+  // Damage breakdown
+  int64 damage_per_minute = 19;
+
+  // First blood involvement
+  int32 first_blood_kills = 20;
+
+  // Multi-kill count (doubles, triples, etc.)
+  int32 multi_kills = 21;
+
+  // Average game duration with this champion
+  int32 avg_game_duration = 22;
+}
+
+// ============================================================================
+// ACHIEVEMENTS
+// ============================================================================
+
+message Achievement {
+  // Achievement type/category
+  // 2 = Some achievement type
+  int32 type = 1;
+
+  // Achievement value/threshold
+  int32 value = 2;
+
+  // Count/progress
+  int32 count = 3;
+}
+
+// ============================================================================
+// DUO STATISTICS
+// ============================================================================
+
+message DuoStatistics {
+  // Total games played with duo partners
+  int32 total_duo_games = 1;
+
+  // Win count with duo
+  int32 duo_wins = 2;
+
+  // Loss count with duo
+  int32 duo_losses = 3;
+
+  // Unique roles played
+  int32 roles_played = 4;
+
+  // Average game duration in duo
+  int32 avg_duo_game_duration = 5;
+
+  // Number of unique partners
+  int32 unique_partners_count = 6;
+
+  // List of duo partners
+  repeated DuoPartner partners = 7;
+
+  // Most played role
+  int32 most_played_role = 8;
+}
+
+// Individual duo partner
+message DuoPartner {
+  // Encrypted profile ID (can be used to fetch their data)
+  string profile_id = 1;
+
+  // Number of games played together
+  int32 games_together = 2;
+
+  // Partner's in-game name
+  string game_name = 3;
+
+  // Partner's tag line (e.g., "NA1", "KR1", "VN2")
+  string tag_line = 4;
+
+  // Wins when playing together
+  int32 wins_together = 5;
+
+  // Losses when playing together
+  int32 losses_together = 6;
+}

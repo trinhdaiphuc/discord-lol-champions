@@ -53,61 +53,57 @@ const getPoll = (
 	availableChampionsByRole: Record<string, string[]>,
 	config: Config
 ): string[] => {
-	if (availableChampionsByRole[role].length < 3) {
-		const pool = availableChampionsByRole[role].filter((champ) => !selectedChampions.has(champ));
-		usedChampions.resetRole(role);
-		let remainingChampions = config.CHAMPION_ROLES[role].filter(
-			(champ) =>
-				!(
-					usedChampions.getTotal().has(champ) ||
-					selectedChampions.has(champ) ||
-					pool.includes(champ)
-				)
-		);
-		if (remainingChampions.length + pool.length >= 3) {
-			return [...pool, ...remainingChampions.sort(() => 0.5 - Math.random())].slice(0, 3);
-		}
+	const needed = 3;
+	const pool: string[] = [];
 
-		remainingChampions = config.CHAMPION_ROLES[role].filter(
-			(champ) => !(selectedChampions.has(champ) || pool.includes(champ))
-		);
+	const shuffle = <T>(arr: T[]): T[] => [...arr].sort(() => randomInt(2) - 0.5);
 
-		if (remainingChampions.length + pool.length < 3) {
-			console.log(`⚠️ Not enough champions for role ${role}`);
-		}
+	// Check if champion is globally unused (not used in any previous match) and not selected in current match
+	const isGloballyAvailable = (champ: string): boolean =>
+		!usedChampions.getTotal().has(champ) && !selectedChampions.has(champ) && !pool.includes(champ);
 
-		return [...pool, ...remainingChampions.sort(() => 0.5 - Math.random())].slice(0, 3);
+	// Check if champion is available for current match (may have been used before, but not in this match)
+	const isAvailableForMatch = (champ: string): boolean =>
+		!selectedChampions.has(champ) && !pool.includes(champ);
+
+	// Step 1: Get globally unused champions from primary role
+	let candidates = shuffle(config.CHAMPION_ROLES[role].filter(isGloballyAvailable));
+	pool.push(...candidates);
+	if (pool.length >= needed) return pool.slice(0, needed);
+
+	// Step 2: Get globally unused champions from fallback roles
+	const fallbacks = config.FALLBACK_ROLES[role] || [];
+	for (const fbRole of fallbacks) {
+		if (pool.length >= needed) break;
+		const fbCandidates = shuffle(config.CHAMPION_ROLES[fbRole].filter(isGloballyAvailable));
+		pool.push(...fbCandidates);
 	}
+	if (pool.length >= needed) return pool.slice(0, needed);
 
-	let pool = availableChampionsByRole[role].filter(
-		(champ) =>
-			!(
-				selectedChampions.has(champ) ||
-				usedChampions.getTotal().has(champ) ||
-				usedChampions.getRole(role).has(champ)
-			)
-	);
-	if (pool.length >= 3) {
-		pool = pool.sort(() => 0.5 - Math.random());
-		return pool.slice(0, 3);
-	}
+	// Step 3: No more globally unused champions available. Need to reset.
+	// Reset the total used champions for this guild (will be done at generateTeams level)
+	// For now, fall back to allowing reuse from primary role
+	console.log(`⚠️ Role ${role}: Not enough globally unused champions, allowing reuse`);
 
+	// Reset role-specific tracking and try again with previously used champions
 	usedChampions.resetRole(role);
+	candidates = shuffle(config.CHAMPION_ROLES[role].filter(isAvailableForMatch));
+	pool.push(...candidates);
+	if (pool.length >= needed) return pool.slice(0, needed);
 
-	let remainingChampions = config.CHAMPION_ROLES[role].filter(
-		(champ) =>
-			!(usedChampions.getTotal().has(champ) || selectedChampions.has(champ) || pool.includes(champ))
-	);
-
-	if (pool.length + remainingChampions.length >= 3) {
-		return [...pool, ...remainingChampions.sort(() => randomInt(2) - 0.5)].slice(0, 3);
+	// Step 4: Still not enough, try fallback roles with reuse allowed
+	for (const fbRole of fallbacks) {
+		if (pool.length >= needed) break;
+		usedChampions.resetRole(fbRole);
+		const fbCandidates = shuffle(config.CHAMPION_ROLES[fbRole].filter(isAvailableForMatch));
+		pool.push(...fbCandidates);
 	}
 
-	remainingChampions = config.CHAMPION_ROLES[role]
-		.filter((champ) => !(selectedChampions.has(champ) || pool.includes(champ)))
-		.sort(() => randomInt(2) - 0.5);
+	if (pool.length < needed) {
+		console.log(`⚠️ Not enough champions for role ${role} even with fallbacks!`);
+	}
 
-	return [...pool, ...remainingChampions].slice(0, 3);
+	return pool.slice(0, needed);
 };
 
 const selectFromRole = (
