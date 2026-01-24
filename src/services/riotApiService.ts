@@ -221,6 +221,7 @@ class RiotApiService {
         headers: {
           "X-Riot-Token": this.apiKey,
         },
+        timeout: 2000, // 2 second timeout
       });
       console.log(`✅ Riot API Response: ${response.status}`);
       return response.data;
@@ -365,9 +366,26 @@ class RiotApiService {
       throw new Error("Không tìm thấy lịch sử trận đấu cho người chơi này.");
     }
 
-    // Step 3: Get match details (limit concurrent requests)
-    const matchPromises = matchIds.map((id) => this.getMatchById(id, tagLine));
-    const matches = await Promise.all(matchPromises);
+    // Step 3: Get match details with graceful error handling
+    // If a match fetch fails, we just skip it
+    const matchResults = await Promise.allSettled(
+      matchIds.map((id) => this.getMatchById(id, tagLine))
+    );
+
+    const matches: MatchData[] = [];
+    for (const result of matchResults) {
+      if (result.status === "fulfilled") {
+        matches.push(result.value);
+      } else {
+        console.warn(`⚠️ Failed to fetch match, skipping:`, result.reason?.message || result.reason);
+      }
+    }
+
+    if (matches.length === 0) {
+      throw new Error("Không thể lấy thông tin trận đấu. Vui lòng thử lại sau.");
+    }
+
+    console.log(`📊 Successfully fetched ${matches.length}/${matchIds.length} matches`);
 
     // Step 4: Extract player stats from each match
     const matchStats: PlayerMatchStats[] = [];
