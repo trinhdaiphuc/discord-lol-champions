@@ -165,8 +165,8 @@ export async function generateTeams(guildId: string): Promise<TeamResult> {
 	}
 
 	if (usedChampions.getTotal().size >= Object.keys(championService.getChampions()).length) {
-		console.log(`Reset total`);
-		usedChampions.resetTotal();
+		console.log(`Reset total and all roles`);
+		usedChampions.reset();
 	}
 
 	verifyUniqueTeams(blueTeam, redTeam);
