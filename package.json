@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "bun run src/app.ts",
-    "dev": "bun --watch run src/app.ts",
+    "dev": "bun --watch --env-file=.env run src/app.ts",
     "register-commands": "bun run src/app.ts --register-commands",
     "update-champions": "bun run src/scripts/updateChampions.ts",
     "fetch-yearin": "bun run src/scripts/fetchYearInLolData.ts",

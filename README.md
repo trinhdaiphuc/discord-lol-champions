@@ -15,6 +15,7 @@ CLIENT_ID=your_discord_client_id
 GOOGLE_API_KEY=your_google_api_key
 # OR
 OPENAI_KEY=your_openai_key
+RIOT_API_KEY=your_riot_api_key
 ```
 
 ### Environment Variables
@@ -24,6 +25,7 @@ OPENAI_KEY=your_openai_key
 -   `CLIENT_ID`: Your Discord App Client ID.
 -   `GOOGLE_API_KEY`: (Optional) API Key for Google Gemini. Get it from [Google AI Studio](https://aistudio.google.com/).
 -   `OPENAI_KEY`: (Optional) API Key for OpenAI. Get it from [OpenAI Platform](https://platform.openai.com/).
+-   `RIOT_API_KEY`: (Optional) API Key for Riot Games API to enable player statistics lookup. Get it from [Riot Developer Portal](https://developer.riotgames.com/).
 
 **Note:** You only need either `GOOGLE_API_KEY` or `OPENAI_KEY` for the AI features. The bot supports fallback if both are provided.
 
