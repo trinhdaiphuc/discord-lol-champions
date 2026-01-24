@@ -82,6 +82,9 @@ function initAI(): void {
 			aiClient = genAI.getGenerativeModel({
 				model: "gemini-2.0-flash",
 				tools: [{ functionDeclarations: [playerLookupTool] }],
+				generationConfig: {
+					temperature: 0.9, // Higher temperature for more creative/playful responses
+				},
 			});
 			aiType = "gemini";
 			console.log("Google API key:", process.env.GOOGLE_API_KEY);
@@ -135,13 +138,15 @@ async function handleToolCall(
 	}
 }
 
+const systemPrompt = `
+Bạn là một chuyên gia về Liên minh huyền thoại. Bạn có thể tra cứu thống kê người chơi và đưa ra nhận xét chi tiết. Trả lời bằng tiếng Việt, giọng điệu vui vẻ, mỉa mai và đầy đủ thông tin. Nếu người dùng nhập tên game#tagline hoặc hỏi về thống kê người chơi, hãy sử dụng tool lookup_player_stats để lấy dữ liệu. 
+`;
+
 /**
  * Ask AI with tool support (Gemini)
  */
 async function askGeminiWithTools(question: string): Promise<string> {
 	const geminiClient = aiClient as GenerativeModel;
-	const systemPrompt =
-		"Bạn là một chuyên gia về Liên minh huyền thoại. Bạn có thể tra cứu thống kê người chơi và đưa ra nhận xét chi tiết. Trả lời bằng tiếng Việt, ngắn gọn nhưng đầy đủ thông tin. Nếu người dùng nhập tên game#tagline hoặc hỏi về thống kê người chơi, hãy sử dụng tool lookup_player_stats để lấy dữ liệu.";
 
 	const chat = geminiClient.startChat({
 		history: [
@@ -198,8 +203,6 @@ async function askGeminiWithTools(question: string): Promise<string> {
  */
 async function askOpenAIWithTools(question: string): Promise<string> {
 	const openaiClient = aiClient as OpenAI;
-	const systemPrompt =
-		"Bạn là một chuyên gia về Liên minh huyền thoại. Bạn có thể tra cứu thống kê người chơi và đưa ra nhận xét chi tiết. Trả lời bằng tiếng Việt, ngắn gọn nhưng đầy đủ thông tin. Nếu người dùng nhập tên game#tagline hoặc hỏi về thống kê người chơi, hãy sử dụng tool lookup_player_stats để lấy dữ liệu.";
 
 	const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
 		{ role: "system", content: systemPrompt },
@@ -211,6 +214,7 @@ async function askOpenAIWithTools(question: string): Promise<string> {
 		model: "gpt-4o-mini",
 		tools: openAITools,
 		tool_choice: "auto",
+		temperature: 0.9, // Higher temperature for more creative/playful responses
 	});
 
 	let assistantMessage = completion.choices[0].message;
