@@ -223,21 +223,29 @@ class RiotApiService {
   private async makeRequest<T>(url: string): Promise<T> {
     const startTime = Date.now();
     console.log(`🌐 Riot API Request: ${url}`);
+
+    // Use AbortController for more reliable timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 2000);
+
     try {
       const response = await axios.get<T>(url, {
         headers: {
           "X-Riot-Token": this.apiKey,
         },
         timeout: 2000, // 2 second timeout
+        signal: controller.signal,
       });
+      clearTimeout(timeoutId);
       const duration = Date.now() - startTime;
       console.log(`✅ Riot API Response: ${response.status} (${duration}ms)`);
       return response.data;
     } catch (error) {
+      clearTimeout(timeoutId);
       const duration = Date.now() - startTime;
       if (error instanceof AxiosError) {
-        // Handle timeout specifically
-        if (error.code === "ECONNABORTED" || error.code === "ETIMEDOUT") {
+        // Handle timeout/abort specifically
+        if (error.code === "ECONNABORTED" || error.code === "ETIMEDOUT" || error.code === "ERR_CANCELED") {
           console.error(`⏱️ Riot API Timeout after ${duration}ms: ${url}`);
           throw new Error("Request timeout - API phản hồi quá chậm.");
         }
@@ -376,7 +384,8 @@ class RiotApiService {
     // Overall timeout for the entire operation (30 seconds)
     const timeoutPromise = new Promise<never>((_, reject) => {
       setTimeout(() => {
-        reject(new Error("Quá thời gian xử lý. Vui lòng thử lại sau."));
+        console.error(`⏱️ TIMEOUT: Operation exceeded 30 seconds for ${gameName}#${tagLine}`);
+        reject(new Error("Quá thời gian xử lý (30s). Vui lòng thử lại sau."));
       }, 30000);
     });
 
@@ -402,11 +411,13 @@ class RiotApiService {
 
       for (let i = 0; i < matchIds.length; i++) {
         const matchId = matchIds[i];
+        console.log(`   📥 Fetching match ${i + 1}/${matchIds.length}: ${matchId}`);
         try {
           const match = await this.getMatchById(matchId, tagLine);
           matches.push(match);
+          console.log(`   ✅ Match ${i + 1}/${matchIds.length} fetched successfully`);
         } catch (error) {
-          console.warn(`⚠️ Failed to fetch match ${matchId}, skipping:`, (error as Error).message);
+          console.warn(`   ⚠️ Match ${i + 1}/${matchIds.length} failed: ${(error as Error).message}`);
         }
 
         // Add delay between requests to respect rate limit (except for last request)
