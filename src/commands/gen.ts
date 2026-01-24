@@ -9,7 +9,7 @@ const command: BotCommand = {
 		.setDescription("Generates a random champion team image"),
 	async execute(interaction: ChatInputCommandInteraction) {
 		try {
-			await interaction.reply(`🎲 Generating teams for ${interaction.guildId}`);
+			await interaction.reply(`🎲 Generating teams...`);
 
 			const { blueTeam, redTeam } = await teamService.generateTeams(interaction.guildId!);
 			const imageBuffer = await imageService.generateTeamImage(blueTeam, redTeam);
@@ -17,7 +17,7 @@ const command: BotCommand = {
 
 			await interaction.editReply({
 				files: [attachment],
-				content: `⚔️ ARAM Teams (6 roles × 3 champions) for ${interaction.guildId}`,
+				content: `⚔️ ARAM Teams (6 roles × 3 champions)`,
 			});
 		} catch (error) {
 			console.error(`❌ Bot error for ${interaction.guildId}:`, error);

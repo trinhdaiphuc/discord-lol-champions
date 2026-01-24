@@ -128,7 +128,7 @@ export async function generateTeams(guildId: string): Promise<TeamResult> {
 	const config = await readConfig();
 	const usedChampions = getCache(guildId);
 
-	console.log(`Used champions: ${usedChampions.getTotal().size}`);
+	console.log(`Used champions for guild ${guildId}: ${usedChampions.getTotal().size}`);
 
 	const availableChampionsByRole: Record<string, string[]> = {};
 	for (const role in config.CHAMPION_ROLES) {
