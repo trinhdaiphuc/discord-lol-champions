@@ -15,12 +15,20 @@ const command: BotCommand = {
 
 		try {
 			const answer = await askAI(question!);
-			await interaction.editReply(`> **Question:** ${question}\n\n${answer}`);
+			const fullMessage = `> **Question:** ${question}\n\n${answer}`;
+
+			// Discord has a 2000 character limit
+			const MAX_LENGTH = 2000;
+			const truncatedMessage = fullMessage.length > MAX_LENGTH
+				? fullMessage.slice(0, MAX_LENGTH - 15) + "...(truncated)"
+				: fullMessage;
+
+			await interaction.editReply(truncatedMessage);
 		} catch (error) {
 			console.error(error);
 			await interaction.editReply(
 				(error as Error).message ||
-					"Sorry, I encountered an error while processing your request."
+				"Sorry, I encountered an error while processing your request."
 			);
 		}
 	},
