@@ -80,7 +80,7 @@ function initAI(): void {
 		try {
 			const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 			aiClient = genAI.getGenerativeModel({
-				model: "gemini-2.0-flash",
+				model: "gemini-2.5-flash",
 				tools: [{ functionDeclarations: [playerLookupTool] }],
 				generationConfig: {
 					temperature: 0.9, // Higher temperature for more creative/playful responses
@@ -192,6 +192,7 @@ async function askGeminiWithTools(question: string): Promise<string> {
 
 		// Send function results back to the model
 		result = await chat.sendMessage(functionResponses);
+		console.log("✅ Function results sent back to model");
 		response = result.response;
 	}
 

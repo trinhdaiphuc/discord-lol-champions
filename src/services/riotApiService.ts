@@ -189,8 +189,14 @@ export interface PlayerSummary {
   recentMatches: PlayerMatchStats[];
 }
 
+// Helper function for delay
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 class RiotApiService {
   private apiKey: string;
+  // Rate limit: 20 requests/sec, 100 requests/2min
+  // Use 100ms delay between requests to safely stay under 20/sec (10/sec actual)
+  private readonly REQUEST_DELAY_MS = 100;
 
   constructor() {
     this.apiKey = process.env.RIOT_API_KEY || "";
@@ -215,6 +221,7 @@ class RiotApiService {
   }
 
   private async makeRequest<T>(url: string): Promise<T> {
+    const startTime = Date.now();
     console.log(`🌐 Riot API Request: ${url}`);
     try {
       const response = await axios.get<T>(url, {
@@ -223,11 +230,18 @@ class RiotApiService {
         },
         timeout: 2000, // 2 second timeout
       });
-      console.log(`✅ Riot API Response: ${response.status}`);
+      const duration = Date.now() - startTime;
+      console.log(`✅ Riot API Response: ${response.status} (${duration}ms)`);
       return response.data;
     } catch (error) {
+      const duration = Date.now() - startTime;
       if (error instanceof AxiosError) {
-        console.error(`❌ Riot API Error: ${error.response?.status} - ${error.response?.statusText}`);
+        // Handle timeout specifically
+        if (error.code === "ECONNABORTED" || error.code === "ETIMEDOUT") {
+          console.error(`⏱️ Riot API Timeout after ${duration}ms: ${url}`);
+          throw new Error("Request timeout - API phản hồi quá chậm.");
+        }
+        console.error(`❌ Riot API Error: ${error.response?.status} - ${error.response?.statusText} (${duration}ms)`);
         console.error(`   URL: ${url}`);
         console.error(`   Response data:`, error.response?.data);
         if (error.response?.status === 404) {
@@ -244,7 +258,7 @@ class RiotApiService {
         }
         throw new Error(`Riot API error: ${error.response?.status} - ${error.message}`);
       }
-      console.error(`❌ Unexpected error:`, error);
+      console.error(`❌ Unexpected error after ${duration}ms:`, error);
       throw error;
     }
   }
@@ -356,116 +370,141 @@ class RiotApiService {
    * Get player match history summary
    */
   async getPlayerSummary(gameName: string, tagLine: string, matchCount: number = 10): Promise<PlayerSummary> {
-    // Step 1: Get account info
-    const account = await this.getAccountByRiotId(gameName, tagLine);
+    const operationStart = Date.now();
+    console.log(`🎮 Starting player summary for: ${gameName}#${tagLine}`);
 
-    // Step 2: Get match IDs
-    const matchIds = await this.getMatchIdsByPuuid(account.puuid, tagLine, matchCount);
+    // Overall timeout for the entire operation (30 seconds)
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      setTimeout(() => {
+        reject(new Error("Quá thời gian xử lý. Vui lòng thử lại sau."));
+      }, 30000);
+    });
 
-    if (matchIds.length === 0) {
-      throw new Error("Không tìm thấy lịch sử trận đấu cho người chơi này.");
-    }
+    const summaryPromise = (async () => {
+      // Step 1: Get account info
+      console.log(`📍 Step 1: Getting account info...`);
+      const account = await this.getAccountByRiotId(gameName, tagLine);
+      console.log(`✅ Step 1 complete (${Date.now() - operationStart}ms)`);
 
-    // Step 3: Get match details with graceful error handling
-    // If a match fetch fails, we just skip it
-    const matchResults = await Promise.allSettled(
-      matchIds.map((id) => this.getMatchById(id, tagLine))
-    );
+      // Step 2: Get match IDs
+      console.log(`📍 Step 2: Getting match IDs...`);
+      const matchIds = await this.getMatchIdsByPuuid(account.puuid, tagLine, matchCount);
+      console.log(`✅ Step 2 complete: ${matchIds.length} match IDs found (${Date.now() - operationStart}ms)`);
 
-    const matches: MatchData[] = [];
-    for (const result of matchResults) {
-      if (result.status === "fulfilled") {
-        matches.push(result.value);
-      } else {
-        console.warn(`⚠️ Failed to fetch match, skipping:`, result.reason?.message || result.reason);
+      if (matchIds.length === 0) {
+        throw new Error("Không tìm thấy lịch sử trận đấu cho người chơi này.");
       }
-    }
 
-    if (matches.length === 0) {
-      throw new Error("Không thể lấy thông tin trận đấu. Vui lòng thử lại sau.");
-    }
+      // Step 3: Get match details with rate limiting and graceful error handling
+      // Fetch sequentially with delay to avoid hitting rate limit (20 req/sec)
+      console.log(`📍 Step 3: Fetching ${matchIds.length} match details with rate limiting...`);
+      const matches: MatchData[] = [];
 
-    console.log(`📊 Successfully fetched ${matches.length}/${matchIds.length} matches`);
+      for (let i = 0; i < matchIds.length; i++) {
+        const matchId = matchIds[i];
+        try {
+          const match = await this.getMatchById(matchId, tagLine);
+          matches.push(match);
+        } catch (error) {
+          console.warn(`⚠️ Failed to fetch match ${matchId}, skipping:`, (error as Error).message);
+        }
 
-    // Step 4: Extract player stats from each match
-    const matchStats: PlayerMatchStats[] = [];
-    for (const match of matches) {
-      const stats = this.extractPlayerStats(match, account.puuid);
-      if (stats) {
-        matchStats.push(stats);
+        // Add delay between requests to respect rate limit (except for last request)
+        if (i < matchIds.length - 1) {
+          await delay(this.REQUEST_DELAY_MS);
+        }
       }
-    }
 
-    if (matchStats.length === 0) {
-      throw new Error("Không thể phân tích lịch sử trận đấu.");
-    }
-
-    // Step 5: Calculate summary statistics
-    const wins = matchStats.filter((m) => m.win).length;
-    const losses = matchStats.length - wins;
-
-    const avgKills = matchStats.reduce((sum, m) => sum + m.kills, 0) / matchStats.length;
-    const avgDeaths = matchStats.reduce((sum, m) => sum + m.deaths, 0) / matchStats.length;
-    const avgAssists = matchStats.reduce((sum, m) => sum + m.assists, 0) / matchStats.length;
-    const avgKDA = matchStats.reduce((sum, m) => sum + m.kda, 0) / matchStats.length;
-    const avgCS = matchStats.reduce((sum, m) => sum + m.cs, 0) / matchStats.length;
-    const avgGold = matchStats.reduce((sum, m) => sum + m.goldEarned, 0) / matchStats.length;
-    const avgDamage = matchStats.reduce((sum, m) => sum + m.damage, 0) / matchStats.length;
-    const avgVisionScore = matchStats.reduce((sum, m) => sum + m.visionScore, 0) / matchStats.length;
-
-    // Calculate favorite champions
-    const championStats: Record<string, { games: number; wins: number }> = {};
-    for (const match of matchStats) {
-      if (!championStats[match.champion]) {
-        championStats[match.champion] = { games: 0, wins: 0 };
+      if (matches.length === 0) {
+        throw new Error("Không thể lấy thông tin trận đấu. Vui lòng thử lại sau.");
       }
-      championStats[match.champion].games++;
-      if (match.win) championStats[match.champion].wins++;
-    }
 
-    const favoriteChampions = Object.entries(championStats)
-      .map(([champion, stats]) => ({
-        champion,
-        games: stats.games,
-        winRate: (stats.wins / stats.games) * 100,
-      }))
-      .sort((a, b) => b.games - a.games)
-      .slice(0, 5);
+      console.log(`✅ Step 3 complete: ${matches.length}/${matchIds.length} matches fetched (${Date.now() - operationStart}ms)`);
 
-    // Calculate favorite positions
-    const positionStats: Record<string, number> = {};
-    for (const match of matchStats) {
-      if (match.position && match.position !== "UNKNOWN") {
-        positionStats[match.position] = (positionStats[match.position] || 0) + 1;
+      // Step 4: Extract player stats from each match
+      const matchStats: PlayerMatchStats[] = [];
+      for (const match of matches) {
+        const stats = this.extractPlayerStats(match, account.puuid);
+        if (stats) {
+          matchStats.push(stats);
+        }
       }
-    }
 
-    const favoritePositions = Object.entries(positionStats)
-      .map(([position, games]) => ({ position, games }))
-      .sort((a, b) => b.games - a.games);
+      if (matchStats.length === 0) {
+        throw new Error("Không thể phân tích lịch sử trận đấu.");
+      }
 
-    return {
-      gameName: account.gameName,
-      tagLine: account.tagLine,
-      puuid: account.puuid,
-      totalGames: matchStats.length,
-      wins,
-      losses,
-      winRate: (wins / matchStats.length) * 100,
-      avgKills: Math.round(avgKills * 10) / 10,
-      avgDeaths: Math.round(avgDeaths * 10) / 10,
-      avgAssists: Math.round(avgAssists * 10) / 10,
-      avgKDA: Math.round(avgKDA * 100) / 100,
-      avgCS: Math.round(avgCS),
-      avgGold: Math.round(avgGold),
-      avgDamage: Math.round(avgDamage),
-      avgVisionScore: Math.round(avgVisionScore * 10) / 10,
-      favoriteChampions,
-      favoritePositions,
-      recentMatches: matchStats.slice(0, 5),
-    };
+      // Step 5: Calculate summary statistics
+      const wins = matchStats.filter((m) => m.win).length;
+      const losses = matchStats.length - wins;
+
+      const avgKills = matchStats.reduce((sum, m) => sum + m.kills, 0) / matchStats.length;
+      const avgDeaths = matchStats.reduce((sum, m) => sum + m.deaths, 0) / matchStats.length;
+      const avgAssists = matchStats.reduce((sum, m) => sum + m.assists, 0) / matchStats.length;
+      const avgKDA = matchStats.reduce((sum, m) => sum + m.kda, 0) / matchStats.length;
+      const avgCS = matchStats.reduce((sum, m) => sum + m.cs, 0) / matchStats.length;
+      const avgGold = matchStats.reduce((sum, m) => sum + m.goldEarned, 0) / matchStats.length;
+      const avgDamage = matchStats.reduce((sum, m) => sum + m.damage, 0) / matchStats.length;
+      const avgVisionScore = matchStats.reduce((sum, m) => sum + m.visionScore, 0) / matchStats.length;
+
+      // Calculate favorite champions
+      const championStats: Record<string, { games: number; wins: number }> = {};
+      for (const match of matchStats) {
+        if (!championStats[match.champion]) {
+          championStats[match.champion] = { games: 0, wins: 0 };
+        }
+        championStats[match.champion].games++;
+        if (match.win) championStats[match.champion].wins++;
+      }
+
+      const favoriteChampions = Object.entries(championStats)
+        .map(([champion, stats]) => ({
+          champion,
+          games: stats.games,
+          winRate: (stats.wins / stats.games) * 100,
+        }))
+        .sort((a, b) => b.games - a.games)
+        .slice(0, 5);
+
+      // Calculate favorite positions
+      const positionStats: Record<string, number> = {};
+      for (const match of matchStats) {
+        if (match.position && match.position !== "UNKNOWN") {
+          positionStats[match.position] = (positionStats[match.position] || 0) + 1;
+        }
+      }
+
+      const favoritePositions = Object.entries(positionStats)
+        .map(([position, games]) => ({ position, games }))
+        .sort((a, b) => b.games - a.games);
+
+      return {
+        gameName: account.gameName,
+        tagLine: account.tagLine,
+        puuid: account.puuid,
+        totalGames: matchStats.length,
+        wins,
+        losses,
+        winRate: (wins / matchStats.length) * 100,
+        avgKills: Math.round(avgKills * 10) / 10,
+        avgDeaths: Math.round(avgDeaths * 10) / 10,
+        avgAssists: Math.round(avgAssists * 10) / 10,
+        avgKDA: Math.round(avgKDA * 100) / 100,
+        avgCS: Math.round(avgCS),
+        avgGold: Math.round(avgGold),
+        avgDamage: Math.round(avgDamage),
+        avgVisionScore: Math.round(avgVisionScore * 10) / 10,
+        favoriteChampions,
+        favoritePositions,
+        recentMatches: matchStats.slice(0, 5),
+      };
+    })();
+
+    // Race between the actual work and the timeout
+    const result = await Promise.race([summaryPromise, timeoutPromise]);
+    console.log(`🎉 Player summary complete (${Date.now() - operationStart}ms total)`);
+    return result;
   }
-
   /**
    * Format player summary for display
    */
