@@ -1,0 +1,31 @@
+{
+	"id": "pixel-arcade",
+	"name": "Pixel Arcade",
+	"description": "Arcade-inspired palette with colorful retro energy.",
+	"tokens": {
+		"combinedGradient": ["#1A1A2E", "#0080FF", "#F8FAFC", "#FF006E", "#2D1B69"],
+		"panelBlueGradient": ["rgba(26, 26, 46, 0.94)", "rgba(0, 128, 255, 0.64)"],
+		"panelRedGradient": ["rgba(45, 27, 105, 0.94)", "rgba(255, 0, 110, 0.64)"],
+		"panelGridBlue": "rgba(0, 255, 255, 0.16)",
+		"panelGridRed": "rgba(255, 0, 110, 0.16)",
+		"panelBorderBlue": "rgba(0, 128, 255, 0.85)",
+		"panelBorderRed": "rgba(255, 0, 110, 0.85)",
+		"cardGradient": ["rgba(255, 255, 255, 0.23)", "rgba(0, 128, 255, 0.16)", "rgba(255, 0, 110, 0.09)"],
+		"cardBorderGradient": ["rgba(255, 255, 255, 0.85)", "rgba(0, 255, 255, 0.35)", "rgba(255, 0, 110, 0.25)"],
+		"placeholderBg": "#191933",
+		"placeholderBorder": "rgba(0, 128, 255, 0.6)",
+		"placeholderText": "#E2E8F0",
+		"teamTitle": "#F8FAFC",
+		"teamTitleBlueGlow": "rgba(0, 128, 255, 0.52)",
+		"teamTitleRedGlow": "rgba(255, 0, 110, 0.52)",
+		"imageBorderBlue": "rgba(0, 128, 255, 0.68)",
+		"imageBorderRed": "rgba(255, 0, 110, 0.68)",
+		"championName": "#F8FAFC",
+		"championNameShadow": "rgba(26, 26, 46, 0.95)",
+		"blobBlue": "rgba(0, 128, 255, 0.14)",
+		"blobRed": "rgba(255, 0, 110, 0.14)",
+		"centerLine": ["rgba(0, 128, 255, 0)", "rgba(255, 255, 255, 0.18)", "rgba(255, 0, 110, 0)"],
+		"outerBorder": "#00FFFF",
+		"vsText": "#FFFFFF"
+	}
+}

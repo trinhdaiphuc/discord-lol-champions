@@ -1,0 +1,31 @@
+{
+	"id": "obsidian-gold",
+	"name": "Obsidian Gold",
+	"description": "Luxury black-and-gold visual identity.",
+	"tokens": {
+		"combinedGradient": ["#0B0B0D", "#111827", "#F8F5E9", "#92400E", "#171717"],
+		"panelBlueGradient": ["rgba(11, 11, 13, 0.96)", "rgba(31, 41, 55, 0.82)"],
+		"panelRedGradient": ["rgba(23, 23, 23, 0.96)", "rgba(146, 64, 14, 0.62)"],
+		"panelGridBlue": "rgba(251, 191, 36, 0.12)",
+		"panelGridRed": "rgba(217, 119, 6, 0.14)",
+		"panelBorderBlue": "rgba(245, 158, 11, 0.72)",
+		"panelBorderRed": "rgba(217, 119, 6, 0.72)",
+		"cardGradient": ["rgba(255, 255, 255, 0.2)", "rgba(251, 191, 36, 0.12)", "rgba(146, 64, 14, 0.08)"],
+		"cardBorderGradient": ["rgba(255, 255, 255, 0.8)", "rgba(251, 191, 36, 0.38)", "rgba(146, 64, 14, 0.22)"],
+		"placeholderBg": "#171717",
+		"placeholderBorder": "rgba(245, 158, 11, 0.55)",
+		"placeholderText": "#FDE68A",
+		"teamTitle": "#F8F5E9",
+		"teamTitleBlueGlow": "rgba(251, 191, 36, 0.35)",
+		"teamTitleRedGlow": "rgba(217, 119, 6, 0.35)",
+		"imageBorderBlue": "rgba(245, 158, 11, 0.55)",
+		"imageBorderRed": "rgba(217, 119, 6, 0.55)",
+		"championName": "#F8F5E9",
+		"championNameShadow": "rgba(11, 11, 13, 0.95)",
+		"blobBlue": "rgba(251, 191, 36, 0.12)",
+		"blobRed": "rgba(217, 119, 6, 0.12)",
+		"centerLine": ["rgba(245, 158, 11, 0)", "rgba(255, 255, 255, 0.16)", "rgba(217, 119, 6, 0)"],
+		"outerBorder": "#F59E0B",
+		"vsText": "#F8F5E9"
+	}
+}

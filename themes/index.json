@@ -1,0 +1,41 @@
+{
+	"defaultThemeId": "hextech-current",
+	"themes": [
+		{
+			"id": "hextech-current",
+			"name": "Hextech Current",
+			"description": "Current default look with blue-vs-red contrast.",
+			"file": "hextech-current.json"
+		},
+		{
+			"id": "retro-futurism-neon",
+			"name": "Retro Futurism Neon",
+			"description": "Neon cyber style inspired by retro-futurism.",
+			"file": "retro-futurism-neon.json"
+		},
+		{
+			"id": "skyforge-light",
+			"name": "Skyforge Light",
+			"description": "Bright professional blue palette with clean contrast.",
+			"file": "skyforge-light.json"
+		},
+		{
+			"id": "cyberpunk-terminal",
+			"name": "Cyberpunk Terminal",
+			"description": "Dark terminal HUD with vivid neon accents.",
+			"file": "cyberpunk-terminal.json"
+		},
+		{
+			"id": "pixel-arcade",
+			"name": "Pixel Arcade",
+			"description": "Arcade-inspired palette with colorful retro energy.",
+			"file": "pixel-arcade.json"
+		},
+		{
+			"id": "obsidian-gold",
+			"name": "Obsidian Gold",
+			"description": "Luxury black-and-gold visual identity.",
+			"file": "obsidian-gold.json"
+		}
+	]
+}

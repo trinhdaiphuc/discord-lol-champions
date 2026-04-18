@@ -2,3 +2,6 @@
 .env
 cache
 .vscode
+
+# data
+data

@@ -1,0 +1,31 @@
+{
+	"id": "retro-futurism-neon",
+	"name": "Retro Futurism Neon",
+	"description": "Neon cyber style inspired by retro-futurism.",
+	"tokens": {
+		"combinedGradient": ["#0F0F23", "#7C3AED", "#E2E8F0", "#F43F5E", "#1A1A2E"],
+		"panelBlueGradient": ["rgba(15, 15, 35, 0.95)", "rgba(124, 58, 237, 0.72)"],
+		"panelRedGradient": ["rgba(26, 26, 46, 0.95)", "rgba(244, 63, 94, 0.7)"],
+		"panelGridBlue": "rgba(0, 255, 255, 0.2)",
+		"panelGridRed": "rgba(255, 0, 110, 0.22)",
+		"panelBorderBlue": "rgba(0, 255, 255, 0.9)",
+		"panelBorderRed": "rgba(255, 0, 110, 0.9)",
+		"cardGradient": ["rgba(255, 255, 255, 0.26)", "rgba(167, 139, 250, 0.2)", "rgba(124, 58, 237, 0.12)"],
+		"cardBorderGradient": ["rgba(255, 255, 255, 0.9)", "rgba(167, 139, 250, 0.45)", "rgba(255, 255, 255, 0.1)"],
+		"placeholderBg": "#0B1020",
+		"placeholderBorder": "rgba(125, 211, 252, 0.7)",
+		"placeholderText": "#E2E8F0",
+		"teamTitle": "#F8FAFC",
+		"teamTitleBlueGlow": "rgba(0, 255, 255, 0.55)",
+		"teamTitleRedGlow": "rgba(255, 0, 110, 0.55)",
+		"imageBorderBlue": "rgba(0, 255, 255, 0.65)",
+		"imageBorderRed": "rgba(255, 0, 110, 0.65)",
+		"championName": "#F8FAFC",
+		"championNameShadow": "rgba(15, 15, 35, 0.95)",
+		"blobBlue": "rgba(0, 255, 255, 0.16)",
+		"blobRed": "rgba(255, 0, 110, 0.15)",
+		"centerLine": ["rgba(124, 58, 237, 0)", "rgba(255, 255, 255, 0.2)", "rgba(244, 63, 94, 0)"],
+		"outerBorder": "#A78BFA",
+		"vsText": "#FFFFFF"
+	}
+}

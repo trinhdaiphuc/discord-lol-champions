@@ -11,7 +11,7 @@ import type { BotCommand, BotEvent, ExtendedClient } from "./types/index.ts";
 
 async function main(): Promise<void> {
 	// Load config and champions
-	const config = await readConfig();
+	await readConfig();
 	await championService.loadChampions();
 	console.log(
 		`✅ Champion data loaded. (${Object.keys(championService.getChampions()).length} champions)`
@@ -101,4 +101,3 @@ async function main(): Promise<void> {
 }
 
 main().catch(console.error);
-

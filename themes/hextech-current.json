@@ -1,0 +1,31 @@
+{
+	"id": "hextech-current",
+	"name": "Hextech Current",
+	"description": "Current default look with blue-vs-red contrast.",
+	"tokens": {
+		"combinedGradient": ["#0f172a", "#1d4ed8", "#e2e8f0", "#b91c1c", "#18181b"],
+		"panelBlueGradient": ["rgba(15, 23, 42, 0.92)", "rgba(30, 58, 138, 0.78)"],
+		"panelRedGradient": ["rgba(24, 24, 27, 0.92)", "rgba(153, 27, 27, 0.78)"],
+		"panelGridBlue": "rgba(56, 189, 248, 0.2)",
+		"panelGridRed": "rgba(251, 113, 133, 0.2)",
+		"panelBorderBlue": "rgba(56, 189, 248, 0.8)",
+		"panelBorderRed": "rgba(251, 113, 133, 0.8)",
+		"cardGradient": ["rgba(255, 255, 255, 0.28)", "rgba(255, 255, 255, 0.13)", "rgba(148, 163, 184, 0.08)"],
+		"cardBorderGradient": ["rgba(255, 255, 255, 0.9)", "rgba(255, 255, 255, 0.28)", "rgba(255, 255, 255, 0.08)"],
+		"placeholderBg": "#111827",
+		"placeholderBorder": "rgba(148, 163, 184, 0.6)",
+		"placeholderText": "#cbd5e1",
+		"teamTitle": "#f8fafc",
+		"teamTitleBlueGlow": "rgba(56, 189, 248, 0.45)",
+		"teamTitleRedGlow": "rgba(251, 113, 133, 0.45)",
+		"imageBorderBlue": "rgba(56, 189, 248, 0.55)",
+		"imageBorderRed": "rgba(251, 113, 133, 0.55)",
+		"championName": "#f8fafc",
+		"championNameShadow": "rgba(15, 23, 42, 0.95)",
+		"blobBlue": "rgba(56, 189, 248, 0.15)",
+		"blobRed": "rgba(251, 146, 60, 0.15)",
+		"centerLine": ["rgba(30, 58, 138, 0)", "rgba(255, 255, 255, 0.15)", "rgba(153, 27, 27, 0)"],
+		"outerBorder": "#fbbf24",
+		"vsText": "#FFFFFF"
+	}
+}

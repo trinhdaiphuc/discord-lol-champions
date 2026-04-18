@@ -1,0 +1,31 @@
+{
+	"id": "cyberpunk-terminal",
+	"name": "Cyberpunk Terminal",
+	"description": "Dark terminal HUD with vivid neon accents.",
+	"tokens": {
+		"combinedGradient": ["#0D0D0D", "#00FFFF", "#E5E7EB", "#FF00FF", "#1A1A1A"],
+		"panelBlueGradient": ["rgba(10, 10, 10, 0.96)", "rgba(0, 255, 255, 0.45)"],
+		"panelRedGradient": ["rgba(10, 10, 10, 0.96)", "rgba(255, 0, 255, 0.45)"],
+		"panelGridBlue": "rgba(0, 255, 255, 0.17)",
+		"panelGridRed": "rgba(255, 0, 255, 0.17)",
+		"panelBorderBlue": "rgba(0, 255, 255, 0.85)",
+		"panelBorderRed": "rgba(255, 0, 255, 0.85)",
+		"cardGradient": ["rgba(255, 255, 255, 0.22)", "rgba(0, 255, 255, 0.16)", "rgba(255, 0, 255, 0.1)"],
+		"cardBorderGradient": ["rgba(255, 255, 255, 0.9)", "rgba(0, 255, 255, 0.4)", "rgba(255, 0, 255, 0.2)"],
+		"placeholderBg": "#111111",
+		"placeholderBorder": "rgba(0, 255, 255, 0.65)",
+		"placeholderText": "#F4F4F5",
+		"teamTitle": "#FFFFFF",
+		"teamTitleBlueGlow": "rgba(0, 255, 255, 0.6)",
+		"teamTitleRedGlow": "rgba(255, 0, 255, 0.6)",
+		"imageBorderBlue": "rgba(0, 255, 255, 0.75)",
+		"imageBorderRed": "rgba(255, 0, 255, 0.75)",
+		"championName": "#FFFFFF",
+		"championNameShadow": "rgba(9, 9, 11, 0.95)",
+		"blobBlue": "rgba(0, 255, 255, 0.16)",
+		"blobRed": "rgba(255, 0, 255, 0.16)",
+		"centerLine": ["rgba(0, 255, 255, 0)", "rgba(255, 255, 255, 0.18)", "rgba(255, 0, 255, 0)"],
+		"outerBorder": "#22D3EE",
+		"vsText": "#FFFFFF"
+	}
+}

@@ -1,10 +1,8 @@
 import { readConfig } from "../core/config.ts";
-import * as championService from "./championService.ts";
 import { randomInt } from "crypto";
 import type { Config, TeamResult, RandomTeamResult } from "../types/index.ts";
 
-const CHAMPIONS_PER_ROLE_PER_TEAM = 4;
-const CHAMPIONS_PER_ROLE_PER_MATCH = CHAMPIONS_PER_ROLE_PER_TEAM * 2;
+const DEFAULT_CHAMPIONS_PER_ROLE_PER_TEAM = 4;
 const MIN_PRIMARY_ROLE_CHAMPIONS = 2;
 
 class UsedChampions {
@@ -62,13 +60,14 @@ const shuffle = <T>(arr: T[]): T[] => {
 const assignToBalancedTeam = (
 	blueRolePicks: string[],
 	redRolePicks: string[],
-	champion: string
+	champion: string,
+	championsPerRolePerTeam: number
 ): void => {
-	if (blueRolePicks.length >= CHAMPIONS_PER_ROLE_PER_TEAM) {
+	if (blueRolePicks.length >= championsPerRolePerTeam) {
 		redRolePicks.push(champion);
 		return;
 	}
-	if (redRolePicks.length >= CHAMPIONS_PER_ROLE_PER_TEAM) {
+	if (redRolePicks.length >= championsPerRolePerTeam) {
 		blueRolePicks.push(champion);
 		return;
 	}
@@ -104,8 +103,10 @@ const draftRoleForBothTeams = (
 	usedChampions: UsedChampions,
 	selectedChampions: Set<string>,
 	config: Config,
-	championRoleMembershipCount: Map<string, number>
+	championRoleMembershipCount: Map<string, number>,
+	championsPerRolePerTeam: number
 ): { blueRolePicks: string[]; redRolePicks: string[] } => {
+	const championsPerRolePerMatch = championsPerRolePerTeam * 2;
 	const primaryRoleChampions = config.CHAMPION_ROLES[role] || [];
 	const fallbackRoles = config.FALLBACK_ROLES[role] || [];
 	const drafted = new Set<string>();
@@ -116,7 +117,7 @@ const draftRoleForBothTeams = (
 
 	const addCandidates = (candidates: string[], sourceRole: string, isPrimary: boolean): void => {
 		for (const champ of candidates) {
-			if (drafted.size >= CHAMPIONS_PER_ROLE_PER_MATCH) {
+			if (drafted.size >= championsPerRolePerMatch) {
 				break;
 			}
 			if (selectedChampions.has(champ) || drafted.has(champ)) {
@@ -124,7 +125,7 @@ const draftRoleForBothTeams = (
 			}
 			drafted.add(champ);
 			draftedFromRole.set(champ, sourceRole);
-			assignToBalancedTeam(blueRolePicks, redRolePicks, champ);
+			assignToBalancedTeam(blueRolePicks, redRolePicks, champ, championsPerRolePerTeam);
 			if (isPrimary) {
 				primaryPicked += 1;
 			}
@@ -161,7 +162,7 @@ const draftRoleForBothTeams = (
 			.join(", ");
 		const selectedInMatch = selectedChampions.size;
 		console.log(
-			`[POOL][${stage}] role=${role} primary=${primaryRemaining}/${primaryTotal} selectedInMatch=${selectedInMatch} draftedForRole=${drafted.size}/${CHAMPIONS_PER_ROLE_PER_MATCH} fallbacks=[${fallbackSummary || "none"}]`
+			`[POOL][${stage}] role=${role} primary=${primaryRemaining}/${primaryTotal} selectedInMatch=${selectedInMatch} draftedForRole=${drafted.size}/${championsPerRolePerMatch} fallbacks=[${fallbackSummary || "none"}]`
 		);
 	};
 
@@ -178,24 +179,26 @@ const draftRoleForBothTeams = (
 		addCandidates(getAnyInRole(role), role, true);
 	}
 
-	if (drafted.size < CHAMPIONS_PER_ROLE_PER_MATCH) {
+	if (drafted.size < championsPerRolePerMatch) {
 		for (const fbRole of fallbackRoles) {
-			if (drafted.size >= CHAMPIONS_PER_ROLE_PER_MATCH) {
+			if (drafted.size >= championsPerRolePerMatch) {
 				break;
 			}
 			addCandidates(getUnusedInRole(fbRole), fbRole, false);
 		}
 	}
 
-	if (drafted.size < CHAMPIONS_PER_ROLE_PER_MATCH) {
-		console.log(`⚠️ Role ${role}: primary and fallback unused exhausted, reset role pool and refill`);
+	if (drafted.size < championsPerRolePerMatch) {
+		console.log(
+			`⚠️ Role ${role}: primary and fallback unused exhausted, reset role pool and refill`
+		);
 		usedChampions.resetRole(role);
 		addCandidates(getAnyInRole(role), role, true);
 	}
 
-	if (drafted.size < CHAMPIONS_PER_ROLE_PER_MATCH) {
+	if (drafted.size < championsPerRolePerMatch) {
 		for (const fbRole of fallbackRoles) {
-			if (drafted.size >= CHAMPIONS_PER_ROLE_PER_MATCH) {
+			if (drafted.size >= championsPerRolePerMatch) {
 				break;
 			}
 			usedChampions.resetRole(fbRole);
@@ -203,7 +206,7 @@ const draftRoleForBothTeams = (
 		}
 	}
 
-	if (drafted.size < CHAMPIONS_PER_ROLE_PER_MATCH) {
+	if (drafted.size < championsPerRolePerMatch) {
 		console.log(`⚠️ Role ${role}: not enough champions even after fallback refill`);
 		addCandidates(getAnyInRole(role), role, true);
 	}
@@ -226,10 +229,19 @@ const draftRoleForBothTeams = (
 	return { blueRolePicks, redRolePicks };
 };
 
-export async function generateTeams(guildId: string): Promise<TeamResult> {
+interface GenerateTeamOptions {
+	poolSize?: 3 | 4 | 5 | 6;
+}
+
+export async function generateTeams(
+	guildId: string,
+	options: GenerateTeamOptions = {}
+): Promise<TeamResult> {
 	const config = await readConfig();
 	const usedChampions = getCache(guildId);
 	const championRoleMembershipCount = buildChampionRoleMembershipCount(config);
+	const championsPerRolePerTeam = options.poolSize ?? DEFAULT_CHAMPIONS_PER_ROLE_PER_TEAM;
+	const championsPerRolePerMatch = championsPerRolePerTeam * 2;
 
 	console.log(`Used champions for guild ${guildId}: ${usedChampions.getTotal().size}`);
 	console.log(
@@ -253,10 +265,11 @@ export async function generateTeams(guildId: string): Promise<TeamResult> {
 			usedChampions,
 			selectedChampions,
 			config,
-			championRoleMembershipCount
+			championRoleMembershipCount,
+			championsPerRolePerTeam
 		);
 		console.log(
-			`Role ${role}: drafted ${blueRolePicks.length + redRolePicks.length}/${CHAMPIONS_PER_ROLE_PER_MATCH}`
+			`Role ${role}: drafted ${blueRolePicks.length + redRolePicks.length}/${championsPerRolePerMatch}`
 		);
 		blueTeam.push(...blueRolePicks);
 		redTeam.push(...redRolePicks);
@@ -284,25 +297,35 @@ export async function generateTeams(guildId: string): Promise<TeamResult> {
 	return { blueTeam, redTeam };
 }
 
-export async function generateTeamsByRole(role: string): Promise<TeamResult> {
+export async function generateTeamsByRole(
+	role: string,
+	options: GenerateTeamOptions = {}
+): Promise<TeamResult> {
 	const config = await readConfig();
 	const roleChampions = config.CHAMPION_ROLES[role];
+	const championsPerRolePerTeam = options.poolSize ?? DEFAULT_CHAMPIONS_PER_ROLE_PER_TEAM;
+	const totalChampionsNeeded = championsPerRolePerTeam * 2;
 
 	if (!roleChampions) {
 		throw new Error(`Invalid role: ${role}`);
 	}
 
 	let selectedChampions: string[];
-	if (roleChampions.length <= 24) {
+	if (roleChampions.length <= totalChampionsNeeded) {
 		selectedChampions = [...roleChampions];
 	} else {
-		selectedChampions = [...roleChampions].sort(() => randomInt(2) - 0.5).slice(0, 24);
+		selectedChampions = shuffle(roleChampions).slice(0, totalChampionsNeeded);
 	}
 
-	const shuffledChampions = selectedChampions.sort(() => randomInt(2) - 0.5);
-	const midPoint = Math.ceil(shuffledChampions.length / 2);
-	const blueTeam = shuffledChampions.slice(0, midPoint);
-	const redTeam = shuffledChampions.slice(midPoint);
+	if (selectedChampions.length < totalChampionsNeeded) {
+		throw new Error(
+			`Not enough champions for role ${role}. Needed ${totalChampionsNeeded}, got ${selectedChampions.length}.`
+		);
+	}
+
+	const shuffledChampions = shuffle(selectedChampions);
+	const blueTeam = shuffledChampions.slice(0, championsPerRolePerTeam);
+	const redTeam = shuffledChampions.slice(championsPerRolePerTeam, totalChampionsNeeded);
 
 	return { blueTeam, redTeam };
 }

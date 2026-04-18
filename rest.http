@@ -5,8 +5,26 @@ GET http://localhost:3000/gen-champions/{{guildId}}
 
 ### Get champions by role
 ### roleName: Fighter | Mage | Tank | Marksman | Support | Assassin 
-@roleName = Mage
-GET http://localhost:3000/gen-champions/role/{{roleName}}
+@roleName = Fighter
+GET http://localhost:3000/gen-champions/role/{{roleName}}?guildId={{guildId}}
+
+### View guild config
+GET http://localhost:3000/guilds/{{guildId}}/config
+
+
+### Update guild config
+### themeId: random | cyberpunk-terminal | hextech-current | obsidian-gold | pixel-arcade | retro-futurism-neon | skyforge-light
+@themeId = skyforge-light
+PUT http://localhost:3000/guilds/{{guildId}}/config
+Content-Type: application/json
+
+{
+  "poolSize": 6,
+  "themeId": "{{themeId}}"
+}
+
+### Reload guild config
+POST http://localhost:3000/guilds/{{guildId}}/config/reload
 
 ### Generate random team
 POST http://localhost:3000/random-team
