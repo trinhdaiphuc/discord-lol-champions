@@ -17,7 +17,7 @@ const command: BotCommand = {
 
 			await interaction.editReply({
 				files: [attachment],
-				content: `⚔️ ARAM Teams (6 roles × 3 champions)`,
+				content: `⚔️ ARAM Teams (6 roles × 4 champions)`,
 			});
 		} catch (error) {
 			console.error(`❌ Bot error for ${interaction.guildId}:`, error);
@@ -31,4 +31,3 @@ const command: BotCommand = {
 };
 
 export default command;
-

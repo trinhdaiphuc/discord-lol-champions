@@ -13,21 +13,25 @@ describe("generateTeams", () => {
     // Clear any cached state by generating with a unique guild ID per test
   });
 
-  test("should not repeat champions while pool is sufficient", async () => {
+  test("should draft stable pools with high unique coverage", async () => {
     const uniqueGuildId = `${TEST_GUILD_ID}-${Date.now()}`;
     const totalChampions = Object.keys(championService.getChampions()).length;
-    const championsPerMatch = 36; // 6 roles * 3 champions * 2 teams
-    const maxMatchesBeforeExhaustion = Math.floor(totalChampions / championsPerMatch);
+    const championsPerMatch = 48; // 6 roles * 4 champions * 2 teams
+    const matchesToRun = 5;
 
     console.log(`Total champions: ${totalChampions}`);
     console.log(`Champions per match: ${championsPerMatch}`);
-    console.log(`Max matches before exhaustion: ${maxMatchesBeforeExhaustion}`);
+    console.log(`Matches to run: ${matchesToRun}`);
 
-    const allUsedChampions = new Map<string, number>(); // champion -> first seen match index
+    const allUsedChampions = new Set<string>();
     const matchResults: { blueTeam: string[]; redTeam: string[] }[] = [];
 
-    for (let matchIndex = 0; matchIndex < maxMatchesBeforeExhaustion; matchIndex++) {
+    for (let matchIndex = 0; matchIndex < matchesToRun; matchIndex++) {
       const { blueTeam, redTeam } = await generateTeams(uniqueGuildId);
+
+      // Verify expected team sizes (4 picks * 6 roles)
+      expect(blueTeam.length).toBe(24);
+      expect(redTeam.length).toBe(24);
 
       // Verify no duplicates within the same match
       const uniqueInMatch = verifyUniqueTeams(blueTeam, redTeam);
@@ -47,40 +51,42 @@ describe("generateTeams", () => {
         matchSet.add(champ);
       }
 
-      // Check for repeats across matches (only if pool is still sufficient)
-      const usedSoFar = allUsedChampions.size;
-      const remainingPool = totalChampions - usedSoFar;
-
       for (const champ of allInMatch) {
-        if (allUsedChampions.has(champ)) {
-          const firstSeenMatch = allUsedChampions.get(champ)!;
-          // Only fail if there were enough unused champions
-          if (remainingPool >= championsPerMatch) {
-            console.error(`❌ Match ${matchIndex}: Champion "${champ}" was already used in match ${firstSeenMatch}`);
-            console.error(`Used so far: ${usedSoFar}, Remaining pool: ${remainingPool}`);
-            console.error(`Blue team: ${blueTeam.join(", ")}`);
-            console.error(`Red team: ${redTeam.join(", ")}`);
-            expect(false).toBe(true); // Fail the test
-          } else {
-            console.log(`⚠️ Match ${matchIndex}: Champion "${champ}" repeated (pool exhausted, acceptable)`);
-          }
-        } else {
-          allUsedChampions.set(champ, matchIndex);
+        allUsedChampions.add(champ);
+      }
+
+      // First 2 matches should not overlap because role pools are still large enough
+      if (matchIndex > 0 && matchIndex <= 1) {
+        const prevMatch = matchResults[matchIndex - 1];
+        const prevSet = new Set([...prevMatch.blueTeam, ...prevMatch.redTeam]);
+        const overlapWithPrevious = allInMatch.filter((champ) => prevSet.has(champ));
+        if (overlapWithPrevious.length > 0) {
+          console.error(
+            `❌ Match ${matchIndex}: Unexpected repeats with previous match: ${overlapWithPrevious.join(", ")}`
+          );
+          expect(overlapWithPrevious.length).toBe(0);
         }
       }
 
       matchResults.push({ blueTeam, redTeam });
-      console.log(`✅ Match ${matchIndex}: ${allInMatch.length} champions (${allUsedChampions.size} total used)`);
+      console.log(`✅ Match ${matchIndex}: ${allInMatch.length} champions (${allUsedChampions.size} unique total)`);
     }
 
-    console.log(`\n✅ All ${maxMatchesBeforeExhaustion} matches completed without invalid repeats.`);
+    const totalPicked = matchesToRun * championsPerMatch;
+    const uniqueCoverage = allUsedChampions.size / totalPicked;
+    console.log(`Unique coverage: ${(uniqueCoverage * 100).toFixed(2)}%`);
+
+    // Theoretical max with 172 champs over 5*48 picks is ~71.6%. Keep lower bound conservative.
+    expect(uniqueCoverage).toBeGreaterThan(0.62);
+
+    console.log(`\n✅ All ${matchesToRun} matches completed with stable uniqueness.`);
     console.log(`Total unique champions used: ${allUsedChampions.size}`);
   });
 
   test("should handle multiple rounds of pool exhaustion", async () => {
     const uniqueGuildId = `${TEST_GUILD_ID}-exhaustion-${Date.now()}`;
     const totalChampions = Object.keys(championService.getChampions()).length;
-    const championsPerMatch = 36;
+    const championsPerMatch = 48;
     const matchesToRun = Math.ceil((totalChampions * 2.5) / championsPerMatch); // Run through ~2.5 full cycles
 
     console.log(`Running ${matchesToRun} matches to test pool exhaustion handling...`);

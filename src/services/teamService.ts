@@ -3,6 +3,10 @@ import * as championService from "./championService.ts";
 import { randomInt } from "crypto";
 import type { Config, TeamResult, RandomTeamResult } from "../types/index.ts";
 
+const CHAMPIONS_PER_ROLE_PER_TEAM = 4;
+const CHAMPIONS_PER_ROLE_PER_MATCH = CHAMPIONS_PER_ROLE_PER_TEAM * 2;
+const MIN_PRIMARY_ROLE_CHAMPIONS = 2;
+
 class UsedChampions {
 	total: Set<string>;
 	roles: Map<string, Set<string>>;
@@ -46,128 +50,235 @@ function getCache(guildId: string): UsedChampions {
 	return cache.get(guildId)!;
 }
 
-const getPoll = (
-	role: string,
-	usedChampions: UsedChampions,
-	selectedChampions: Set<string>,
-	availableChampionsByRole: Record<string, string[]>,
-	config: Config
-): string[] => {
-	const needed = 3;
-	const pool: string[] = [];
-
-	const shuffle = <T>(arr: T[]): T[] => [...arr].sort(() => randomInt(2) - 0.5);
-
-	// Check if champion is globally unused (not used in any previous match) and not selected in current match
-	const isGloballyAvailable = (champ: string): boolean =>
-		!usedChampions.getTotal().has(champ) && !selectedChampions.has(champ) && !pool.includes(champ);
-
-	// Check if champion is available for current match (may have been used before, but not in this match)
-	const isAvailableForMatch = (champ: string): boolean =>
-		!selectedChampions.has(champ) && !pool.includes(champ);
-
-	// Step 1: Get globally unused champions from primary role
-	let candidates = shuffle(config.CHAMPION_ROLES[role].filter(isGloballyAvailable));
-	pool.push(...candidates);
-	if (pool.length >= needed) return pool.slice(0, needed);
-
-	// Step 2: Get globally unused champions from fallback roles
-	const fallbacks = config.FALLBACK_ROLES[role] || [];
-	for (const fbRole of fallbacks) {
-		if (pool.length >= needed) break;
-		const fbCandidates = shuffle(config.CHAMPION_ROLES[fbRole].filter(isGloballyAvailable));
-		pool.push(...fbCandidates);
+const shuffle = <T>(arr: T[]): T[] => {
+	const result = [...arr];
+	for (let i = result.length - 1; i > 0; i--) {
+		const j = randomInt(i + 1);
+		[result[i], result[j]] = [result[j], result[i]];
 	}
-	if (pool.length >= needed) return pool.slice(0, needed);
-
-	// Step 3: No more globally unused champions available. Need to reset.
-	// Reset the total used champions for this guild (will be done at generateTeams level)
-	// For now, fall back to allowing reuse from primary role
-	console.log(`⚠️ Role ${role}: Not enough globally unused champions, allowing reuse`);
-
-	// Reset role-specific tracking and try again with previously used champions
-	usedChampions.resetRole(role);
-	candidates = shuffle(config.CHAMPION_ROLES[role].filter(isAvailableForMatch));
-	pool.push(...candidates);
-	if (pool.length >= needed) return pool.slice(0, needed);
-
-	// Step 4: Still not enough, try fallback roles with reuse allowed
-	for (const fbRole of fallbacks) {
-		if (pool.length >= needed) break;
-		usedChampions.resetRole(fbRole);
-		const fbCandidates = shuffle(config.CHAMPION_ROLES[fbRole].filter(isAvailableForMatch));
-		pool.push(...fbCandidates);
-	}
-
-	if (pool.length < needed) {
-		console.log(`⚠️ Not enough champions for role ${role} even with fallbacks!`);
-	}
-
-	return pool.slice(0, needed);
+	return result;
 };
 
-const selectFromRole = (
-	team: string[],
+const assignToBalancedTeam = (
+	blueRolePicks: string[],
+	redRolePicks: string[],
+	champion: string
+): void => {
+	if (blueRolePicks.length >= CHAMPIONS_PER_ROLE_PER_TEAM) {
+		redRolePicks.push(champion);
+		return;
+	}
+	if (redRolePicks.length >= CHAMPIONS_PER_ROLE_PER_TEAM) {
+		blueRolePicks.push(champion);
+		return;
+	}
+	if (blueRolePicks.length <= redRolePicks.length) {
+		blueRolePicks.push(champion);
+	} else {
+		redRolePicks.push(champion);
+	}
+};
+
+const buildChampionRoleMembershipCount = (config: Config): Map<string, number> => {
+	const counts = new Map<string, number>();
+	for (const roleChampions of Object.values(config.CHAMPION_ROLES)) {
+		for (const champ of roleChampions) {
+			counts.set(champ, (counts.get(champ) || 0) + 1);
+		}
+	}
+	return counts;
+};
+
+const prioritizeRoleSpecificChampions = (
+	champions: string[],
+	championRoleMembershipCount: Map<string, number>
+): string[] =>
+	[...champions].sort(
+		(a, b) =>
+			(championRoleMembershipCount.get(a) || Number.MAX_SAFE_INTEGER) -
+			(championRoleMembershipCount.get(b) || Number.MAX_SAFE_INTEGER)
+	);
+
+const draftRoleForBothTeams = (
 	role: string,
 	usedChampions: UsedChampions,
 	selectedChampions: Set<string>,
-	availableChampionsByRole: Record<string, string[]>,
-	config: Config
-): void => {
-	const pool = getPoll(role, usedChampions, selectedChampions, availableChampionsByRole, config);
+	config: Config,
+	championRoleMembershipCount: Map<string, number>
+): { blueRolePicks: string[]; redRolePicks: string[] } => {
+	const primaryRoleChampions = config.CHAMPION_ROLES[role] || [];
+	const fallbackRoles = config.FALLBACK_ROLES[role] || [];
+	const drafted = new Set<string>();
+	const draftedFromRole = new Map<string, string>();
+	const blueRolePicks: string[] = [];
+	const redRolePicks: string[] = [];
+	let primaryPicked = 0;
 
-	pool.forEach((champ) => {
-		team.push(champ);
+	const addCandidates = (candidates: string[], sourceRole: string, isPrimary: boolean): void => {
+		for (const champ of candidates) {
+			if (drafted.size >= CHAMPIONS_PER_ROLE_PER_MATCH) {
+				break;
+			}
+			if (selectedChampions.has(champ) || drafted.has(champ)) {
+				continue;
+			}
+			drafted.add(champ);
+			draftedFromRole.set(champ, sourceRole);
+			assignToBalancedTeam(blueRolePicks, redRolePicks, champ);
+			if (isPrimary) {
+				primaryPicked += 1;
+			}
+		}
+	};
+
+	const getUnusedInRole = (roleName: string): string[] =>
+		prioritizeRoleSpecificChampions(
+			shuffle(
+				(config.CHAMPION_ROLES[roleName] || []).filter(
+					(champ) => !usedChampions.getRole(roleName).has(champ)
+				)
+			),
+			championRoleMembershipCount
+		);
+
+	const getAnyInRole = (roleName: string): string[] =>
+		prioritizeRoleSpecificChampions(
+			shuffle(config.CHAMPION_ROLES[roleName] || []),
+			championRoleMembershipCount
+		);
+
+	const logRolePoolSnapshot = (stage: "before" | "after"): void => {
+		const primaryTotal = (config.CHAMPION_ROLES[role] || []).length;
+		const primaryUsed = usedChampions.getRole(role).size;
+		const primaryRemaining = Math.max(0, primaryTotal - primaryUsed);
+		const fallbackSummary = fallbackRoles
+			.map((fbRole) => {
+				const fbTotal = (config.CHAMPION_ROLES[fbRole] || []).length;
+				const fbUsed = usedChampions.getRole(fbRole).size;
+				const fbRemaining = Math.max(0, fbTotal - fbUsed);
+				return `${fbRole}:${fbRemaining}/${fbTotal}`;
+			})
+			.join(", ");
+		const selectedInMatch = selectedChampions.size;
+		console.log(
+			`[POOL][${stage}] role=${role} primary=${primaryRemaining}/${primaryTotal} selectedInMatch=${selectedInMatch} draftedForRole=${drafted.size}/${CHAMPIONS_PER_ROLE_PER_MATCH} fallbacks=[${fallbackSummary || "none"}]`
+		);
+	};
+
+	logRolePoolSnapshot("before");
+
+	addCandidates(getUnusedInRole(role), role, true);
+	const minimumPrimary = Math.min(
+		MIN_PRIMARY_ROLE_CHAMPIONS,
+		primaryRoleChampions.filter((champ) => !selectedChampions.has(champ)).length
+	);
+	if (primaryPicked < minimumPrimary) {
+		console.log(`⚠️ Role ${role}: ensure minimum primary picks, reset role pool and refill`);
+		usedChampions.resetRole(role);
+		addCandidates(getAnyInRole(role), role, true);
+	}
+
+	if (drafted.size < CHAMPIONS_PER_ROLE_PER_MATCH) {
+		for (const fbRole of fallbackRoles) {
+			if (drafted.size >= CHAMPIONS_PER_ROLE_PER_MATCH) {
+				break;
+			}
+			addCandidates(getUnusedInRole(fbRole), fbRole, false);
+		}
+	}
+
+	if (drafted.size < CHAMPIONS_PER_ROLE_PER_MATCH) {
+		console.log(`⚠️ Role ${role}: primary and fallback unused exhausted, reset role pool and refill`);
+		usedChampions.resetRole(role);
+		addCandidates(getAnyInRole(role), role, true);
+	}
+
+	if (drafted.size < CHAMPIONS_PER_ROLE_PER_MATCH) {
+		for (const fbRole of fallbackRoles) {
+			if (drafted.size >= CHAMPIONS_PER_ROLE_PER_MATCH) {
+				break;
+			}
+			usedChampions.resetRole(fbRole);
+			addCandidates(getAnyInRole(fbRole), fbRole, false);
+		}
+	}
+
+	if (drafted.size < CHAMPIONS_PER_ROLE_PER_MATCH) {
+		console.log(`⚠️ Role ${role}: not enough champions even after fallback refill`);
+		addCandidates(getAnyInRole(role), role, true);
+	}
+
+	for (const champ of blueRolePicks) {
 		selectedChampions.add(champ);
-		usedChampions.getRole(role).add(champ);
+		const sourceRole = draftedFromRole.get(champ) || role;
+		usedChampions.getRole(sourceRole).add(champ);
 		usedChampions.getTotal().add(champ);
-	});
+	}
+	for (const champ of redRolePicks) {
+		selectedChampions.add(champ);
+		const sourceRole = draftedFromRole.get(champ) || role;
+		usedChampions.getRole(sourceRole).add(champ);
+		usedChampions.getTotal().add(champ);
+	}
+
+	logRolePoolSnapshot("after");
+
+	return { blueRolePicks, redRolePicks };
 };
 
 export async function generateTeams(guildId: string): Promise<TeamResult> {
 	const config = await readConfig();
 	const usedChampions = getCache(guildId);
+	const championRoleMembershipCount = buildChampionRoleMembershipCount(config);
 
 	console.log(`Used champions for guild ${guildId}: ${usedChampions.getTotal().size}`);
-
-	const availableChampionsByRole: Record<string, string[]> = {};
-	for (const role in config.CHAMPION_ROLES) {
-		availableChampionsByRole[role] = config.CHAMPION_ROLES[role].filter(
-			(champ) => !(usedChampions.getRole(role).has(champ) || usedChampions.getTotal().has(champ))
-		);
-		console.log(`Available champions for role ${role}: ${availableChampionsByRole[role].length}`);
-	}
+	console.log(
+		`[POOL][match-start] ${Object.keys(config.CHAMPION_ROLES)
+			.map((role) => {
+				const total = config.CHAMPION_ROLES[role].length;
+				const used = usedChampions.getRole(role).size;
+				const remaining = Math.max(0, total - used);
+				return `${role}:${remaining}/${total}`;
+			})
+			.join(" | ")}`
+	);
 
 	const selectedChampions = new Set<string>();
 	const blueTeam: string[] = [];
 	const redTeam: string[] = [];
 
 	for (const role of Object.keys(config.CHAMPION_ROLES)) {
-		selectFromRole(
-			blueTeam,
+		const { blueRolePicks, redRolePicks } = draftRoleForBothTeams(
 			role,
 			usedChampions,
 			selectedChampions,
-			availableChampionsByRole,
-			config
+			config,
+			championRoleMembershipCount
 		);
+		console.log(
+			`Role ${role}: drafted ${blueRolePicks.length + redRolePicks.length}/${CHAMPIONS_PER_ROLE_PER_MATCH}`
+		);
+		blueTeam.push(...blueRolePicks);
+		redTeam.push(...redRolePicks);
 	}
 
-	for (const role of Object.keys(config.CHAMPION_ROLES)) {
-		selectFromRole(
-			redTeam,
-			role,
-			usedChampions,
-			selectedChampions,
-			availableChampionsByRole,
-			config
-		);
-	}
-
-	if (usedChampions.getTotal().size >= Object.keys(championService.getChampions()).length) {
-		console.log(`Reset total and all roles`);
+	const allRolePoolsExhausted = Object.keys(config.CHAMPION_ROLES).every(
+		(role) => usedChampions.getRole(role).size >= config.CHAMPION_ROLES[role].length
+	);
+	if (allRolePoolsExhausted) {
+		console.log(`Reset all role pools`);
 		usedChampions.reset();
 	}
+	console.log(
+		`[POOL][match-end] ${Object.keys(config.CHAMPION_ROLES)
+			.map((role) => {
+				const total = config.CHAMPION_ROLES[role].length;
+				const used = usedChampions.getRole(role).size;
+				const remaining = Math.max(0, total - used);
+				return `${role}:${remaining}/${total}`;
+			})
+			.join(" | ")}`
+	);
 
 	verifyUniqueTeams(blueTeam, redTeam);
 	return { blueTeam, redTeam };
@@ -230,4 +341,3 @@ export const verifyUniqueTeams = (teamA: string[], teamB: string[]): boolean => 
 	}
 	return true;
 };
-

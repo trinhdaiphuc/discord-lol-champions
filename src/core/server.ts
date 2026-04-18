@@ -62,7 +62,7 @@ export function createServer(port: number | string = 3000) {
 					const imageBuffer = await imageService.generateTeamImage(blueTeam, redTeam);
 
 					return new Response(imageBuffer, {
-						headers: { "Content-Type": "image/png" },
+						headers: { "Content-Type": "image/jpeg" },
 					});
 				} catch (error) {
 					console.error("Error generating champion image:", error);
@@ -78,7 +78,7 @@ export function createServer(port: number | string = 3000) {
 					const imageBuffer = await imageService.generateTeamImage(blueTeam, redTeam);
 
 					return new Response(imageBuffer, {
-						headers: { "Content-Type": "image/png" },
+						headers: { "Content-Type": "image/jpeg" },
 					});
 				} catch (error) {
 					console.error("Error generating champion image:", error);

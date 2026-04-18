@@ -3,6 +3,12 @@ import { readFile } from "fs/promises";
 import { join } from "path";
 import * as championService from "./championService.ts";
 
+const TEAM_CANVAS_WIDTH = 900;
+const TEAM_COLS = 4;
+const TEAM_CARD_SIZE = 128;
+const TEAM_CARD_SPACING_X = 200;
+const TEAM_CARD_SPACING_Y = 195;
+
 const imageCache = new Map<string, Buffer>();
 const imagesDir = join(import.meta.dir, "..", "..", "images");
 
@@ -54,53 +60,97 @@ function drawPlaceholder(
 	drawRoundedRect(ctx, x, y, size, size, 15);
 	ctx.clip();
 
-	ctx.fillStyle = "#2d3748"; // Dark gray
+	ctx.fillStyle = "#111827";
 	ctx.fillRect(x, y, size, size);
 
-	ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
+	ctx.strokeStyle = "rgba(148, 163, 184, 0.6)";
 	ctx.lineWidth = 2;
 	ctx.stroke();
 
-	ctx.fillStyle = "#e2e8f0";
-	ctx.font = "bold 40px Arial";
+	ctx.fillStyle = "#cbd5e1";
+	ctx.font = "bold 36px sans-serif";
 	ctx.textAlign = "center";
 	ctx.textBaseline = "middle";
 	ctx.fillText("?", x + size / 2, y + size / 2);
 	ctx.restore();
 }
 
+function drawPanelBackground(
+	ctx: CanvasRenderingContext2D,
+	canvasWidth: number,
+	canvasHeight: number,
+	isBlueTeam: boolean
+): void {
+	const panelGradient = ctx.createLinearGradient(0, 0, canvasWidth, canvasHeight);
+	if (isBlueTeam) {
+		panelGradient.addColorStop(0, "rgba(15, 23, 42, 0.92)");
+		panelGradient.addColorStop(1, "rgba(30, 58, 138, 0.78)");
+	} else {
+		panelGradient.addColorStop(0, "rgba(24, 24, 27, 0.92)");
+		panelGradient.addColorStop(1, "rgba(153, 27, 27, 0.78)");
+	}
+
+	drawRoundedRect(ctx, 10, 10, canvasWidth - 20, canvasHeight - 20, 28);
+	ctx.fillStyle = panelGradient;
+	ctx.fill();
+
+	ctx.save();
+	drawRoundedRect(ctx, 10, 10, canvasWidth - 20, canvasHeight - 20, 28);
+	ctx.clip();
+	ctx.strokeStyle = isBlueTeam ? "rgba(56, 189, 248, 0.2)" : "rgba(251, 113, 133, 0.2)";
+	ctx.lineWidth = 1;
+	for (let x = 20; x < canvasWidth; x += 36) {
+		ctx.beginPath();
+		ctx.moveTo(x, 0);
+		ctx.lineTo(x, canvasHeight);
+		ctx.stroke();
+	}
+	for (let y = 20; y < canvasHeight; y += 30) {
+		ctx.beginPath();
+		ctx.moveTo(0, y);
+		ctx.lineTo(canvasWidth, y);
+		ctx.stroke();
+	}
+	ctx.restore();
+
+	ctx.strokeStyle = isBlueTeam ? "rgba(56, 189, 248, 0.8)" : "rgba(251, 113, 133, 0.8)";
+	ctx.lineWidth = 2.5;
+	drawRoundedRect(ctx, 10, 10, canvasWidth - 20, canvasHeight - 20, 28);
+	ctx.stroke();
+}
+
 async function drawTeamOnCanvas(
 	team: string[],
 	teamName: string,
-	_isBlueTeam: boolean
+	isBlueTeam: boolean
 ): Promise<Canvas> {
 	try {
 		const championsData = championService.getChampions();
-		const canvasWidth = 850;
+		const canvasWidth = TEAM_CANVAS_WIDTH;
 
-		const colsPerRow = 3;
+		const colsPerRow = TEAM_COLS;
 		const rows = Math.ceil(team.length / colsPerRow);
 		const startY = 120;
-		const spacingY = 265;
-		const minHeight = 850;
-		const calculatedHeight = startY + (rows > 0 ? (rows - 1) * spacingY : 0) + 280;
+		const minHeight = 900;
+		const calculatedHeight = startY + (rows > 0 ? (rows - 1) * TEAM_CARD_SPACING_Y : 0) + 250;
 		const canvasHeight = Math.max(minHeight, calculatedHeight);
 
 		const canvas = createCanvas(canvasWidth, canvasHeight);
 		const ctx = canvas.getContext("2d");
+		drawPanelBackground(ctx, canvasWidth, canvasHeight, isBlueTeam);
 
 		// Team Name
-		ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
-		ctx.shadowBlur = 15;
-		ctx.fillStyle = "#FFFFFF";
-		ctx.font = "bold 40px Arial";
+		ctx.shadowColor = isBlueTeam ? "rgba(56, 189, 248, 0.45)" : "rgba(251, 113, 133, 0.45)";
+		ctx.shadowBlur = 18;
+		ctx.fillStyle = "#f8fafc";
+		ctx.font = "bold 42px sans-serif";
 		ctx.textAlign = "center";
 		ctx.fillText(teamName, canvasWidth / 2, 60);
 		ctx.shadowBlur = 0;
 
-		const champSize = 160;
-		const startX = 60;
-		const spacingX = 270;
+		const champSize = TEAM_CARD_SIZE;
+		const startX = 66;
+		const spacingX = TEAM_CARD_SPACING_X;
 
 		for (let i = 0; i < team.length; i++) {
 			const championId = team[i];
@@ -111,25 +161,25 @@ async function drawTeamOnCanvas(
 			const colIndex = i % colsPerRow;
 
 			const x = startX + colIndex * spacingX;
-			const y = startY + rowIndex * spacingY;
+			const y = startY + rowIndex * TEAM_CARD_SPACING_Y;
 
 			// --- Card Background (Glass) ---
 			ctx.save();
-			const cardPaddingX = 30;
-			const cardPaddingTop = 25;
-			const cardPaddingBottom = 45;
+			const cardPaddingX = 20;
+			const cardPaddingTop = 18;
+			const cardPaddingBottom = 35;
 			const cardWidth = champSize + cardPaddingX * 2;
 			const cardHeight = champSize + cardPaddingTop + cardPaddingBottom;
 
 			const cardX = x - cardPaddingX;
 			const cardY = y - cardPaddingTop;
-			const cardRadius = 25;
+			const cardRadius = 20;
 
 			// Drop Shadow
-			ctx.shadowColor = "rgba(20, 30, 50, 0.8)";
-			ctx.shadowBlur = 35;
-			ctx.shadowOffsetY = 22;
-			ctx.shadowOffsetX = 5;
+			ctx.shadowColor = "rgba(2, 6, 23, 0.8)";
+			ctx.shadowBlur = 24;
+			ctx.shadowOffsetY = 16;
+			ctx.shadowOffsetX = 4;
 
 			// Glass Gradient Fill
 			const cardGradient = ctx.createLinearGradient(
@@ -138,10 +188,9 @@ async function drawTeamOnCanvas(
 				cardX + cardWidth,
 				cardY + cardHeight
 			);
-			cardGradient.addColorStop(0, "rgba(255, 255, 255, 0.35)");
-			cardGradient.addColorStop(0.3, "rgba(255, 255, 255, 0.20)");
-			cardGradient.addColorStop(0.7, "rgba(255, 255, 255, 0.12)");
-			cardGradient.addColorStop(1, "rgba(255, 255, 255, 0.08)");
+			cardGradient.addColorStop(0, "rgba(255, 255, 255, 0.28)");
+			cardGradient.addColorStop(0.4, "rgba(255, 255, 255, 0.13)");
+			cardGradient.addColorStop(1, "rgba(148, 163, 184, 0.08)");
 
 			drawRoundedRect(ctx, cardX, cardY, cardWidth, cardHeight, cardRadius);
 			ctx.fillStyle = cardGradient;
@@ -160,12 +209,12 @@ async function drawTeamOnCanvas(
 				cardX + cardWidth,
 				cardY + cardHeight
 			);
-			borderGradient.addColorStop(0, "rgba(255, 255, 255, 1.0)");
-			borderGradient.addColorStop(0.4, "rgba(255, 255, 255, 0.5)");
-			borderGradient.addColorStop(1, "rgba(255, 255, 255, 0.1)");
+			borderGradient.addColorStop(0, "rgba(255, 255, 255, 0.9)");
+			borderGradient.addColorStop(0.6, "rgba(255, 255, 255, 0.28)");
+			borderGradient.addColorStop(1, "rgba(255, 255, 255, 0.08)");
 
 			ctx.strokeStyle = borderGradient;
-			ctx.lineWidth = 1.5;
+			ctx.lineWidth = 1.25;
 			ctx.stroke();
 
 			// Inner Gloss
@@ -205,8 +254,8 @@ async function drawTeamOnCanvas(
 					// Image Border
 					ctx.save();
 					drawRoundedRect(ctx, x, y, champSize, champSize, 20);
-					ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
-					ctx.lineWidth = 2;
+					ctx.strokeStyle = isBlueTeam ? "rgba(56, 189, 248, 0.55)" : "rgba(251, 113, 133, 0.55)";
+					ctx.lineWidth = 1.75;
 					ctx.stroke();
 					ctx.restore();
 				} else {
@@ -216,18 +265,18 @@ async function drawTeamOnCanvas(
 				// Champion Name
 				ctx.textAlign = "center";
 				ctx.textBaseline = "middle";
-				ctx.fillStyle = "#f0e6d2";
-				ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
+				ctx.fillStyle = "#f8fafc";
+				ctx.shadowColor = "rgba(15, 23, 42, 0.95)";
 				ctx.shadowBlur = 4;
 
-				let fontSize = 24;
-				ctx.font = `bold ${fontSize}px Arial`;
+				let fontSize = 20;
+				ctx.font = `bold ${fontSize}px sans-serif`;
 				while (ctx.measureText(championName).width > cardWidth - 20 && fontSize > 14) {
 					fontSize -= 1;
-					ctx.font = `bold ${fontSize}px Arial`;
+					ctx.font = `bold ${fontSize}px sans-serif`;
 				}
 
-				const textAreaHeight = 45;
+				const textAreaHeight = 35;
 				const textY = y + champSize + textAreaHeight / 2;
 				ctx.fillText(championName, x + champSize / 2, textY);
 				ctx.shadowBlur = 0;
@@ -265,16 +314,16 @@ export async function generateTeamImage(blueTeam: string[], redTeam: string[]): 
 		console.log("📐 Combining...");
 
 		const combinedHeight = Math.max(blueCanvas.height, redCanvas.height) + 20;
-		const combinedCanvas = createCanvas(1900, combinedHeight);
+		const combinedCanvas = createCanvas(1960, combinedHeight);
 		const ctx = combinedCanvas.getContext("2d");
 
 		// Background gradient
 		const gradient = ctx.createLinearGradient(0, 0, combinedCanvas.width, 0);
-		gradient.addColorStop(0, "#3A4F7A");
-		gradient.addColorStop(0.48, "#3A4F7A");
-		gradient.addColorStop(0.5, "#E0E0E0");
-		gradient.addColorStop(0.52, "#7A3A3A");
-		gradient.addColorStop(1, "#7A3A3A");
+		gradient.addColorStop(0, "#0f172a");
+		gradient.addColorStop(0.46, "#1d4ed8");
+		gradient.addColorStop(0.5, "#e2e8f0");
+		gradient.addColorStop(0.54, "#b91c1c");
+		gradient.addColorStop(1, "#18181b");
 
 		ctx.fillStyle = gradient;
 		ctx.fillRect(0, 0, combinedCanvas.width, combinedCanvas.height);
@@ -331,7 +380,7 @@ export async function generateTeamImage(blueTeam: string[], redTeam: string[]): 
 		ctx.fillRect(combinedCanvas.width / 2 - 50, 0, 100, combinedCanvas.height);
 
 		// Border
-		ctx.strokeStyle = "#c8aa6e";
+		ctx.strokeStyle = "#fbbf24";
 		ctx.lineWidth = 4;
 		ctx.strokeRect(0, 0, combinedCanvas.width, combinedCanvas.height);
 
@@ -345,7 +394,7 @@ export async function generateTeamImage(blueTeam: string[], redTeam: string[]): 
 
 		// VS Text
 		ctx.fillStyle = "#FFFFFF";
-		ctx.font = "bold 60px Arial";
+		ctx.font = "bold 64px sans-serif";
 		ctx.textAlign = "center";
 		ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
 		ctx.shadowBlur = 20;

@@ -1,5 +1,32 @@
 {
-    "DRAGON_VERSION": "16.2.1",
+    "FALLBACK_ROLES": {
+        "Fighter": [
+            "Tank",
+            "Assassin"
+        ],
+        "Mage": [
+            "Support",
+            "Assassin"
+        ],
+        "Tank": [
+            "Fighter",
+            "Support"
+        ],
+        "Marksman": [
+            "Assassin",
+            "Mage"
+        ],
+        "Assassin": [
+            "Fighter",
+            "Marksman",
+            "Mage"
+        ],
+        "Support": [
+            "Mage",
+            "Tank"
+        ]
+    },
+    "DRAGON_VERSION": "16.8.1",
     "CHAMPION_ROLES": {
         "Fighter": [
             "Aatrox",
@@ -195,33 +222,6 @@
             "Thresh",
             "Yuumi",
             "Zilean"
-        ]
-    },
-    "FALLBACK_ROLES": {
-        "Fighter": [
-            "Tank",
-            "Assassin"
-        ],
-        "Mage": [
-            "Support",
-            "Assassin"
-        ],
-        "Tank": [
-            "Fighter",
-            "Support"
-        ],
-        "Marksman": [
-            "Assassin",
-            "Mage"
-        ],
-        "Assassin": [
-            "Fighter",
-            "Marksman",
-            "Mage"
-        ],
-        "Support": [
-            "Mage",
-            "Tank"
         ]
     }
 }
