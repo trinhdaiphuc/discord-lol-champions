@@ -57,11 +57,11 @@ function getTeamLayoutProfile(colsPerRow: number): TeamLayoutProfile {
 		return {
 			sidePadding: 10,
 			cardGap: 42,
-			rowGap: 14,
-			startY: 82,
-			bottomPadding: 56,
-			minChampionSize: 116,
-			maxChampionSize: 184,
+			rowGap: 24,
+			startY: 96,
+			bottomPadding: 72,
+			minChampionSize: 108,
+			maxChampionSize: 170,
 		};
 	}
 
@@ -69,11 +69,11 @@ function getTeamLayoutProfile(colsPerRow: number): TeamLayoutProfile {
 		return {
 			sidePadding: 14,
 			cardGap: 34,
-			rowGap: 14,
-			startY: 84,
-			bottomPadding: 60,
-			minChampionSize: 102,
-			maxChampionSize: 152,
+			rowGap: 22,
+			startY: 96,
+			bottomPadding: 72,
+			minChampionSize: 96,
+			maxChampionSize: 142,
 		};
 	}
 
@@ -93,8 +93,8 @@ function getTeamLayoutProfile(colsPerRow: number): TeamLayoutProfile {
 		sidePadding: 38,
 		cardGap: 12,
 		rowGap: 18,
-		startY: 88,
-		bottomPadding: 64,
+		startY: 92,
+		bottomPadding: 68,
 		minChampionSize: 84,
 		maxChampionSize: 110,
 	};
