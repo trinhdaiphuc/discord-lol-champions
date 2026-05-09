@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, beforeAll } from "bun:test";
+import { describe, test, expect, beforeEach, beforeAll, afterAll } from "bun:test";
 import {
 	clearGuildTeamCache,
 	generateTeams,
@@ -7,9 +7,11 @@ import {
 } from "./teamService.ts";
 import { getGuildGenerateConfig, setGuildGenerateConfig } from "./channelConfigService.ts";
 import * as championService from "./championService.ts";
+import { createServer } from "../core/server.ts";
 import {
 	analyzeGeneratedTeams,
 	createCompositionSignature,
+	getRoleOnlyAnalysisNotice,
 } from "./synergyAnalysisService.ts";
 import {
 	findCompAnalysisBySignature,
@@ -18,6 +20,12 @@ import {
 } from "./compAnalysisHistoryService.ts";
 
 const TEST_GUILD_ID = "test-guild-12345";
+const apiServer = createServer(0);
+const apiBaseUrl = `http://127.0.0.1:${apiServer.port}`;
+
+afterAll(() => {
+	apiServer.stop(true);
+});
 
 describe("generateTeams", () => {
 	beforeAll(async () => {
@@ -265,6 +273,60 @@ describe("generateTeams", () => {
 		expect(result.metadata.redRolePools.Support).toHaveLength(3);
 		expect(result.metadata.blueRolePools.Fighter).toHaveLength(0);
 		expect(result.metadata.redRolePools.Mage).toHaveLength(0);
+	});
+});
+
+describe("generation API integration", () => {
+	test("should return JSON analysis metadata and persist history for full generation", async () => {
+		const guildId = `${TEST_GUILD_ID}-api-json-${Date.now()}`;
+		await setGuildGenerateConfig(guildId, { poolSize: 3, historyWindow: 0 });
+
+		const response = await fetch(`${apiBaseUrl}/gen-champions/${guildId}?view=json`);
+		const payload = (await response.json()) as {
+			blueTeam: string[];
+			redTeam: string[];
+			analysis: { summaryText: string; blue: { scores: Record<string, unknown> } };
+		};
+		const recentHistory = await getRecentCompAnalysisHistory(guildId, 5);
+
+		expect(response.status).toBe(200);
+		expect(payload.blueTeam.length).toBe(18);
+		expect(payload.redTeam.length).toBe(18);
+		expect(payload.analysis.summaryText).toContain("BLUE:");
+		expect(payload.analysis.summaryText).toContain("RED:");
+		expect(payload.analysis.blue.scores.engage).toBeDefined();
+		expect(recentHistory.length).toBeGreaterThan(0);
+	});
+
+	test("should keep the default full-generation API contract as image/jpeg", async () => {
+		const guildId = `${TEST_GUILD_ID}-api-image-${Date.now()}`;
+		await setGuildGenerateConfig(guildId, { poolSize: 3, historyWindow: 0 });
+
+		const response = await fetch(`${apiBaseUrl}/gen-champions/${guildId}`);
+
+		expect(response.status).toBe(200);
+		expect(response.headers.get("content-type")).toBe("image/jpeg");
+	});
+
+	test("should make role-only API behavior explicit instead of returning a full scorecard", async () => {
+		const guildId = `${TEST_GUILD_ID}-api-role-${Date.now()}`;
+		await setGuildGenerateConfig(guildId, { poolSize: 3 });
+
+		const response = await fetch(
+			`${apiBaseUrl}/gen-champions/role/Support?guildId=${guildId}&view=json`
+		);
+		const payload = (await response.json()) as {
+			role: string;
+			analysisNotice: string;
+			blueTeam: string[];
+			redTeam: string[];
+		};
+
+		expect(response.status).toBe(200);
+		expect(payload.role).toBe("Support");
+		expect(payload.blueTeam.length).toBe(3);
+		expect(payload.redTeam.length).toBe(3);
+		expect(payload.analysisNotice).toBe(getRoleOnlyAnalysisNotice("Support", 3));
 	});
 });
 

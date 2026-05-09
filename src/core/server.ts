@@ -6,6 +6,8 @@ import {
 	reloadGuildGenerateConfig,
 	setGuildGenerateConfig,
 } from "../services/channelConfigService.ts";
+import { analyzeAndStoreGeneratedTeams } from "../services/compAnalysisHistoryService.ts";
+import { getRoleOnlyAnalysisNotice } from "../services/synergyAnalysisService.ts";
 import {
 	getThemeById,
 	getThemeDisplayName,
@@ -26,6 +28,38 @@ interface GuildConfigBody {
 	poolSize?: number;
 	historyWindow?: number;
 	themeId?: string;
+}
+
+function wantsJsonResponse(req: Request): boolean {
+	const url = new URL(req.url);
+	return url.searchParams.get("view") === "json";
+}
+
+export function buildGenerationJsonResponse(params: {
+	guildId: string;
+	themeId: string;
+	themeName: string;
+	configuredThemeName: string;
+	teamResult: Awaited<ReturnType<typeof teamService.generateTeams>>;
+	analysisSummary: Awaited<ReturnType<typeof analyzeAndStoreGeneratedTeams>>["analysis"];
+}) {
+	return {
+		guildId: params.guildId,
+		mode: params.teamResult.metadata.mode,
+		poolSize: params.teamResult.metadata.poolSize,
+		theme: {
+			id: params.themeId,
+			name: params.configuredThemeName,
+			resolvedName: params.themeName,
+		},
+		blueTeam: params.teamResult.blueTeam,
+		redTeam: params.teamResult.redTeam,
+		analysis: {
+			blue: params.analysisSummary.blue,
+			red: params.analysisSummary.red,
+			summaryText: params.analysisSummary.summaryText,
+		},
+	};
 }
 
 export function createServer(port: number | string = 3000) {
@@ -84,12 +118,29 @@ export function createServer(port: number | string = 3000) {
 					const roleName = req.params.roleName;
 					const guildConfig = await getGuildGenerateConfig(guildId);
 					const theme = await resolveThemeForGenerate(guildConfig.themeId);
-					const { blueTeam, redTeam } = await teamService.generateTeamsByRole(roleName, {
+					const configuredThemeName = await getThemeDisplayName(guildConfig.themeId);
+					const teamResult = await teamService.generateTeamsByRole(roleName, {
 						poolSize: guildConfig.poolSize,
 					});
+					if (wantsJsonResponse(req)) {
+						return Response.json({
+							guildId,
+							mode: teamResult.metadata.mode,
+							poolSize: teamResult.metadata.poolSize,
+							role: roleName,
+							theme: {
+								id: guildConfig.themeId,
+								name: configuredThemeName,
+								resolvedName: theme.name,
+							},
+							blueTeam: teamResult.blueTeam,
+							redTeam: teamResult.redTeam,
+							analysisNotice: getRoleOnlyAnalysisNotice(roleName, guildConfig.poolSize),
+						});
+					}
 					const imageBuffer = await imageService.generateTeamImage(
-						blueTeam,
-						redTeam,
+						teamResult.blueTeam,
+						teamResult.redTeam,
 						theme,
 						guildConfig.poolSize
 					);
@@ -109,13 +160,27 @@ export function createServer(port: number | string = 3000) {
 					const guildId = req.params.guildId;
 					const guildConfig = await getGuildGenerateConfig(guildId);
 					const theme = await resolveThemeForGenerate(guildConfig.themeId);
-					const { blueTeam, redTeam } = await teamService.generateTeams(guildId, {
+					const configuredThemeName = await getThemeDisplayName(guildConfig.themeId);
+					const teamResult = await teamService.generateTeams(guildId, {
 						poolSize: guildConfig.poolSize,
 						historyWindow: guildConfig.historyWindow,
 					});
+					const { analysis } = await analyzeAndStoreGeneratedTeams(guildId, teamResult);
+					if (wantsJsonResponse(req)) {
+						return Response.json(
+							buildGenerationJsonResponse({
+								guildId,
+								themeId: guildConfig.themeId,
+								themeName: theme.name,
+								configuredThemeName,
+								teamResult,
+								analysisSummary: analysis,
+							})
+						);
+					}
 					const imageBuffer = await imageService.generateTeamImage(
-						blueTeam,
-						redTeam,
+						teamResult.blueTeam,
+						teamResult.redTeam,
 						theme,
 						guildConfig.poolSize
 					);

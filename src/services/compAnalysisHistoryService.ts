@@ -1,12 +1,15 @@
 import { Database } from "bun:sqlite";
 import { mkdir } from "fs/promises";
 import { join } from "path";
+import { CHANNEL_CONFIG_DB_PATH } from "./channelConfigService.ts";
 import {
-	CHANNEL_CONFIG_DB_PATH,
-} from "./channelConfigService.ts";
+	analyzeGeneratedTeams,
+	createCompositionSignature,
+} from "./synergyAnalysisService.ts";
 import type {
 	PersistCompAnalysisInput,
 	PersistedCompAnalysisRecord,
+	TeamResult,
 	TeamSynergyAnalysis,
 } from "../types/index.ts";
 
@@ -216,4 +219,24 @@ export async function findCompAnalysisBySignature(
 		.get(guildId, compositionSignature) as CompAnalysisRow | null;
 
 	return row ? mapRow(row) : null;
+}
+
+export async function analyzeAndStoreGeneratedTeams(guildId: string, teamResult: TeamResult): Promise<{
+	analysis: Awaited<ReturnType<typeof analyzeGeneratedTeams>>;
+	record: PersistedCompAnalysisRecord;
+}> {
+	const analysis = await analyzeGeneratedTeams(teamResult);
+	const record = await saveCompAnalysisHistory({
+		guildId,
+		generationMode: teamResult.metadata.mode,
+		poolSize: teamResult.metadata.poolSize,
+		blueTeam: teamResult.blueTeam,
+		redTeam: teamResult.redTeam,
+		blueAnalysis: analysis.blue,
+		redAnalysis: analysis.red,
+		summaryText: analysis.summaryText,
+		compositionSignature: createCompositionSignature(teamResult),
+	});
+
+	return { analysis, record };
 }

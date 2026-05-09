@@ -6,6 +6,7 @@ import {
 import * as teamService from "../services/teamService.ts";
 import * as imageService from "../services/imageService.ts";
 import { getGuildGenerateConfig } from "../services/channelConfigService.ts";
+import { analyzeAndStoreGeneratedTeams } from "../services/compAnalysisHistoryService.ts";
 import { getThemeDisplayName, resolveThemeForGenerate } from "../services/themeService.ts";
 import * as championNameService from "../services/championNameService.ts";
 import type { BotCommand } from "../types/index.ts";
@@ -49,28 +50,32 @@ const command: BotCommand = {
 				}
 			}
 
-			let teams;
+			let teamResult;
 			if (exclusions.length > 0) {
-				teams = await teamService.generateTeamsWithExclusions(guildId, exclusions, {
+				teamResult = await teamService.generateTeamsWithExclusions(guildId, exclusions, {
 					poolSize: guildConfig.poolSize,
 					historyWindow: guildConfig.historyWindow,
 				});
 			} else {
-				teams = await teamService.generateTeams(guildId, {
+				teamResult = await teamService.generateTeams(guildId, {
 					poolSize: guildConfig.poolSize,
 					historyWindow: guildConfig.historyWindow,
 				});
 			}
+			const { analysis } = await analyzeAndStoreGeneratedTeams(guildId, teamResult);
 
 			const imageBuffer = await imageService.generateTeamImage(
-				teams.blueTeam,
-				teams.redTeam,
+				teamResult.blueTeam,
+				teamResult.redTeam,
 				theme,
 				guildConfig.poolSize
 			);
 			const attachment = new AttachmentBuilder(imageBuffer, { name: "team.jpg" });
 
-			let content = `⚔️ ARAM Teams (6 roles × ${guildConfig.poolSize} champions) • Theme: ${configuredThemeName} • Using: ${theme.name}`;
+			let content = [
+				`⚔️ ARAM Teams (6 roles × ${guildConfig.poolSize} champions) • Theme: ${configuredThemeName} • Using: ${theme.name}`,
+				analysis.summaryText,
+			].join("\n");
 			if (exclusions.length > 0) {
 				content += `\n🔕 Excluded: ${exclusions.join(", ")}`;
 			}

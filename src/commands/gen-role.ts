@@ -6,6 +6,7 @@ import {
 import * as teamService from "../services/teamService.ts";
 import * as imageService from "../services/imageService.ts";
 import { getGuildGenerateConfig } from "../services/channelConfigService.ts";
+import { getRoleOnlyAnalysisNotice } from "../services/synergyAnalysisService.ts";
 import { getThemeDisplayName, resolveThemeForGenerate } from "../services/themeService.ts";
 import type { BotCommand } from "../types/index.ts";
 
@@ -40,12 +41,12 @@ const command: BotCommand = {
 			const theme = await resolveThemeForGenerate(guildConfig.themeId);
 			const configuredThemeName = await getThemeDisplayName(guildConfig.themeId);
 
-			const { blueTeam, redTeam } = await teamService.generateTeamsByRole(role!, {
+			const teamResult = await teamService.generateTeamsByRole(role!, {
 				poolSize: guildConfig.poolSize,
 			});
 			const imageBuffer = await imageService.generateTeamImage(
-				blueTeam,
-				redTeam,
+				teamResult.blueTeam,
+				teamResult.redTeam,
 				theme,
 				guildConfig.poolSize
 			);
@@ -53,7 +54,10 @@ const command: BotCommand = {
 
 			await interaction.editReply({
 				files: [attachment],
-				content: `⚔️ Teams for role: ${role} (${guildConfig.poolSize} per side) • Theme: ${configuredThemeName} • Using: ${theme.name}`,
+				content: [
+					`⚔️ Teams for role: ${role} (${guildConfig.poolSize} per side) • Theme: ${configuredThemeName} • Using: ${theme.name}`,
+					getRoleOnlyAnalysisNotice(role!, guildConfig.poolSize),
+				].join("\n"),
 			});
 		} catch (error) {
 			console.error("❌ Bot error:", error);

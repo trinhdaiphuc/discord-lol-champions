@@ -354,6 +354,10 @@ export function formatCompactSummary(blue: TeamSynergyAnalysis, red: TeamSynergy
 	);
 }
 
+export function getRoleOnlyAnalysisNotice(role: string, poolSize: number): string {
+	return `Role-only pool for ${role} (${poolSize} per side). Full synergy scorecard skipped because this command does not cover all six roles.`;
+}
+
 export function createCompositionSignature(teamResult: TeamResult): string {
 	const normalizedSide = (team: string[], rolePools: TeamGenerationMetadata["blueRolePools"]) =>
 		(

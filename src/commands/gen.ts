@@ -6,6 +6,7 @@ import {
 import * as teamService from "../services/teamService.ts";
 import * as imageService from "../services/imageService.ts";
 import { getGuildGenerateConfig } from "../services/channelConfigService.ts";
+import { analyzeAndStoreGeneratedTeams } from "../services/compAnalysisHistoryService.ts";
 import { getThemeDisplayName, resolveThemeForGenerate } from "../services/themeService.ts";
 import type { BotCommand } from "../types/index.ts";
 
@@ -25,13 +26,14 @@ const command: BotCommand = {
 			const theme = await resolveThemeForGenerate(guildConfig.themeId);
 			const configuredThemeName = await getThemeDisplayName(guildConfig.themeId);
 
-			const { blueTeam, redTeam } = await teamService.generateTeams(guildId, {
+			const teamResult = await teamService.generateTeams(guildId, {
 				poolSize: guildConfig.poolSize,
 				historyWindow: guildConfig.historyWindow,
 			});
+			const { analysis } = await analyzeAndStoreGeneratedTeams(guildId, teamResult);
 			const imageBuffer = await imageService.generateTeamImage(
-				blueTeam,
-				redTeam,
+				teamResult.blueTeam,
+				teamResult.redTeam,
 				theme,
 				guildConfig.poolSize
 			);
@@ -39,7 +41,10 @@ const command: BotCommand = {
 
 			await interaction.editReply({
 				files: [attachment],
-				content: `⚔️ ARAM Teams (6 roles × ${guildConfig.poolSize} champions) • Theme: ${configuredThemeName} • Using: ${theme.name}`,
+				content: [
+					`⚔️ ARAM Teams (6 roles × ${guildConfig.poolSize} champions) • Theme: ${configuredThemeName} • Using: ${theme.name}`,
+					analysis.summaryText,
+				].join("\n"),
 			});
 		} catch (error) {
 			console.error(`❌ Bot error for ${interaction.guildId}:`, error);
