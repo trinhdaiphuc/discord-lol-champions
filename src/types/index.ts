@@ -11,6 +11,34 @@ export interface Champion {
 	id: string;
 	name: string;
 	title: string;
+	info: {
+		attack: number;
+		defense: number;
+		magic: number;
+		difficulty: number;
+	};
+	stats: {
+		hp: number;
+		hpperlevel: number;
+		mp: number;
+		mpperlevel: number;
+		movespeed: number;
+		armor: number;
+		armorperlevel: number;
+		spellblock: number;
+		spellblockperlevel: number;
+		attackrange: number;
+		hpregen: number;
+		hpregenperlevel: number;
+		mpregen: number;
+		mpregenperlevel: number;
+		crit: number;
+		critperlevel: number;
+		attackdamage: number;
+		attackdamageperlevel: number;
+		attackspeedperlevel: number;
+		attackspeed: number;
+	};
 	image: {
 		full: string;
 		sprite: string;
@@ -94,10 +122,12 @@ export interface TeamSynergyAnalysis {
 	takeaway: string;
 }
 
+export type GenerationMode = "full" | "full-with-exclusions" | "role-only";
+
 export interface PersistedCompAnalysisRecord {
 	id: number;
 	guildId: string;
-	generationMode: "full" | "full-with-exclusions" | "role-only";
+	generationMode: GenerationMode;
 	poolSize: number;
 	blueTeam: string[];
 	redTeam: string[];
@@ -106,6 +136,18 @@ export interface PersistedCompAnalysisRecord {
 	summaryText: string;
 	compositionSignature: string;
 	createdAt: number;
+}
+
+export interface PersistCompAnalysisInput {
+	guildId: string;
+	generationMode: GenerationMode;
+	poolSize: number;
+	blueTeam: string[];
+	redTeam: string[];
+	blueAnalysis: TeamSynergyAnalysis;
+	redAnalysis: TeamSynergyAnalysis;
+	summaryText: string;
+	compositionSignature: string;
 }
 
 export interface TeamSideRolePools {
@@ -118,7 +160,7 @@ export interface TeamSideRolePools {
 }
 
 export interface TeamGenerationMetadata {
-	mode: "full" | "full-with-exclusions" | "role-only";
+	mode: GenerationMode;
 	poolSize: 3 | 4 | 5 | 6;
 	roleOrder: ChampionRoleKey[];
 	blueRolePools: TeamSideRolePools;
