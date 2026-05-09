@@ -9,6 +9,27 @@ import { readConfig } from "./core/config.ts";
 import * as championService from "./services/championService.ts";
 import type { BotCommand, BotEvent, ExtendedClient } from "./types/index.ts";
 
+async function registerApplicationCommands(client: ExtendedClient): Promise<void> {
+	const botToken = process.env.BOT_TOKEN;
+	const clientId = process.env.CLIENT_ID;
+
+	if (!botToken) {
+		throw new Error("BOT_TOKEN is required to register application commands.");
+	}
+
+	if (!clientId) {
+		throw new Error("CLIENT_ID is required to register application commands.");
+	}
+
+	const rest = new REST({ version: "9" }).setToken(botToken);
+
+	console.log("Started refreshing application (/) commands.");
+	await rest.put(Routes.applicationCommands(clientId), {
+		body: client.commands.map((command) => command.data.toJSON()),
+	});
+	console.log("Successfully reloaded application (/) commands.");
+}
+
 async function main(): Promise<void> {
 	// Load config and champions
 	await readConfig();
@@ -49,18 +70,8 @@ async function main(): Promise<void> {
 	}
 	console.log(`✅ Loaded ${eventFiles.length} events.`);
 
-	// Command registration
+	await registerApplicationCommands(client);
 	if (process.argv.includes("--register-commands")) {
-		const rest = new REST({ version: "9" }).setToken(process.env.BOT_TOKEN!);
-		try {
-			console.log("Started refreshing application (/) commands.");
-			await rest.put(Routes.applicationCommands(process.env.CLIENT_ID!), {
-				body: client.commands.map((c) => c.data.toJSON()),
-			});
-			console.log("Successfully reloaded application (/) commands.");
-		} catch (error) {
-			console.error(error);
-		}
 		return;
 	}
 

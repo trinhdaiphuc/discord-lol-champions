@@ -1,5 +1,6 @@
-import { readConfig } from "../core/config.ts";
+import NodeCache from "node-cache";
 import { randomInt } from "crypto";
+import { getChampionCacheTtlSeconds, readConfig } from "../core/config.ts";
 import type { Config, TeamResult, RandomTeamResult } from "../types/index.ts";
 
 const DEFAULT_CHAMPIONS_PER_ROLE_PER_TEAM = 4;
@@ -39,13 +40,28 @@ class UsedChampions {
 	}
 }
 
-const cache = new Map<string, UsedChampions>();
+const cache = new NodeCache({
+	stdTTL: getChampionCacheTtlSeconds(),
+	useClones: false,
+});
 
 function getCache(guildId: string): UsedChampions {
-	if (!cache.has(guildId)) {
-		cache.set(guildId, new UsedChampions());
+	const cachedValue = cache.get(guildId) as UsedChampions | undefined;
+	if (cachedValue) {
+		return cachedValue;
 	}
-	return cache.get(guildId)!;
+
+	const usedChampions = new UsedChampions();
+	cache.set(guildId, usedChampions);
+	return usedChampions;
+}
+
+function refreshGuildCacheTtl(guildId: string, usedChampions: UsedChampions): void {
+	cache.set(guildId, usedChampions, getChampionCacheTtlSeconds());
+}
+
+export function clearGuildTeamCache(guildId: string): boolean {
+	return cache.del(guildId) > 0;
 }
 
 const shuffle = <T>(arr: T[]): T[] => {
@@ -282,6 +298,7 @@ export async function generateTeams(
 		console.log(`Reset all role pools`);
 		usedChampions.reset();
 	}
+	refreshGuildCacheTtl(guildId, usedChampions);
 	console.log(
 		`[POOL][match-end] ${Object.keys(config.CHAMPION_ROLES)
 			.map((role) => {
@@ -539,6 +556,7 @@ export async function generateTeamsWithExclusions(
 		console.log(`Reset all role pools`);
 		usedChampions.reset();
 	}
+	refreshGuildCacheTtl(guildId, usedChampions);
 	console.log(
 		`[POOL][match-end] ${Object.keys(config.CHAMPION_ROLES)
 			.map((role) => {
