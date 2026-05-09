@@ -7,6 +7,15 @@ import {
 } from "./teamService.ts";
 import { getGuildGenerateConfig, setGuildGenerateConfig } from "./channelConfigService.ts";
 import * as championService from "./championService.ts";
+import {
+	analyzeGeneratedTeams,
+	createCompositionSignature,
+} from "./synergyAnalysisService.ts";
+import {
+	findCompAnalysisBySignature,
+	getRecentCompAnalysisHistory,
+	saveCompAnalysisHistory,
+} from "./compAnalysisHistoryService.ts";
 
 const TEST_GUILD_ID = "test-guild-12345";
 
@@ -195,6 +204,67 @@ describe("generateTeams", () => {
 		expect(result6.blueTeam.length).toBe(6);
 		expect(result6.redTeam.length).toBe(6);
 		expect(verifyUniqueTeams(result6.blueTeam, result6.redTeam)).toBe(true);
+	});
+
+	test("should produce deterministic synergy analysis with all required metrics", async () => {
+		const guildId = `${TEST_GUILD_ID}-analysis-${Date.now()}`;
+		const teamResult = await generateTeams(guildId, { poolSize: 3, historyWindow: 0 });
+
+		const firstAnalysis = await analyzeGeneratedTeams(teamResult);
+		const secondAnalysis = await analyzeGeneratedTeams(teamResult);
+		const metricKeys = [
+			"engage",
+			"damageBalance",
+			"cc",
+			"peel",
+			"scaling",
+			"laneStability",
+		];
+
+		expect(firstAnalysis).toEqual(secondAnalysis);
+		expect(Object.keys(firstAnalysis.blue.scores)).toEqual(metricKeys);
+		expect(Object.keys(firstAnalysis.red.scores)).toEqual(metricKeys);
+		expect(firstAnalysis.summaryText).toContain("BLUE:");
+		expect(firstAnalysis.summaryText).toContain("RED:");
+	});
+
+	test("should persist and reload comp analysis history records", async () => {
+		const guildId = `${TEST_GUILD_ID}-history-record-${Date.now()}`;
+		const teamResult = await generateTeams(guildId, { poolSize: 3, historyWindow: 0 });
+		const analysis = await analyzeGeneratedTeams(teamResult);
+		const compositionSignature = createCompositionSignature(teamResult);
+
+		const savedRecord = await saveCompAnalysisHistory({
+			guildId,
+			generationMode: teamResult.metadata.mode,
+			poolSize: teamResult.metadata.poolSize,
+			blueTeam: teamResult.blueTeam,
+			redTeam: teamResult.redTeam,
+			blueAnalysis: analysis.blue,
+			redAnalysis: analysis.red,
+			summaryText: analysis.summaryText,
+			compositionSignature,
+		});
+
+		const foundRecord = await findCompAnalysisBySignature(guildId, compositionSignature);
+		const recentRecords = await getRecentCompAnalysisHistory(guildId, 5);
+
+		expect(savedRecord.id).toBeGreaterThan(0);
+		expect(foundRecord?.summaryText).toBe(analysis.summaryText);
+		expect(foundRecord?.blueAnalysis.scores.engage.score).toBe(analysis.blue.scores.engage.score);
+		expect(foundRecord?.compositionSignature).toBe(compositionSignature);
+		expect(recentRecords.length).toBeGreaterThan(0);
+		expect(recentRecords[0]?.guildId).toBe(guildId);
+	});
+
+	test("should keep role-only generation metadata explicit for partial analysis flows", async () => {
+		const result = await generateTeamsByRole("Support", { poolSize: 3 });
+
+		expect(result.metadata.mode).toBe("role-only");
+		expect(result.metadata.blueRolePools.Support).toHaveLength(3);
+		expect(result.metadata.redRolePools.Support).toHaveLength(3);
+		expect(result.metadata.blueRolePools.Fighter).toHaveLength(0);
+		expect(result.metadata.redRolePools.Mage).toHaveLength(0);
 	});
 });
 

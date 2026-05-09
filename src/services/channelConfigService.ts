@@ -4,7 +4,13 @@ import { join } from "path";
 import type { GuildGenerateConfig } from "../types/index.ts";
 import { getDefaultThemeId } from "./themeService.ts";
 
-const dbPath = join(import.meta.dir, "..", "..", "data", "channel-config.sqlite");
+export const CHANNEL_CONFIG_DB_PATH = join(
+	import.meta.dir,
+	"..",
+	"..",
+	"data",
+	"channel-config.sqlite"
+);
 const DEFAULT_POOL_SIZE: GuildGenerateConfig["poolSize"] = 4;
 const DEFAULT_HISTORY_WINDOW = 1;
 const MAX_HISTORY_WINDOW = 5;
@@ -24,7 +30,7 @@ async function initDb(): Promise<void> {
 
 	initPromise = (async () => {
 		await mkdir(join(import.meta.dir, "..", "..", "data"), { recursive: true });
-		db = new Database(dbPath);
+		db = new Database(CHANNEL_CONFIG_DB_PATH);
 		db.run(`
 			CREATE TABLE IF NOT EXISTS guild_generate_config (
 				guild_id TEXT PRIMARY KEY,
