@@ -40,28 +40,67 @@ class UsedChampions {
 	}
 }
 
+interface GuildTeamCacheState {
+	usedChampions: UsedChampions;
+	recentMatches: string[][];
+}
+
 const cache = new NodeCache({
 	stdTTL: getChampionCacheTtlSeconds(),
 	useClones: false,
 });
 
-function getCache(guildId: string): UsedChampions {
-	const cachedValue = cache.get(guildId) as UsedChampions | undefined;
+function createGuildTeamCacheState(): GuildTeamCacheState {
+	return {
+		usedChampions: new UsedChampions(),
+		recentMatches: [],
+	};
+}
+
+function getCache(guildId: string): GuildTeamCacheState {
+	const cachedValue = cache.get(guildId) as GuildTeamCacheState | undefined;
 	if (cachedValue) {
 		return cachedValue;
 	}
 
-	const usedChampions = new UsedChampions();
-	cache.set(guildId, usedChampions);
-	return usedChampions;
+	const state = createGuildTeamCacheState();
+	cache.set(guildId, state);
+	return state;
 }
 
-function refreshGuildCacheTtl(guildId: string, usedChampions: UsedChampions): void {
-	cache.set(guildId, usedChampions, getChampionCacheTtlSeconds());
+function refreshGuildCacheTtl(guildId: string, state: GuildTeamCacheState): void {
+	cache.set(guildId, state, getChampionCacheTtlSeconds());
 }
 
 export function clearGuildTeamCache(guildId: string): boolean {
 	return cache.del(guildId) > 0;
+}
+
+function buildBlockedRecentChampions(
+	recentMatches: string[][],
+	historyWindow: number
+): Set<string> {
+	if (historyWindow <= 0 || recentMatches.length === 0) {
+		return new Set<string>();
+	}
+
+	return new Set(recentMatches.slice(-historyWindow).flat());
+}
+
+function recordRecentMatch(
+	state: GuildTeamCacheState,
+	allChampionsInMatch: string[],
+	historyWindow: number
+): void {
+	if (historyWindow <= 0) {
+		state.recentMatches = [];
+		return;
+	}
+
+	state.recentMatches.push([...allChampionsInMatch]);
+	if (state.recentMatches.length > historyWindow) {
+		state.recentMatches = state.recentMatches.slice(-historyWindow);
+	}
 }
 
 const shuffle = <T>(arr: T[]): T[] => {
@@ -120,7 +159,9 @@ const draftRoleForBothTeams = (
 	selectedChampions: Set<string>,
 	config: Config,
 	championRoleMembershipCount: Map<string, number>,
-	championsPerRolePerTeam: number
+	championsPerRolePerTeam: number,
+	blockedRecentChampions: Set<string>,
+	enforceRecentHistory: boolean
 ): { blueRolePicks: string[]; redRolePicks: string[] } => {
 	const championsPerRolePerMatch = championsPerRolePerTeam * 2;
 	const primaryRoleChampions = config.CHAMPION_ROLES[role] || [];
@@ -137,6 +178,12 @@ const draftRoleForBothTeams = (
 				break;
 			}
 			if (selectedChampions.has(champ) || drafted.has(champ)) {
+				continue;
+			}
+			if (enforceRecentHistory && blockedRecentChampions.has(champ)) {
+				console.log(
+					`⚠️ Role ${role}: champion ${champ} is blocked by recent history filter`
+				);
 				continue;
 			}
 			drafted.add(champ);
@@ -247,6 +294,7 @@ const draftRoleForBothTeams = (
 
 interface GenerateTeamOptions {
 	poolSize?: 3 | 4 | 5 | 6;
+	historyWindow?: number;
 }
 
 export async function generateTeams(
@@ -254,10 +302,13 @@ export async function generateTeams(
 	options: GenerateTeamOptions = {}
 ): Promise<TeamResult> {
 	const config = await readConfig();
-	const usedChampions = getCache(guildId);
+	const state = getCache(guildId);
+	const usedChampions = state.usedChampions;
 	const championRoleMembershipCount = buildChampionRoleMembershipCount(config);
 	const championsPerRolePerTeam = options.poolSize ?? DEFAULT_CHAMPIONS_PER_ROLE_PER_TEAM;
 	const championsPerRolePerMatch = championsPerRolePerTeam * 2;
+	const historyWindow = Math.max(0, options.historyWindow ?? 1);
+	const blockedRecentChampions = buildBlockedRecentChampions(state.recentMatches, historyWindow);
 
 	console.log(`Used champions for guild ${guildId}: ${usedChampions.getTotal().size}`);
 	console.log(
@@ -276,14 +327,33 @@ export async function generateTeams(
 	const redTeam: string[] = [];
 
 	for (const role of Object.keys(config.CHAMPION_ROLES)) {
-		const { blueRolePicks, redRolePicks } = draftRoleForBothTeams(
+		let roleResult = draftRoleForBothTeams(
 			role,
 			usedChampions,
 			selectedChampions,
 			config,
 			championRoleMembershipCount,
-			championsPerRolePerTeam
+			championsPerRolePerTeam,
+			blockedRecentChampions,
+			true
 		);
+		if (
+			blockedRecentChampions.size > 0 &&
+			roleResult.blueRolePicks.length + roleResult.redRolePicks.length < championsPerRolePerMatch
+		) {
+			console.log(`⚠️ Role ${role}: recent history blocked completion, relaxing history filter`);
+			roleResult = draftRoleForBothTeams(
+				role,
+				usedChampions,
+				selectedChampions,
+				config,
+				championRoleMembershipCount,
+				championsPerRolePerTeam,
+				blockedRecentChampions,
+				false
+			);
+		}
+		const { blueRolePicks, redRolePicks } = roleResult;
 		console.log(
 			`Role ${role}: drafted ${blueRolePicks.length + redRolePicks.length}/${championsPerRolePerMatch}`
 		);
@@ -298,7 +368,8 @@ export async function generateTeams(
 		console.log(`Reset all role pools`);
 		usedChampions.reset();
 	}
-	refreshGuildCacheTtl(guildId, usedChampions);
+	recordRecentMatch(state, [...blueTeam, ...redTeam], historyWindow);
+	refreshGuildCacheTtl(guildId, state);
 	console.log(
 		`[POOL][match-end] ${Object.keys(config.CHAMPION_ROLES)
 			.map((role) => {
@@ -388,10 +459,13 @@ export async function generateTeamsWithExclusions(
 	options: GenerateTeamOptions = {}
 ): Promise<TeamResult> {
 	const config = await readConfig();
-	const usedChampions = getCache(guildId);
+	const state = getCache(guildId);
+	const usedChampions = state.usedChampions;
 	const championRoleMembershipCount = buildChampionRoleMembershipCount(config);
 	const championsPerRolePerTeam = options.poolSize ?? DEFAULT_CHAMPIONS_PER_ROLE_PER_TEAM;
 	const championsPerRolePerMatch = championsPerRolePerTeam * 2;
+	const historyWindow = Math.max(0, options.historyWindow ?? 1);
+	const blockedRecentChampions = buildBlockedRecentChampions(state.recentMatches, historyWindow);
 
 	const exclusionsSet = new Set(exclusions);
 
@@ -415,7 +489,9 @@ export async function generateTeamsWithExclusions(
 		role: string,
 		usedChampionsLocal: UsedChampions,
 		selectedChampionsLocal: Set<string>,
-		championsPerRolePerTeamLocal: number
+		championsPerRolePerTeamLocal: number,
+		blockedRecentChampionsLocal: Set<string>,
+		enforceRecentHistory: boolean
 	): { blueRolePicks: string[]; redRolePicks: string[] } => {
 		const championsPerRolePerMatchLocal = championsPerRolePerTeamLocal * 2;
 		const primaryRoleChampions = getFilteredRoleArray(role);
@@ -430,6 +506,7 @@ export async function generateTeamsWithExclusions(
 			for (const champ of candidates) {
 				if (drafted.size >= championsPerRolePerMatchLocal) break;
 				if (selectedChampionsLocal.has(champ) || drafted.has(champ)) continue;
+				if (enforceRecentHistory && blockedRecentChampionsLocal.has(champ)) continue;
 				drafted.add(champ);
 				draftedFromRole.set(champ, sourceRole);
 				assignToBalancedTeam(blueRolePicks, redRolePicks, champ, championsPerRolePerTeamLocal);
@@ -440,7 +517,9 @@ export async function generateTeamsWithExclusions(
 		const getUnusedInRole = (roleName: string): string[] =>
 			prioritizeFiltered(
 				shuffle(
-					getFilteredRoleArray(roleName).filter((champ) => !usedChampionsLocal.getRole(roleName).has(champ))
+					getFilteredRoleArray(roleName).filter(
+						(champ) => !usedChampionsLocal.getRole(roleName).has(champ)
+					)
 				)
 			);
 
@@ -487,7 +566,9 @@ export async function generateTeamsWithExclusions(
 		}
 
 		if (drafted.size < championsPerRolePerMatchLocal) {
-			console.log(`⚠️ Role ${role}: primary and fallback unused exhausted, reset role pool and refill`);
+			console.log(
+				`⚠️ Role ${role}: primary and fallback unused exhausted, reset role pool and refill`
+			);
 			usedChampionsLocal.resetRole(role);
 			addCandidates(getAnyInRole(role), role, true);
 		}
@@ -536,12 +617,29 @@ export async function generateTeamsWithExclusions(
 	);
 
 	for (const role of Object.keys(config.CHAMPION_ROLES)) {
-		const { blueRolePicks, redRolePicks } = draftRoleForBothTeamsWithExclusions(
+		let roleResult = draftRoleForBothTeamsWithExclusions(
 			role,
 			usedChampions,
 			selectedChampions,
-			championsPerRolePerTeam
+			championsPerRolePerTeam,
+			blockedRecentChampions,
+			true
 		);
+		if (
+			blockedRecentChampions.size > 0 &&
+			roleResult.blueRolePicks.length + roleResult.redRolePicks.length < championsPerRolePerMatch
+		) {
+			console.log(`⚠️ Role ${role}: recent history blocked completion, relaxing history filter`);
+			roleResult = draftRoleForBothTeamsWithExclusions(
+				role,
+				usedChampions,
+				selectedChampions,
+				championsPerRolePerTeam,
+				blockedRecentChampions,
+				false
+			);
+		}
+		const { blueRolePicks, redRolePicks } = roleResult;
 		console.log(
 			`Role ${role}: drafted ${blueRolePicks.length + redRolePicks.length}/${championsPerRolePerMatch}`
 		);
@@ -556,7 +654,8 @@ export async function generateTeamsWithExclusions(
 		console.log(`Reset all role pools`);
 		usedChampions.reset();
 	}
-	refreshGuildCacheTtl(guildId, usedChampions);
+	recordRecentMatch(state, [...blueTeam, ...redTeam], historyWindow);
+	refreshGuildCacheTtl(guildId, state);
 	console.log(
 		`[POOL][match-end] ${Object.keys(config.CHAMPION_ROLES)
 			.map((role) => {

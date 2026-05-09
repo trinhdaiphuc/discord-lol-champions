@@ -53,10 +53,12 @@ const command: BotCommand = {
 			if (exclusions.length > 0) {
 				teams = await teamService.generateTeamsWithExclusions(guildId, exclusions, {
 					poolSize: guildConfig.poolSize,
+					historyWindow: guildConfig.historyWindow,
 				});
 			} else {
 				teams = await teamService.generateTeams(guildId, {
 					poolSize: guildConfig.poolSize,
+					historyWindow: guildConfig.historyWindow,
 				});
 			}
 
@@ -89,4 +91,3 @@ const command: BotCommand = {
 };
 
 export default command;
-

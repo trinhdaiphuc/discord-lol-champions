@@ -27,6 +27,7 @@ const command: BotCommand = {
 
 			const { blueTeam, redTeam } = await teamService.generateTeams(guildId, {
 				poolSize: guildConfig.poolSize,
+				historyWindow: guildConfig.historyWindow,
 			});
 			const imageBuffer = await imageService.generateTeamImage(
 				blueTeam,

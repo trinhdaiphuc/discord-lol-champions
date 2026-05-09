@@ -24,6 +24,7 @@ interface RandomTeamBody {
 
 interface GuildConfigBody {
 	poolSize?: number;
+	historyWindow?: number;
 	themeId?: string;
 }
 
@@ -110,6 +111,7 @@ export function createServer(port: number | string = 3000) {
 					const theme = await resolveThemeForGenerate(guildConfig.themeId);
 					const { blueTeam, redTeam } = await teamService.generateTeams(guildId, {
 						poolSize: guildConfig.poolSize,
+						historyWindow: guildConfig.historyWindow,
 					});
 					const imageBuffer = await imageService.generateTeamImage(
 						blueTeam,
@@ -136,6 +138,7 @@ export function createServer(port: number | string = 3000) {
 						return Response.json({
 							guildId: config.guildId,
 							poolSize: config.poolSize,
+							historyWindow: config.historyWindow,
 							themeId: config.themeId,
 							themeName,
 							updatedAt: config.updatedAt,
@@ -152,6 +155,17 @@ export function createServer(port: number | string = 3000) {
 						if (body.poolSize !== undefined && ![3, 4, 5, 6].includes(body.poolSize)) {
 							return Response.json(
 								{ error: "poolSize must be one of: 3, 4, 5, 6" },
+								{ status: 400 }
+							);
+						}
+						if (
+							body.historyWindow !== undefined &&
+							(!Number.isInteger(body.historyWindow) ||
+								body.historyWindow < 0 ||
+								body.historyWindow > 5)
+						) {
+							return Response.json(
+								{ error: "historyWindow must be an integer between 0 and 5" },
 								{ status: 400 }
 							);
 						}
@@ -179,12 +193,14 @@ export function createServer(port: number | string = 3000) {
 
 						const updated = await setGuildGenerateConfig(guildId, {
 							poolSize: body.poolSize as 3 | 4 | 5 | 6 | undefined,
+							historyWindow: body.historyWindow,
 							themeId: body.themeId,
 						});
 						const themeName = await getThemeDisplayName(updated.themeId);
 						return Response.json({
 							guildId: updated.guildId,
 							poolSize: updated.poolSize,
+							historyWindow: updated.historyWindow,
 							themeId: updated.themeId,
 							themeName,
 							updatedAt: updated.updatedAt,
@@ -205,6 +221,7 @@ export function createServer(port: number | string = 3000) {
 						return Response.json({
 							guildId: config.guildId,
 							poolSize: config.poolSize,
+							historyWindow: config.historyWindow,
 							themeId: config.themeId,
 							themeName,
 							updatedAt: config.updatedAt,

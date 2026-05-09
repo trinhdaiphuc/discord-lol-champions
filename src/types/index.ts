@@ -40,10 +40,10 @@ export interface Config {
 
 export interface BotCommand {
 	data:
-	| SlashCommandBuilder
-	| SlashCommandOptionsOnlyBuilder
-	| SlashCommandSubcommandsOnlyBuilder
-	| Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand">;
+		| SlashCommandBuilder
+		| SlashCommandOptionsOnlyBuilder
+		| SlashCommandSubcommandsOnlyBuilder
+		| Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand">;
 	execute: (interaction: ChatInputCommandInteraction) => Promise<void>;
 	authorizedRoles?: string[];
 }
@@ -78,6 +78,7 @@ export interface RandomTeamResult {
 export interface GuildGenerateConfig {
 	guildId: string;
 	poolSize: 3 | 4 | 5 | 6;
+	historyWindow: number;
 	themeId: string;
 	updatedAt: number;
 }

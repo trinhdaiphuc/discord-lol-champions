@@ -42,6 +42,25 @@ const command: BotCommand = {
 		)
 		.addSubcommand((subcommand) =>
 			subcommand
+				.setName("history")
+				.setDescription("Set how many recent matches should be blocked from repeating")
+				.addIntegerOption((option) =>
+					option
+						.setName("size")
+						.setDescription("Recent match history window to avoid repeats")
+						.setRequired(true)
+						.addChoices(
+							{ name: "0 matches", value: 0 },
+							{ name: "1 match (default)", value: 1 },
+							{ name: "2 matches", value: 2 },
+							{ name: "3 matches", value: 3 },
+							{ name: "4 matches", value: 4 },
+							{ name: "5 matches", value: 5 }
+						)
+				)
+		)
+		.addSubcommand((subcommand) =>
+			subcommand
 				.setName("theme")
 				.setDescription("Set image theme for this server")
 				.addStringOption((option) => {
@@ -71,7 +90,7 @@ const command: BotCommand = {
 				const themeName = await getThemeDisplayName(config.themeId);
 				const allThemes = await listThemeManifestItems();
 				await interaction.reply(
-					`⚙️ Server config\n- Pool size: ${config.poolSize}\n- Theme: ${themeName}\n- Available themes: ${[RANDOM_THEME_NAME, ...allThemes.map((item) => item.name)].join(", ")}`
+					`⚙️ Server config\n- Pool size: ${config.poolSize}\n- History window: ${config.historyWindow}\n- Theme: ${themeName}\n- Available themes: ${[RANDOM_THEME_NAME, ...allThemes.map((item) => item.name)].join(", ")}`
 				);
 				return;
 			}
@@ -86,6 +105,16 @@ const command: BotCommand = {
 				return;
 			}
 
+			if (subcommand === "history") {
+				const historyWindow = interaction.options.getInteger("size", true);
+				const updated = await setGuildGenerateConfig(guildId, { historyWindow });
+				const themeName = await getThemeDisplayName(updated.themeId);
+				await interaction.reply(
+					`✅ Updated server config\n- Pool size: ${updated.poolSize}\n- History window: ${updated.historyWindow}\n- Theme: ${themeName}`
+				);
+				return;
+			}
+
 			if (subcommand === "theme") {
 				const themeId = interaction.options.getString("name", true);
 				if (themeId !== RANDOM_THEME_ID && !(await getThemeById(themeId))) {
@@ -94,7 +123,7 @@ const command: BotCommand = {
 				const updated = await setGuildGenerateConfig(guildId, { themeId });
 				const themeName = await getThemeDisplayName(updated.themeId);
 				await interaction.reply(
-					`✅ Updated server config\n- Pool size: ${updated.poolSize}\n- Theme: ${themeName}`
+					`✅ Updated server config\n- Pool size: ${updated.poolSize}\n- History window: ${updated.historyWindow}\n- Theme: ${themeName}`
 				);
 				return;
 			}
@@ -103,7 +132,7 @@ const command: BotCommand = {
 				const reloaded = await reloadGuildGenerateConfig(guildId);
 				const themeName = await getThemeDisplayName(reloaded.themeId);
 				await interaction.reply(
-					`🔄 Reloaded config for this server\n- Pool size: ${reloaded.poolSize}\n- Theme: ${themeName}`
+					`🔄 Reloaded config for this server\n- Pool size: ${reloaded.poolSize}\n- History window: ${reloaded.historyWindow}\n- Theme: ${themeName}`
 				);
 				return;
 			}
