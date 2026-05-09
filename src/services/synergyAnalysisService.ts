@@ -283,9 +283,13 @@ function findWeakestMetric(scores: TeamSynergyScores): [SynergyMetricKey, Synerg
 }
 
 function formatSideSummaryLine(analysis: TeamSynergyAnalysis): string {
-	const [strongestMetricKey, strongestMetric] = findStrongestMetric(analysis.scores);
-	const [weakestMetricKey, weakestMetric] = findWeakestMetric(analysis.scores);
-	return `${analysis.side.toUpperCase()}: ${SUMMARY_METRIC_LABELS[strongestMetricKey]} ${strongestMetric.score} (${strongestMetric.label}), ${SUMMARY_METRIC_LABELS[weakestMetricKey]} ${weakestMetric.score} (${weakestMetric.label})`;
+	const metricSummary = (Object.entries(analysis.scores) as Array<[SynergyMetricKey, SynergyMetricScore]>)
+		.map(
+			([metricKey, metricScore]) =>
+				`${SUMMARY_METRIC_LABELS[metricKey]} ${metricScore.score}`
+		)
+		.join(" | ");
+	return `${analysis.side.toUpperCase()}: ${metricSummary}`;
 }
 
 function averageScore(scores: TeamSynergyScores): number {

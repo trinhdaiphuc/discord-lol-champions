@@ -234,6 +234,12 @@ describe("generateTeams", () => {
 		expect(Object.keys(firstAnalysis.red.scores)).toEqual(metricKeys);
 		expect(firstAnalysis.summaryText).toContain("BLUE:");
 		expect(firstAnalysis.summaryText).toContain("RED:");
+		expect(firstAnalysis.summaryText).toContain("engage");
+		expect(firstAnalysis.summaryText).toContain("damage balance");
+		expect(firstAnalysis.summaryText).toContain("CC");
+		expect(firstAnalysis.summaryText).toContain("peel");
+		expect(firstAnalysis.summaryText).toContain("scaling");
+		expect(firstAnalysis.summaryText).toContain("lane stability");
 	});
 
 	test("should persist and reload comp analysis history records", async () => {
@@ -294,6 +300,12 @@ describe("generation API integration", () => {
 		expect(payload.redTeam.length).toBe(18);
 		expect(payload.analysis.summaryText).toContain("BLUE:");
 		expect(payload.analysis.summaryText).toContain("RED:");
+		expect(payload.analysis.summaryText).toContain("engage");
+		expect(payload.analysis.summaryText).toContain("damage balance");
+		expect(payload.analysis.summaryText).toContain("CC");
+		expect(payload.analysis.summaryText).toContain("peel");
+		expect(payload.analysis.summaryText).toContain("scaling");
+		expect(payload.analysis.summaryText).toContain("lane stability");
 		expect(payload.analysis.blue.scores.engage).toBeDefined();
 		expect(recentHistory.length).toBeGreaterThan(0);
 	});
