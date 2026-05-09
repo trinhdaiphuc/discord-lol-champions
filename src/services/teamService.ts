@@ -364,3 +364,200 @@ export const verifyUniqueTeams = (teamA: string[], teamB: string[]): boolean => 
 	}
 	return true;
 };
+
+export async function generateTeamsWithExclusions(
+	guildId: string,
+	exclusions: string[],
+	options: GenerateTeamOptions = {}
+): Promise<TeamResult> {
+	const config = await readConfig();
+	const usedChampions = getCache(guildId);
+	const championRoleMembershipCount = buildChampionRoleMembershipCount(config);
+	const championsPerRolePerTeam = options.poolSize ?? DEFAULT_CHAMPIONS_PER_ROLE_PER_TEAM;
+	const championsPerRolePerMatch = championsPerRolePerTeam * 2;
+
+	const exclusionsSet = new Set(exclusions);
+
+	console.log(`Excluding ${exclusionsSet.size} champions for guild ${guildId}`);
+
+	const selectedChampions = new Set<string>();
+	const blueTeam: string[] = [];
+	const redTeam: string[] = [];
+
+	// local helper versions that respect exclusions
+	const getFilteredRoleArray = (roleName: string): string[] =>
+		(config.CHAMPION_ROLES[roleName] || []).filter((c) => !exclusionsSet.has(c));
+
+	const getFilteredFallbacks = (roleName: string): string[] =>
+		(config.FALLBACK_ROLES[roleName] || []).filter((c) => !exclusionsSet.has(c));
+
+	const prioritizeFiltered = (champions: string[]) =>
+		prioritizeRoleSpecificChampions(champions, championRoleMembershipCount);
+
+	const draftRoleForBothTeamsWithExclusions = (
+		role: string,
+		usedChampionsLocal: UsedChampions,
+		selectedChampionsLocal: Set<string>,
+		championsPerRolePerTeamLocal: number
+	): { blueRolePicks: string[]; redRolePicks: string[] } => {
+		const championsPerRolePerMatchLocal = championsPerRolePerTeamLocal * 2;
+		const primaryRoleChampions = getFilteredRoleArray(role);
+		const fallbackRoles = getFilteredFallbacks(role);
+		const drafted = new Set<string>();
+		const draftedFromRole = new Map<string, string>();
+		const blueRolePicks: string[] = [];
+		const redRolePicks: string[] = [];
+		let primaryPicked = 0;
+
+		const addCandidates = (candidates: string[], sourceRole: string, isPrimary: boolean): void => {
+			for (const champ of candidates) {
+				if (drafted.size >= championsPerRolePerMatchLocal) break;
+				if (selectedChampionsLocal.has(champ) || drafted.has(champ)) continue;
+				drafted.add(champ);
+				draftedFromRole.set(champ, sourceRole);
+				assignToBalancedTeam(blueRolePicks, redRolePicks, champ, championsPerRolePerTeamLocal);
+				if (isPrimary) primaryPicked += 1;
+			}
+		};
+
+		const getUnusedInRole = (roleName: string): string[] =>
+			prioritizeFiltered(
+				shuffle(
+					getFilteredRoleArray(roleName).filter((champ) => !usedChampionsLocal.getRole(roleName).has(champ))
+				)
+			);
+
+		const getAnyInRole = (roleName: string): string[] =>
+			prioritizeFiltered(shuffle(getFilteredRoleArray(roleName)));
+
+		const logRolePoolSnapshot = (stage: "before" | "after"): void => {
+			const primaryTotal = getFilteredRoleArray(role).length;
+			const primaryUsed = usedChampionsLocal.getRole(role).size;
+			const primaryRemaining = Math.max(0, primaryTotal - primaryUsed);
+			const fallbackSummary = (config.FALLBACK_ROLES[role] || [])
+				.filter((fbRole) => getFilteredRoleArray(fbRole).length > 0)
+				.map((fbRole) => {
+					const fbTotal = getFilteredRoleArray(fbRole).length;
+					const fbUsed = usedChampionsLocal.getRole(fbRole).size;
+					const fbRemaining = Math.max(0, fbTotal - fbUsed);
+					return `${fbRole}:${fbRemaining}/${fbTotal}`;
+				})
+				.join(", ");
+			const selectedInMatch = selectedChampionsLocal.size;
+			console.log(
+				`[POOL][${stage}] role=${role} primary=${primaryRemaining}/${primaryTotal} selectedInMatch=${selectedInMatch} draftedForRole=${drafted.size}/${championsPerRolePerMatchLocal} fallbacks=[${fallbackSummary || "none"}]`
+			);
+		};
+
+		logRolePoolSnapshot("before");
+
+		addCandidates(getUnusedInRole(role), role, true);
+		const minimumPrimary = Math.min(
+			MIN_PRIMARY_ROLE_CHAMPIONS,
+			primaryRoleChampions.filter((champ) => !selectedChampionsLocal.has(champ)).length
+		);
+		if (primaryPicked < minimumPrimary) {
+			console.log(`⚠️ Role ${role}: ensure minimum primary picks, reset role pool and refill`);
+			usedChampionsLocal.resetRole(role);
+			addCandidates(getAnyInRole(role), role, true);
+		}
+
+		if (drafted.size < championsPerRolePerMatchLocal) {
+			for (const fbRole of fallbackRoles) {
+				if (drafted.size >= championsPerRolePerMatchLocal) break;
+				addCandidates(getUnusedInRole(fbRole), fbRole, false);
+			}
+		}
+
+		if (drafted.size < championsPerRolePerMatchLocal) {
+			console.log(`⚠️ Role ${role}: primary and fallback unused exhausted, reset role pool and refill`);
+			usedChampionsLocal.resetRole(role);
+			addCandidates(getAnyInRole(role), role, true);
+		}
+
+		if (drafted.size < championsPerRolePerMatchLocal) {
+			for (const fbRole of fallbackRoles) {
+				if (drafted.size >= championsPerRolePerMatchLocal) break;
+				usedChampionsLocal.resetRole(fbRole);
+				addCandidates(getAnyInRole(fbRole), fbRole, false);
+			}
+		}
+
+		if (drafted.size < championsPerRolePerMatchLocal) {
+			console.log(`⚠️ Role ${role}: not enough champions even after fallback refill`);
+			addCandidates(getAnyInRole(role), role, true);
+		}
+
+		for (const champ of blueRolePicks) {
+			selectedChampionsLocal.add(champ);
+			const sourceRole = draftedFromRole.get(champ) || role;
+			usedChampionsLocal.getRole(sourceRole).add(champ);
+			usedChampionsLocal.getTotal().add(champ);
+		}
+		for (const champ of redRolePicks) {
+			selectedChampionsLocal.add(champ);
+			const sourceRole = draftedFromRole.get(champ) || role;
+			usedChampionsLocal.getRole(sourceRole).add(champ);
+			usedChampionsLocal.getTotal().add(champ);
+		}
+
+		logRolePoolSnapshot("after");
+
+		return { blueRolePicks, redRolePicks };
+	};
+
+	console.log(`Used champions for guild ${guildId}: ${usedChampions.getTotal().size}`);
+	console.log(
+		`[POOL][match-start] ${Object.keys(config.CHAMPION_ROLES)
+			.map((role) => {
+				const total = getFilteredRoleArray(role).length;
+				const used = usedChampions.getRole(role).size;
+				const remaining = Math.max(0, total - used);
+				return `${role}:${remaining}/${total}`;
+			})
+			.join(" | ")}`
+	);
+
+	for (const role of Object.keys(config.CHAMPION_ROLES)) {
+		const { blueRolePicks, redRolePicks } = draftRoleForBothTeamsWithExclusions(
+			role,
+			usedChampions,
+			selectedChampions,
+			championsPerRolePerTeam
+		);
+		console.log(
+			`Role ${role}: drafted ${blueRolePicks.length + redRolePicks.length}/${championsPerRolePerMatch}`
+		);
+		blueTeam.push(...blueRolePicks);
+		redTeam.push(...redRolePicks);
+	}
+
+	const allRolePoolsExhausted = Object.keys(config.CHAMPION_ROLES).every(
+		(role) => usedChampions.getRole(role).size >= getFilteredRoleArray(role).length
+	);
+	if (allRolePoolsExhausted) {
+		console.log(`Reset all role pools`);
+		usedChampions.reset();
+	}
+	console.log(
+		`[POOL][match-end] ${Object.keys(config.CHAMPION_ROLES)
+			.map((role) => {
+				const total = getFilteredRoleArray(role).length;
+				const used = usedChampions.getRole(role).size;
+				const remaining = Math.max(0, total - used);
+				return `${role}:${remaining}/${total}`;
+			})
+			.join(" | ")}`
+	);
+
+	verifyUniqueTeams(blueTeam, redTeam);
+
+	// sanity check: ensure excluded champions not present
+	for (const ex of exclusionsSet) {
+		if (blueTeam.includes(ex) || redTeam.includes(ex)) {
+			throw new Error(`Excluded champion ${ex} ended up in generated teams`);
+		}
+	}
+
+	return { blueTeam, redTeam };
+}
