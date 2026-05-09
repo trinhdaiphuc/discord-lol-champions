@@ -55,7 +55,7 @@ const command: BotCommand = {
 			await interaction.editReply({
 				files: [attachment],
 				content: [
-					`⚔️ Teams for role: ${role} (${guildConfig.poolSize} per side) • Theme: ${configuredThemeName} • Using: ${theme.name}`,
+					`⚔️ **Đội theo role ${role}** (${guildConfig.poolSize} tướng mỗi bên) • Theme: ${configuredThemeName} • Đang dùng: ${theme.name}`,
 					getRoleOnlyAnalysisNotice(role!, guildConfig.poolSize),
 				].join("\n"),
 			});

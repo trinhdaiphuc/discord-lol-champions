@@ -7,6 +7,7 @@ import * as teamService from "../services/teamService.ts";
 import * as imageService from "../services/imageService.ts";
 import { getGuildGenerateConfig } from "../services/channelConfigService.ts";
 import { analyzeAndStoreGeneratedTeams } from "../services/compAnalysisHistoryService.ts";
+import { formatDiscordCompactSummary } from "../services/synergyAnalysisService.ts";
 import { getThemeDisplayName, resolveThemeForGenerate } from "../services/themeService.ts";
 import type { BotCommand } from "../types/index.ts";
 
@@ -42,8 +43,8 @@ const command: BotCommand = {
 			await interaction.editReply({
 				files: [attachment],
 				content: [
-					`⚔️ ARAM Teams (6 roles × ${guildConfig.poolSize} champions) • Theme: ${configuredThemeName} • Using: ${theme.name}`,
-					analysis.summaryText,
+					`⚔️ **Đội ARAM** (6 role × ${guildConfig.poolSize} tướng) • Theme: ${configuredThemeName} • Đang dùng: ${theme.name}`,
+					formatDiscordCompactSummary(analysis.blue, analysis.red),
 				].join("\n"),
 			});
 		} catch (error) {

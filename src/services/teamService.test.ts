@@ -232,14 +232,14 @@ describe("generateTeams", () => {
 		expect(firstAnalysis).toEqual(secondAnalysis);
 		expect(Object.keys(firstAnalysis.blue.scores)).toEqual(metricKeys);
 		expect(Object.keys(firstAnalysis.red.scores)).toEqual(metricKeys);
-		expect(firstAnalysis.summaryText).toContain("BLUE:");
-		expect(firstAnalysis.summaryText).toContain("RED:");
-		expect(firstAnalysis.summaryText).toContain("engage");
-		expect(firstAnalysis.summaryText).toContain("damage balance");
-		expect(firstAnalysis.summaryText).toContain("CC");
-		expect(firstAnalysis.summaryText).toContain("peel");
-		expect(firstAnalysis.summaryText).toContain("scaling");
-		expect(firstAnalysis.summaryText).toContain("lane stability");
+		expect(firstAnalysis.summaryText).toContain("ĐỘI XANH:");
+		expect(firstAnalysis.summaryText).toContain("ĐỘI ĐỎ:");
+		expect(firstAnalysis.summaryText).toContain("Mở giao tranh");
+		expect(firstAnalysis.summaryText).toContain("Cân bằng sát thương");
+		expect(firstAnalysis.summaryText).toContain("Khống chế");
+		expect(firstAnalysis.summaryText).toContain("Bảo kê");
+		expect(firstAnalysis.summaryText).toContain("Thăng tiến");
+		expect(firstAnalysis.summaryText).toContain("Độ ổn định đội hình");
 	});
 
 	test("should persist and reload comp analysis history records", async () => {
@@ -298,14 +298,14 @@ describe("generation API integration", () => {
 		expect(response.status).toBe(200);
 		expect(payload.blueTeam.length).toBe(18);
 		expect(payload.redTeam.length).toBe(18);
-		expect(payload.analysis.summaryText).toContain("BLUE:");
-		expect(payload.analysis.summaryText).toContain("RED:");
-		expect(payload.analysis.summaryText).toContain("engage");
-		expect(payload.analysis.summaryText).toContain("damage balance");
-		expect(payload.analysis.summaryText).toContain("CC");
-		expect(payload.analysis.summaryText).toContain("peel");
-		expect(payload.analysis.summaryText).toContain("scaling");
-		expect(payload.analysis.summaryText).toContain("lane stability");
+		expect(payload.analysis.summaryText).toContain("ĐỘI XANH:");
+		expect(payload.analysis.summaryText).toContain("ĐỘI ĐỎ:");
+		expect(payload.analysis.summaryText).toContain("Mở giao tranh");
+		expect(payload.analysis.summaryText).toContain("Cân bằng sát thương");
+		expect(payload.analysis.summaryText).toContain("Khống chế");
+		expect(payload.analysis.summaryText).toContain("Bảo kê");
+		expect(payload.analysis.summaryText).toContain("Thăng tiến");
+		expect(payload.analysis.summaryText).toContain("Độ ổn định đội hình");
 		expect(payload.analysis.blue.scores.engage).toBeDefined();
 		expect(recentHistory.length).toBeGreaterThan(0);
 	});

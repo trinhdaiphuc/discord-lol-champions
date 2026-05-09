@@ -36,13 +36,21 @@ const LONG_RANGE_THRESHOLD = 525;
 const HIGH_HEALTH_THRESHOLD = 620;
 const HIGH_CC_MOVESPEED_THRESHOLD = 335;
 const SUMMARY_METRIC_LABELS: Record<SynergyMetricKey, string> = {
-	engage: "engage",
-	damageBalance: "damage balance",
-	cc: "CC",
-	peel: "peel",
-	scaling: "scaling",
-	laneStability: "lane stability",
+	engage: "Mở giao tranh",
+	damageBalance: "Cân bằng sát thương",
+	cc: "Khống chế",
+	peel: "Bảo kê",
+	scaling: "Thăng tiến",
+	laneStability: "Độ ổn định đội hình",
 };
+const ANSI_RESET = "\u001b[0m";
+const ANSI_BOLD = "\u001b[1m";
+const ANSI_BLUE = "\u001b[34m";
+const ANSI_RED = "\u001b[31m";
+const ANSI_GREEN = "\u001b[32m";
+const ANSI_YELLOW = "\u001b[33m";
+const ANSI_CYAN = "\u001b[36m";
+const ANSI_WHITE = "\u001b[37m";
 
 interface SideAnalysisInput {
 	side: "blue" | "red";
@@ -64,18 +72,18 @@ function clampScore(score: number): number {
 
 function labelScore(score: number): string {
 	if (score >= 80) {
-		return "elite";
+		return "Xuất sắc";
 	}
 	if (score >= 65) {
-		return "strong";
+		return "Tốt";
 	}
 	if (score >= 50) {
-		return "steady";
+		return "Ổn";
 	}
 	if (score >= 35) {
-		return "shaky";
+		return "Yếu";
 	}
-	return "thin";
+	return "Rất yếu";
 }
 
 function getTeamChampions(team: string[]): Champion[] {
@@ -286,10 +294,10 @@ function formatSideSummaryLine(analysis: TeamSynergyAnalysis): string {
 	const metricSummary = (Object.entries(analysis.scores) as Array<[SynergyMetricKey, SynergyMetricScore]>)
 		.map(
 			([metricKey, metricScore]) =>
-				`${SUMMARY_METRIC_LABELS[metricKey]} ${metricScore.score}`
+				`${SUMMARY_METRIC_LABELS[metricKey]} ${metricScore.score}/100`
 		)
 		.join(" | ");
-	return `${analysis.side.toUpperCase()}: ${metricSummary}`;
+	return `${analysis.side === "blue" ? "ĐỘI XANH" : "ĐỘI ĐỎ"}: ${metricSummary}`;
 }
 
 function averageScore(scores: TeamSynergyScores): number {
@@ -307,7 +315,7 @@ function formatOverallTakeaway(blue: TeamSynergyAnalysis, red: TeamSynergyAnalys
 	const [bestMetric] = findStrongestMetric(betterSide.scores);
 	const [weakMetric] = findWeakestMetric(trailingSide.scores);
 
-	return `${betterSide.side.toUpperCase()} is the steadier pool through ${SUMMARY_METRIC_LABELS[bestMetric]}; ${trailingSide.side.toUpperCase()} needs cleaner ${SUMMARY_METRIC_LABELS[weakMetric]}.`;
+	return `${betterSide.side === "blue" ? "Đội Xanh" : "Đội Đỏ"} ổn định hơn nhờ ${SUMMARY_METRIC_LABELS[bestMetric]}; ${trailingSide.side === "blue" ? "Đội Xanh" : "Đội Đỏ"} cần cải thiện ${SUMMARY_METRIC_LABELS[weakMetric]}.`;
 }
 
 export async function analyzeTeamSide(input: SideAnalysisInput): Promise<TeamSynergyAnalysis> {
@@ -325,7 +333,7 @@ export async function analyzeTeamSide(input: SideAnalysisInput): Promise<TeamSyn
 		...input,
 		scores,
 		summaryLine,
-		takeaway: `${input.side.toUpperCase()} leans on ${SUMMARY_METRIC_LABELS[strongestMetricKey]} (${strongestMetric.label}) but can still improve ${SUMMARY_METRIC_LABELS[weakestMetricKey]}.`,
+		takeaway: `${input.side === "blue" ? "Đội Xanh" : "Đội Đỏ"} mạnh ở ${SUMMARY_METRIC_LABELS[strongestMetricKey]} (${strongestMetric.label}) nhưng vẫn có thể cải thiện ${SUMMARY_METRIC_LABELS[weakestMetricKey]}.`,
 	};
 }
 
@@ -359,7 +367,51 @@ export function formatCompactSummary(blue: TeamSynergyAnalysis, red: TeamSynergy
 }
 
 export function getRoleOnlyAnalysisNotice(role: string, poolSize: number): string {
-	return `Role-only pool for ${role} (${poolSize} per side). Full synergy scorecard skipped because this command does not cover all six roles.`;
+	return `Đây là pool theo riêng role ${role} (${poolSize} tướng mỗi bên), nên bot không hiển thị đủ scorecard 6 chỉ số như đội hình đầy đủ.`;
+}
+
+function getAnsiColorForScore(score: number): string {
+	if (score >= 80) {
+		return ANSI_GREEN;
+	}
+	if (score >= 65) {
+		return ANSI_YELLOW;
+	}
+	if (score >= 50) {
+		return ANSI_CYAN;
+	}
+	return ANSI_RED;
+}
+
+function formatDiscordMetricLine(metricKey: SynergyMetricKey, metricScore: SynergyMetricScore): string {
+	const color = getAnsiColorForScore(metricScore.score);
+	return `${SUMMARY_METRIC_LABELS[metricKey]}: ${color}${metricScore.score}/100 ${metricScore.label}${ANSI_RESET}`;
+}
+
+function formatDiscordSideBlock(analysis: TeamSynergyAnalysis): string {
+	const sideColor = analysis.side === "blue" ? ANSI_BLUE : ANSI_RED;
+	const sideLabel = analysis.side === "blue" ? "ĐỘI XANH" : "ĐỘI ĐỎ";
+	const lines = (Object.entries(analysis.scores) as Array<[SynergyMetricKey, SynergyMetricScore]>).map(
+		([metricKey, metricScore]) => formatDiscordMetricLine(metricKey, metricScore)
+	);
+
+	return [`${ANSI_BOLD}${sideColor}${sideLabel}${ANSI_RESET}`, ...lines].join("\n");
+}
+
+export function formatDiscordCompactSummary(
+	blue: TeamSynergyAnalysis,
+	red: TeamSynergyAnalysis
+): string {
+	return [
+		"📊 **Phân tích đội hình**",
+		"*Điểm nội bộ 0-100, không phải tỉ lệ thắng*",
+		"```ansi",
+		formatDiscordSideBlock(blue),
+		"",
+		formatDiscordSideBlock(red),
+		"```",
+		`📌 **Nhận xét:** ${formatOverallTakeaway(blue, red)}`,
+	].join("\n");
 }
 
 export function createCompositionSignature(teamResult: TeamResult): string {
