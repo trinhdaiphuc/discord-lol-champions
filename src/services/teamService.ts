@@ -1,10 +1,24 @@
 import NodeCache from "node-cache";
 import { randomInt } from "crypto";
 import { getChampionCacheTtlSeconds, readConfig } from "../core/config.ts";
-import type { Config, TeamResult, RandomTeamResult } from "../types/index.ts";
+import type {
+	ChampionRoleKey,
+	Config,
+	RandomTeamResult,
+	TeamResult,
+	TeamSideRolePools,
+} from "../types/index.ts";
 
 const DEFAULT_CHAMPIONS_PER_ROLE_PER_TEAM = 4;
 const MIN_PRIMARY_ROLE_CHAMPIONS = 2;
+const ROLE_ORDER: ChampionRoleKey[] = [
+	"Fighter",
+	"Mage",
+	"Tank",
+	"Marksman",
+	"Assassin",
+	"Support",
+];
 
 class UsedChampions {
 	total: Set<string>;
@@ -181,9 +195,7 @@ const draftRoleForBothTeams = (
 				continue;
 			}
 			if (enforceRecentHistory && blockedRecentChampions.has(champ)) {
-				console.log(
-					`⚠️ Role ${role}: champion ${champ} is blocked by recent history filter`
-				);
+				console.log(`⚠️ Role ${role}: champion ${champ} is blocked by recent history filter`);
 				continue;
 			}
 			drafted.add(champ);
@@ -297,6 +309,37 @@ interface GenerateTeamOptions {
 	historyWindow?: number;
 }
 
+function createEmptyRolePools(): TeamSideRolePools {
+	return {
+		Fighter: [],
+		Mage: [],
+		Tank: [],
+		Marksman: [],
+		Assassin: [],
+		Support: [],
+	};
+}
+
+function buildTeamResult(
+	blueTeam: string[],
+	redTeam: string[],
+	blueRolePools: TeamSideRolePools,
+	redRolePools: TeamSideRolePools,
+	options: { mode: TeamResult["metadata"]["mode"]; poolSize: 3 | 4 | 5 | 6 }
+): TeamResult {
+	return {
+		blueTeam,
+		redTeam,
+		metadata: {
+			mode: options.mode,
+			poolSize: options.poolSize,
+			roleOrder: ROLE_ORDER,
+			blueRolePools,
+			redRolePools,
+		},
+	};
+}
+
 export async function generateTeams(
 	guildId: string,
 	options: GenerateTeamOptions = {}
@@ -325,8 +368,10 @@ export async function generateTeams(
 	const selectedChampions = new Set<string>();
 	const blueTeam: string[] = [];
 	const redTeam: string[] = [];
+	const blueRolePools = createEmptyRolePools();
+	const redRolePools = createEmptyRolePools();
 
-	for (const role of Object.keys(config.CHAMPION_ROLES)) {
+	for (const role of ROLE_ORDER) {
 		let roleResult = draftRoleForBothTeams(
 			role,
 			usedChampions,
@@ -357,6 +402,8 @@ export async function generateTeams(
 		console.log(
 			`Role ${role}: drafted ${blueRolePicks.length + redRolePicks.length}/${championsPerRolePerMatch}`
 		);
+		blueRolePools[role] = [...blueRolePicks];
+		redRolePools[role] = [...redRolePicks];
 		blueTeam.push(...blueRolePicks);
 		redTeam.push(...redRolePicks);
 	}
@@ -382,7 +429,10 @@ export async function generateTeams(
 	);
 
 	verifyUniqueTeams(blueTeam, redTeam);
-	return { blueTeam, redTeam };
+	return buildTeamResult(blueTeam, redTeam, blueRolePools, redRolePools, {
+		mode: "full",
+		poolSize: championsPerRolePerTeam,
+	});
 }
 
 export async function generateTeamsByRole(
@@ -414,8 +464,16 @@ export async function generateTeamsByRole(
 	const shuffledChampions = shuffle(selectedChampions);
 	const blueTeam = shuffledChampions.slice(0, championsPerRolePerTeam);
 	const redTeam = shuffledChampions.slice(championsPerRolePerTeam, totalChampionsNeeded);
+	const blueRolePools = createEmptyRolePools();
+	const redRolePools = createEmptyRolePools();
+	const normalizedRole = role as ChampionRoleKey;
+	blueRolePools[normalizedRole] = [...blueTeam];
+	redRolePools[normalizedRole] = [...redTeam];
 
-	return { blueTeam, redTeam };
+	return buildTeamResult(blueTeam, redTeam, blueRolePools, redRolePools, {
+		mode: "role-only",
+		poolSize: championsPerRolePerTeam,
+	});
 }
 
 export function createRandomTeams(members: string[]): RandomTeamResult {
@@ -474,6 +532,8 @@ export async function generateTeamsWithExclusions(
 	const selectedChampions = new Set<string>();
 	const blueTeam: string[] = [];
 	const redTeam: string[] = [];
+	const blueRolePools = createEmptyRolePools();
+	const redRolePools = createEmptyRolePools();
 
 	// local helper versions that respect exclusions
 	const getFilteredRoleArray = (roleName: string): string[] =>
@@ -616,7 +676,7 @@ export async function generateTeamsWithExclusions(
 			.join(" | ")}`
 	);
 
-	for (const role of Object.keys(config.CHAMPION_ROLES)) {
+	for (const role of ROLE_ORDER) {
 		let roleResult = draftRoleForBothTeamsWithExclusions(
 			role,
 			usedChampions,
@@ -643,6 +703,8 @@ export async function generateTeamsWithExclusions(
 		console.log(
 			`Role ${role}: drafted ${blueRolePicks.length + redRolePicks.length}/${championsPerRolePerMatch}`
 		);
+		blueRolePools[role] = [...blueRolePicks];
+		redRolePools[role] = [...redRolePicks];
 		blueTeam.push(...blueRolePicks);
 		redTeam.push(...redRolePicks);
 	}
@@ -676,5 +738,8 @@ export async function generateTeamsWithExclusions(
 		}
 	}
 
-	return { blueTeam, redTeam };
+	return buildTeamResult(blueTeam, redTeam, blueRolePools, redRolePools, {
+		mode: "full-with-exclusions",
+		poolSize: championsPerRolePerTeam,
+	});
 }

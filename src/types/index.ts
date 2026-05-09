@@ -65,9 +65,70 @@ export interface Checksums {
 	};
 }
 
+export type ChampionRoleKey = "Fighter" | "Mage" | "Tank" | "Marksman" | "Assassin" | "Support";
+
+export type SynergyMetricKey =
+	| "engage"
+	| "damageBalance"
+	| "cc"
+	| "peel"
+	| "scaling"
+	| "laneStability";
+
+export interface SynergyMetricScore {
+	score: number;
+	label: string;
+	evidence: string[];
+}
+
+export type TeamSynergyScores = Record<SynergyMetricKey, SynergyMetricScore>;
+
+export interface TeamSynergyAnalysis {
+	side: "blue" | "red";
+	poolSize: number;
+	roleOrder: ChampionRoleKey[];
+	team: string[];
+	rolePools: Record<ChampionRoleKey, string[]>;
+	scores: TeamSynergyScores;
+	summaryLine: string;
+	takeaway: string;
+}
+
+export interface PersistedCompAnalysisRecord {
+	id: number;
+	guildId: string;
+	generationMode: "full" | "full-with-exclusions" | "role-only";
+	poolSize: number;
+	blueTeam: string[];
+	redTeam: string[];
+	blueAnalysis: TeamSynergyAnalysis;
+	redAnalysis: TeamSynergyAnalysis;
+	summaryText: string;
+	compositionSignature: string;
+	createdAt: number;
+}
+
+export interface TeamSideRolePools {
+	Fighter: string[];
+	Mage: string[];
+	Tank: string[];
+	Marksman: string[];
+	Assassin: string[];
+	Support: string[];
+}
+
+export interface TeamGenerationMetadata {
+	mode: "full" | "full-with-exclusions" | "role-only";
+	poolSize: 3 | 4 | 5 | 6;
+	roleOrder: ChampionRoleKey[];
+	blueRolePools: TeamSideRolePools;
+	redRolePools: TeamSideRolePools;
+}
+
 export interface TeamResult {
 	blueTeam: string[];
 	redTeam: string[];
+	metadata: TeamGenerationMetadata;
 }
 
 export interface RandomTeamResult {
