@@ -92,6 +92,7 @@ export interface ImageThemeTokens {
 	panelBorderRed: string;
 	cardGradient: [string, string, string];
 	cardBorderGradient: [string, string, string];
+	cardGlossGradient: [string, string, string];
 	placeholderBg: string;
 	placeholderBorder: string;
 	placeholderText: string;

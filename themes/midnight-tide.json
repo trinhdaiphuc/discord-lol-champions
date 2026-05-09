@@ -1,0 +1,32 @@
+{
+	"id": "midnight-tide",
+	"name": "Midnight Tide",
+	"description": "Deep navy glass theme with cool cyan highlights.",
+	"tokens": {
+		"combinedGradient": ["#020617", "#0F3D5E", "#D6EEFF", "#1D4ED8", "#030712"],
+		"panelBlueGradient": ["rgba(2, 6, 23, 0.97)", "rgba(8, 47, 73, 0.82)"],
+		"panelRedGradient": ["rgba(3, 7, 18, 0.97)", "rgba(29, 78, 216, 0.66)"],
+		"panelGridBlue": "rgba(103, 232, 249, 0.15)",
+		"panelGridRed": "rgba(96, 165, 250, 0.16)",
+		"panelBorderBlue": "rgba(34, 211, 238, 0.68)",
+		"panelBorderRed": "rgba(96, 165, 250, 0.68)",
+		"cardGradient": ["rgba(255, 255, 255, 0.15)", "rgba(56, 189, 248, 0.1)", "rgba(15, 23, 42, 0.18)"],
+		"cardBorderGradient": ["rgba(186, 230, 253, 0.72)", "rgba(34, 211, 238, 0.28)", "rgba(59, 130, 246, 0.14)"],
+		"cardGlossGradient": ["rgba(186, 230, 253, 0.16)", "rgba(34, 211, 238, 0.08)", "rgba(255, 255, 255, 0)"],
+		"placeholderBg": "#081120",
+		"placeholderBorder": "rgba(56, 189, 248, 0.45)",
+		"placeholderText": "#D6EEFF",
+		"teamTitle": "#E0F2FE",
+		"teamTitleBlueGlow": "rgba(34, 211, 238, 0.4)",
+		"teamTitleRedGlow": "rgba(96, 165, 250, 0.4)",
+		"imageBorderBlue": "rgba(34, 211, 238, 0.5)",
+		"imageBorderRed": "rgba(96, 165, 250, 0.5)",
+		"championName": "#F8FAFC",
+		"championNameShadow": "rgba(2, 6, 23, 0.96)",
+		"blobBlue": "rgba(34, 211, 238, 0.12)",
+		"blobRed": "rgba(96, 165, 250, 0.12)",
+		"centerLine": ["rgba(34, 211, 238, 0)", "rgba(214, 238, 255, 0.18)", "rgba(96, 165, 250, 0)"],
+		"outerBorder": "#67E8F9",
+		"vsText": "#F8FAFC"
+	}
+}

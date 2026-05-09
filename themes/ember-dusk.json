@@ -1,0 +1,32 @@
+{
+	"id": "ember-dusk",
+	"name": "Ember Dusk",
+	"description": "Smoky charcoal palette with ember-orange glass accents.",
+	"tokens": {
+		"combinedGradient": ["#09090B", "#3F1D12", "#FDE7D3", "#B91C1C", "#171717"],
+		"panelBlueGradient": ["rgba(9, 9, 11, 0.97)", "rgba(63, 29, 18, 0.8)"],
+		"panelRedGradient": ["rgba(23, 23, 23, 0.97)", "rgba(185, 28, 28, 0.62)"],
+		"panelGridBlue": "rgba(251, 146, 60, 0.14)",
+		"panelGridRed": "rgba(248, 113, 113, 0.14)",
+		"panelBorderBlue": "rgba(249, 115, 22, 0.68)",
+		"panelBorderRed": "rgba(239, 68, 68, 0.68)",
+		"cardGradient": ["rgba(255, 255, 255, 0.14)", "rgba(251, 146, 60, 0.1)", "rgba(127, 29, 29, 0.14)"],
+		"cardBorderGradient": ["rgba(254, 215, 170, 0.66)", "rgba(249, 115, 22, 0.28)", "rgba(239, 68, 68, 0.16)"],
+		"cardGlossGradient": ["rgba(254, 215, 170, 0.16)", "rgba(251, 146, 60, 0.08)", "rgba(255, 255, 255, 0)"],
+		"placeholderBg": "#161114",
+		"placeholderBorder": "rgba(249, 115, 22, 0.44)",
+		"placeholderText": "#FDE7D3",
+		"teamTitle": "#FFF7ED",
+		"teamTitleBlueGlow": "rgba(249, 115, 22, 0.36)",
+		"teamTitleRedGlow": "rgba(248, 113, 113, 0.36)",
+		"imageBorderBlue": "rgba(249, 115, 22, 0.5)",
+		"imageBorderRed": "rgba(239, 68, 68, 0.5)",
+		"championName": "#FFF7ED",
+		"championNameShadow": "rgba(9, 9, 11, 0.96)",
+		"blobBlue": "rgba(249, 115, 22, 0.11)",
+		"blobRed": "rgba(239, 68, 68, 0.11)",
+		"centerLine": ["rgba(249, 115, 22, 0)", "rgba(255, 237, 213, 0.16)", "rgba(248, 113, 113, 0)"],
+		"outerBorder": "#FB923C",
+		"vsText": "#FFF7ED"
+	}
+}

@@ -24,6 +24,7 @@ const defaultTheme: ImageTheme = {
 		panelBorderRed: "rgba(251, 113, 133, 0.8)",
 		cardGradient: ["rgba(255, 255, 255, 0.28)", "rgba(255, 255, 255, 0.13)", "rgba(148, 163, 184, 0.08)"],
 		cardBorderGradient: ["rgba(255, 255, 255, 0.9)", "rgba(255, 255, 255, 0.28)", "rgba(255, 255, 255, 0.08)"],
+		cardGlossGradient: ["rgba(191, 219, 254, 0.2)", "rgba(255, 255, 255, 0.08)", "rgba(255, 255, 255, 0)"],
 		placeholderBg: "#111827",
 		placeholderBorder: "rgba(148, 163, 184, 0.6)",
 		placeholderText: "#cbd5e1",
@@ -338,9 +339,9 @@ async function drawTeamOnCanvas(
 				cardY + cardHeight * 0.2,
 				cardWidth * 0.8
 			);
-			glossGradient.addColorStop(0, "rgba(255, 255, 255, 0.25)");
-			glossGradient.addColorStop(0.5, "rgba(255, 255, 255, 0.08)");
-			glossGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+			glossGradient.addColorStop(0, theme.tokens.cardGlossGradient[0]);
+			glossGradient.addColorStop(0.5, theme.tokens.cardGlossGradient[1]);
+			glossGradient.addColorStop(1, theme.tokens.cardGlossGradient[2]);
 			ctx.fillStyle = glossGradient;
 			ctx.fillRect(cardX, cardY, cardWidth, cardHeight);
 			ctx.restore();

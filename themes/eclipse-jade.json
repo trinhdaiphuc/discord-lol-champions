@@ -1,0 +1,32 @@
+{
+	"id": "eclipse-jade",
+	"name": "Eclipse Jade",
+	"description": "Dark stone palette with muted jade glow and cleaner glass.",
+	"tokens": {
+		"combinedGradient": ["#020617", "#083344", "#E7F7F2", "#14532D", "#111827"],
+		"panelBlueGradient": ["rgba(2, 6, 23, 0.97)", "rgba(8, 51, 68, 0.78)"],
+		"panelRedGradient": ["rgba(17, 24, 39, 0.97)", "rgba(20, 83, 45, 0.62)"],
+		"panelGridBlue": "rgba(94, 234, 212, 0.14)",
+		"panelGridRed": "rgba(74, 222, 128, 0.14)",
+		"panelBorderBlue": "rgba(45, 212, 191, 0.66)",
+		"panelBorderRed": "rgba(74, 222, 128, 0.66)",
+		"cardGradient": ["rgba(255, 255, 255, 0.14)", "rgba(45, 212, 191, 0.08)", "rgba(15, 23, 42, 0.16)"],
+		"cardBorderGradient": ["rgba(204, 251, 241, 0.68)", "rgba(45, 212, 191, 0.26)", "rgba(74, 222, 128, 0.14)"],
+		"cardGlossGradient": ["rgba(204, 251, 241, 0.16)", "rgba(45, 212, 191, 0.07)", "rgba(255, 255, 255, 0)"],
+		"placeholderBg": "#0B1120",
+		"placeholderBorder": "rgba(45, 212, 191, 0.42)",
+		"placeholderText": "#E7F7F2",
+		"teamTitle": "#F0FDFA",
+		"teamTitleBlueGlow": "rgba(45, 212, 191, 0.35)",
+		"teamTitleRedGlow": "rgba(74, 222, 128, 0.35)",
+		"imageBorderBlue": "rgba(45, 212, 191, 0.48)",
+		"imageBorderRed": "rgba(74, 222, 128, 0.48)",
+		"championName": "#F0FDFA",
+		"championNameShadow": "rgba(2, 6, 23, 0.96)",
+		"blobBlue": "rgba(45, 212, 191, 0.1)",
+		"blobRed": "rgba(74, 222, 128, 0.1)",
+		"centerLine": ["rgba(45, 212, 191, 0)", "rgba(231, 247, 242, 0.16)", "rgba(74, 222, 128, 0)"],
+		"outerBorder": "#5EEAD4",
+		"vsText": "#F0FDFA"
+	}
+}

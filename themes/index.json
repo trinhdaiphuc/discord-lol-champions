@@ -36,6 +36,24 @@
 			"name": "Obsidian Gold",
 			"description": "Luxury black-and-gold visual identity.",
 			"file": "obsidian-gold.json"
+		},
+		{
+			"id": "midnight-tide",
+			"name": "Midnight Tide",
+			"description": "Deep navy glass theme with cool cyan highlights.",
+			"file": "midnight-tide.json"
+		},
+		{
+			"id": "ember-dusk",
+			"name": "Ember Dusk",
+			"description": "Smoky charcoal palette with ember-orange glass accents.",
+			"file": "ember-dusk.json"
+		},
+		{
+			"id": "eclipse-jade",
+			"name": "Eclipse Jade",
+			"description": "Dark stone palette with muted jade glow and cleaner glass.",
+			"file": "eclipse-jade.json"
 		}
 	]
 }

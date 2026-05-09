@@ -12,6 +12,7 @@
 		"panelBorderRed": "rgba(255, 0, 255, 0.85)",
 		"cardGradient": ["rgba(255, 255, 255, 0.22)", "rgba(0, 255, 255, 0.16)", "rgba(255, 0, 255, 0.1)"],
 		"cardBorderGradient": ["rgba(255, 255, 255, 0.9)", "rgba(0, 255, 255, 0.4)", "rgba(255, 0, 255, 0.2)"],
+		"cardGlossGradient": ["rgba(0, 255, 255, 0.18)", "rgba(255, 0, 255, 0.09)", "rgba(255, 255, 255, 0)"],
 		"placeholderBg": "#111111",
 		"placeholderBorder": "rgba(0, 255, 255, 0.65)",
 		"placeholderText": "#F4F4F5",
