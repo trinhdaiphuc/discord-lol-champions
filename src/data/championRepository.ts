@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "fs/promises";
 import { join } from "path";
 import { createHash } from "crypto";
-import type { ChampionData, Checksums } from "../types/index.ts";
+import type { ChampionData, Checksums } from "../entities/index.ts";
 
 const CHAMPIONS_PATH = join(import.meta.dir, "..", "..", "champions.json");
 const CHECKSUM_PATH = join(import.meta.dir, "..", "..", "checksum.json");

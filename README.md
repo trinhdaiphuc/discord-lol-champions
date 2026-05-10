@@ -22,7 +22,7 @@ You can invite the bot to your server: [Invite Bot](https://discord.com/oauth2/a
 |---|---|
 | `/gen` | Generate a random champion team image |
 | `/gen-role` | Generate teams filtered by a specific role |
-| `/gen-exclude` | Generate teams excluding specified champions (autocomplete search + text input) |
+| `/gen-exclude` | Generate teams excluding specified champions (10 autocomplete options + text input) |
 | `/history` | View recent team composition analyses |
 | `/config view` | Show current server configuration |
 | `/config pool` | Set champions per role (3–6) |

@@ -102,7 +102,7 @@ This project is a Discord bot and web server designed to generate League of Lege
 |---|---|
 | `/gen` | Generate a random champion team image for the server |
 | `/gen-role` | Generate teams filtered by a specific role |
-| `/gen-exclude` | Generate teams excluding specified champions (autocomplete search + text input) |
+| `/gen-exclude` | Generate teams excluding specified champions (10 autocomplete options + text input) |
 | `/history` | View recent team composition analyses (limit: 1-20) |
 | `/config` | Configure server settings (pool size, history window, theme) |
 | `/clear` | Clear champion team cache for the server |
@@ -292,7 +292,7 @@ The Dockerfile uses a multi-stage build with Bun:
 -   **Canvas**: The `canvas` package works with Bun but requires native dependencies.
 -   **SQLite**: Guild configs are persisted in `data/channel-config.sqlite` via Bun's native SQLite API.
 -   **Repository Pattern**: Services use constructor-based dependency injection. Default singleton instances provide backward compatibility.
--   **Autocomplete**: The `/gen-exclude` command uses Discord's autocomplete feature for champion selection. Autocomplete interactions are handled in `src/events/interactionCreate.ts`.
+-   **Autocomplete**: The `/gen-exclude` command uses Discord's autocomplete feature for champion selection with 10 searchable options. Autocomplete interactions are handled in `src/events/interactionCreate.ts`.
 -   **Themes**: New themes must be added as JSON files in `themes/` and registered in `themes/index.json`.
 -   **Code Style**: Run `bun run fix` before committing to ensure consistent formatting.
 -   **Scripts shortcut**: `bun run update-champions` is the canonical way to refresh champion data (not calling the script path directly).

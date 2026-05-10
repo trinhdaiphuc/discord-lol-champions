@@ -101,6 +101,41 @@ const command: BotCommand = {
 		)
 		.addStringOption((option) =>
 			option
+				.setName("champion6")
+				.setDescription("Type to search and select champion to exclude")
+				.setAutocomplete(true)
+				.setRequired(false)
+		)
+		.addStringOption((option) =>
+			option
+				.setName("champion7")
+				.setDescription("Type to search and select champion to exclude")
+				.setAutocomplete(true)
+				.setRequired(false)
+		)
+		.addStringOption((option) =>
+			option
+				.setName("champion8")
+				.setDescription("Type to search and select champion to exclude")
+				.setAutocomplete(true)
+				.setRequired(false)
+		)
+		.addStringOption((option) =>
+			option
+				.setName("champion9")
+				.setDescription("Type to search and select champion to exclude")
+				.setAutocomplete(true)
+				.setRequired(false)
+		)
+		.addStringOption((option) =>
+			option
+				.setName("champion10")
+				.setDescription("Type to search and select champion to exclude")
+				.setAutocomplete(true)
+				.setRequired(false)
+		)
+		.addStringOption((option) =>
+			option
 				.setName("exclude")
 				.setDescription("Comma-separated list of champion names to exclude (e.g. ahri, garen)")
 				.setRequired(false)
@@ -150,7 +185,7 @@ const command: BotCommand = {
 			}
 
 			// Collect from champion selection options (champion1, champion2, etc.)
-			for (let i = 1; i <= 5; i++) {
+			for (let i = 1; i <= 10; i++) {
 				const championId = interaction.options.getString(`champion${i}`);
 				if (championId) {
 					exclusions.push(championId);
@@ -159,6 +194,11 @@ const command: BotCommand = {
 
 			// Remove duplicates
 			exclusions = [...new Set(exclusions)];
+
+			// Save exclusions to persistent cache
+			if (exclusions.length > 0) {
+				teamService.setPersistentExclusions(guildId, exclusions);
+			}
 
 			let teamResult;
 			if (exclusions.length > 0) {
@@ -182,12 +222,16 @@ const command: BotCommand = {
 			);
 			const attachment = new AttachmentBuilder(imageBuffer, { name: "team.jpg" });
 
+			// Get persistent exclusions to show in message
+			const persistentExclusions = teamService.getPersistentExclusions(guildId);
+			const allExclusions = [...new Set([...exclusions, ...persistentExclusions])];
+
 			let content = [
 				`⚔️ **Đội ARAM** (6 role × ${guildConfig.poolSize} tướng) • Theme: ${configuredThemeName} • Đang dùng: ${theme.name}`,
 				formatDiscordCompactSummary(analysis.blue, analysis.red),
 			].join("\n");
-			if (exclusions.length > 0) {
-				content += `\n🔕 **Loại trừ:** ${exclusions.join(", ")}`;
+			if (allExclusions.length > 0) {
+				content += `\n🔕 **Loại trừ:** ${allExclusions.join(", ")}`;
 			}
 			if (unknownExclusions.length > 0) {
 				content += `\n❓ **Không nhận diện được:** ${unknownExclusions.join(", ")}`;

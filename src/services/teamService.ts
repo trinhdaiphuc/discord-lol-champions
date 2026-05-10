@@ -57,6 +57,7 @@ class UsedChampions {
 interface GuildTeamCacheState {
 	usedChampions: UsedChampions;
 	recentMatches: string[][];
+	persistentExclusions: Set<string>;
 }
 
 const cache = new NodeCache({
@@ -68,6 +69,7 @@ function createGuildTeamCacheState(): GuildTeamCacheState {
 	return {
 		usedChampions: new UsedChampions(),
 		recentMatches: [],
+		persistentExclusions: new Set<string>(),
 	};
 }
 
@@ -88,6 +90,31 @@ function refreshGuildCacheTtl(guildId: string, state: GuildTeamCacheState): void
 
 export function clearGuildTeamCache(guildId: string): boolean {
 	return cache.del(guildId) > 0;
+}
+
+export function getPersistentExclusions(guildId: string): Set<string> {
+	const state = getCache(guildId);
+	return state.persistentExclusions;
+}
+
+export function setPersistentExclusions(guildId: string, exclusions: string[]): void {
+	const state = getCache(guildId);
+	state.persistentExclusions = new Set(exclusions);
+	refreshGuildCacheTtl(guildId, state);
+}
+
+export function addPersistentExclusions(guildId: string, exclusions: string[]): void {
+	const state = getCache(guildId);
+	for (const champion of exclusions) {
+		state.persistentExclusions.add(champion);
+	}
+	refreshGuildCacheTtl(guildId, state);
+}
+
+export function clearPersistentExclusions(guildId: string): void {
+	const state = getCache(guildId);
+	state.persistentExclusions.clear();
+	refreshGuildCacheTtl(guildId, state);
 }
 
 function buildBlockedRecentChampions(
@@ -525,9 +552,10 @@ export async function generateTeamsWithExclusions(
 	const historyWindow = Math.max(0, options.historyWindow ?? 1);
 	const blockedRecentChampions = buildBlockedRecentChampions(state.recentMatches, historyWindow);
 
-	const exclusionsSet = new Set(exclusions);
+	// Merge current exclusions with persistent exclusions
+	const exclusionsSet = new Set([...exclusions, ...state.persistentExclusions]);
 
-	console.log(`Excluding ${exclusionsSet.size} champions for guild ${guildId}`);
+	console.log(`Excluding ${exclusionsSet.size} champions for guild ${guildId} (${exclusions.length} current + ${state.persistentExclusions.size} persistent)`);
 
 	const selectedChampions = new Set<string>();
 	const blueTeam: string[] = [];
