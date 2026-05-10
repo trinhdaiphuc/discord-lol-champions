@@ -8,9 +8,11 @@ You can invite the bot to your server: [Invite Bot](https://discord.com/oauth2/a
 
 -   🎲 **Random champion team generation** with configurable pool sizes
 -   🎨 **Multiple visual themes** for generated images
--   🔕 **Champion exclusions** — exclude specific champions from generation
+-   🔕 **Champion exclusions** with autocomplete search — exclude specific champions from generation
 -   📜 **History window** — avoid repeating champions from recent sessions
--   ⚙️ **Per-server configuration** stored in SQLite
+-   📊 **Team synergy analysis** — AI-powered composition strength analysis with detailed metrics
+-   📈 **Composition history** — track and review past team generations
+-   ⚙️ **Per-server configuration** stored in SQLite with repository pattern
 -   🤖 **AI assistant** (OpenAI or Google Gemini) for LoL questions
 -   📊 **Player stats** via Riot Games API
 
@@ -20,7 +22,8 @@ You can invite the bot to your server: [Invite Bot](https://discord.com/oauth2/a
 |---|---|
 | `/gen` | Generate a random champion team image |
 | `/gen-role` | Generate teams filtered by a specific role |
-| `/gen-exclude` | Generate teams excluding specified champions |
+| `/gen-exclude` | Generate teams excluding specified champions (autocomplete search + text input) |
+| `/history` | View recent team composition analyses |
 | `/config view` | Show current server configuration |
 | `/config pool` | Set champions per role (3–6) |
 | `/config history` | Set how many recent matches to avoid repeating |
@@ -211,6 +214,46 @@ Update configuration for a guild.
 ```
 
 **Available `themeId` values:** `random` | `cyberpunk-terminal` | `eclipse-jade` | `ember-dusk` | `hextech-current` | `midnight-tide` | `obsidian-gold` | `pixel-arcade` | `retro-futurism-neon` | `skyforge-light`
+
+---
+
+### `GET /guilds/:guildId/history`
+
+Get recent team composition analysis history for a guild.
+
+**Query Parameters:**
+- `limit` (optional, default: 10, max: 50) - Number of records to retrieve
+- `offset` (optional, default: 0) - Pagination offset
+
+**Response:**
+```json
+{
+  "guildId": "...",
+  "total": 42,
+  "limit": 10,
+  "offset": 0,
+  "records": [
+    {
+      "id": 1,
+      "generationMode": "full",
+      "poolSize": 5,
+      "blueTeam": ["Ahri", "Garen", ...],
+      "redTeam": ["Yasuo", "Lux", ...],
+      "blueScores": {
+        "engage": { "score": 75, "label": "Good" },
+        "damage": { "score": 82, "label": "Strong" },
+        ...
+      },
+      "redScores": { ... },
+      "summary": "...",
+      "compositionSignature": "abc123...",
+      "createdAt": "2026-05-10T04:30:00.000Z"
+    }
+  ]
+}
+```
+
+---
 
 ---
 

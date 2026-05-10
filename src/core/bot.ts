@@ -3,7 +3,7 @@ import cron from "node-cron";
 import { updateChampions } from "../scripts/updateChampions.ts";
 import * as championService from "../services/championService.ts";
 import { readConfig } from "./config.ts";
-import type { ExtendedClient } from "../types/index.ts";
+import type { ExtendedClient } from "../entities/index.ts";
 
 export function createClient(): ExtendedClient {
   const client = new Client({

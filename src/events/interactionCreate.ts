@@ -1,14 +1,38 @@
 import type { Interaction } from "discord.js";
-import type { BotEvent, ExtendedClient } from "../types/index.ts";
+import type { BotEvent, ExtendedClient } from "../entities/index.ts";
 
 const event: BotEvent<[Interaction]> = {
 	name: "interactionCreate",
 	async execute(interaction) {
+		const client = interaction.client as ExtendedClient;
+
+		// Handle autocomplete interactions
+		if (interaction.isAutocomplete()) {
+			const command = client.commands.get(interaction.commandName);
+
+			if (!command) {
+				console.error(`No command matching ${interaction.commandName} was found.`);
+				return;
+			}
+
+			if (!command.autocomplete) {
+				return;
+			}
+
+			try {
+				await command.autocomplete(interaction);
+			} catch (error) {
+				console.error(`Error executing autocomplete for ${interaction.commandName}`);
+				console.error(error);
+			}
+			return;
+		}
+
+		// Handle chat input commands
 		if (!interaction.isChatInputCommand()) {
 			return;
 		}
 
-		const client = interaction.client as ExtendedClient;
 		const command = client.commands.get(interaction.commandName);
 
 		if (!command) {

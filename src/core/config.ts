@@ -1,6 +1,6 @@
 import { readFile, writeFile } from "fs/promises";
 import { join } from "path";
-import type { Config } from "../types/index.ts";
+import type { Config } from "../entities/index.ts";
 
 const CONFIG_PATH = join(import.meta.dir, "..", "..", "config.json");
 const DEFAULT_CHAMPION_CACHE_TTL_SECONDS = 60 * 60;

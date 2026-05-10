@@ -7,7 +7,7 @@ import { createClient } from "./core/bot.ts";
 import { createServer } from "./core/server.ts";
 import { readConfig } from "./core/config.ts";
 import * as championService from "./services/championService.ts";
-import type { BotCommand, BotEvent, ExtendedClient } from "./types/index.ts";
+import type { BotCommand, BotEvent, ExtendedClient } from "./entities/index.ts";
 
 async function registerApplicationCommands(client: ExtendedClient): Promise<void> {
 	const botToken = process.env.BOT_TOKEN;

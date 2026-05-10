@@ -1,7 +1,7 @@
 import { readFile, readdir } from "fs/promises";
 import { readFileSync } from "fs";
 import { join } from "path";
-import type { ImageTheme, ThemeManifestItem } from "../types/index.ts";
+import type { ImageTheme, ThemeManifestItem } from "../entities/index.ts";
 
 interface ThemeManifestFile {
 	defaultThemeId: string;

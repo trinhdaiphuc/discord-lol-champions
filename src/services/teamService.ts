@@ -7,7 +7,7 @@ import type {
 	RandomTeamResult,
 	TeamResult,
 	TeamSideRolePools,
-} from "../types/index.ts";
+} from "../entities/index.ts";
 
 const DEFAULT_CHAMPIONS_PER_ROLE_PER_TEAM = 4;
 const MIN_PRIMARY_ROLE_CHAMPIONS = 2;

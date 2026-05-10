@@ -8,7 +8,7 @@ import * as imageService from "../services/imageService.ts";
 import { getGuildGenerateConfig } from "../services/channelConfigService.ts";
 import { getRoleOnlyAnalysisNotice } from "../services/synergyAnalysisService.ts";
 import { getThemeDisplayName, resolveThemeForGenerate } from "../services/themeService.ts";
-import type { BotCommand } from "../types/index.ts";
+import type { BotCommand } from "../entities/index.ts";
 
 const command: BotCommand = {
 	data: new SlashCommandBuilder()

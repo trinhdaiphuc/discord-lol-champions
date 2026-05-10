@@ -11,7 +11,7 @@ import type {
 	TeamSynergyScores,
 	SynergyMetricKey,
 	SynergyMetricScore,
-} from "../types/index.ts";
+} from "../entities/index.ts";
 
 const MAX_METRIC_SCORE = 100;
 const ROLE_COMPLETENESS_WEIGHT = 55;

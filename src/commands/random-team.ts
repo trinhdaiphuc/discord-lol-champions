@@ -6,7 +6,7 @@ import {
 	type VoiceChannel,
 } from "discord.js";
 import * as teamService from "../services/teamService.ts";
-import type { BotCommand } from "../types/index.ts";
+import type { BotCommand } from "../entities/index.ts";
 
 const command: BotCommand = {
 	data: new SlashCommandBuilder()

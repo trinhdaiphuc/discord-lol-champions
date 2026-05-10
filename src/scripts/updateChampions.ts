@@ -13,7 +13,7 @@ import type {
 	ChampionEnrichedAbility,
 	ChampionMobalyticsAramData,
 	Config,
-} from "../types/index.ts";
+} from "../entities/index.ts";
 
 const IMAGES_PATH = join(import.meta.dir, "..", "..", "images");
 const MOBA_BASE_URL = "https://mobalytics.gg";

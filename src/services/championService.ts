@@ -1,5 +1,5 @@
 import * as championRepository from "../data/championRepository.ts";
-import type { Champion, ChampionData } from "../types/index.ts";
+import type { Champion, ChampionData } from "../entities/index.ts";
 
 let champions: ChampionData | null = null;
 

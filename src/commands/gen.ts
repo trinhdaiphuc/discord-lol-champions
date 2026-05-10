@@ -9,7 +9,7 @@ import { getGuildGenerateConfig } from "../services/channelConfigService.ts";
 import { analyzeAndStoreGeneratedTeams } from "../services/compAnalysisHistoryService.ts";
 import { formatDiscordCompactSummary } from "../services/synergyAnalysisService.ts";
 import { getThemeDisplayName, resolveThemeForGenerate } from "../services/themeService.ts";
-import type { BotCommand } from "../types/index.ts";
+import type { BotCommand } from "../entities/index.ts";
 
 const command: BotCommand = {
 	data: new SlashCommandBuilder()

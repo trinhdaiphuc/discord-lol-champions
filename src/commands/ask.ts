@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, type ChatInputCommandInteraction } from "discord.js";
 import { askAI } from "../services/aiService.ts";
-import type { BotCommand } from "../types/index.ts";
+import type { BotCommand } from "../entities/index.ts";
 
 const command: BotCommand = {
 	data: new SlashCommandBuilder()

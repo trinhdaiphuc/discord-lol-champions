@@ -6,7 +6,10 @@ import {
 	reloadGuildGenerateConfig,
 	setGuildGenerateConfig,
 } from "../services/channelConfigService.ts";
-import { analyzeAndStoreGeneratedTeams } from "../services/compAnalysisHistoryService.ts";
+import {
+	analyzeAndStoreGeneratedTeams,
+	getRecentCompAnalysisHistory,
+} from "../services/compAnalysisHistoryService.ts";
 import { getRoleOnlyAnalysisNotice } from "../services/synergyAnalysisService.ts";
 import {
 	getThemeById,
@@ -295,6 +298,60 @@ export function createServer(port: number | string = 3000) {
 					} catch (error) {
 						console.error("Error reloading guild config:", error);
 						return Response.json({ error: "Error reloading guild config" }, { status: 500 });
+					}
+				},
+			},
+
+			"/guilds/:guildId/history": {
+				GET: async (req) => {
+					try {
+						const guildId = req.params.guildId;
+						const url = new URL(req.url);
+						const limitParam = url.searchParams.get("limit");
+						const offsetParam = url.searchParams.get("offset");
+
+						const limit = limitParam ? parseInt(limitParam, 10) : 10;
+						const offset = offsetParam ? parseInt(offsetParam, 10) : 0;
+
+						if (limit > 50) {
+							return Response.json(
+								{ error: "limit cannot exceed 50" },
+								{ status: 400 }
+							);
+						}
+
+						if (offset < 0) {
+							return Response.json(
+								{ error: "offset must be non-negative" },
+								{ status: 400 }
+							);
+						}
+
+						// Fetch limit + offset records, then slice to get pagination
+						const allRecords = await getRecentCompAnalysisHistory(guildId, limit + offset);
+						const records = allRecords.slice(offset, offset + limit);
+
+						return Response.json({
+							guildId,
+							total: allRecords.length,
+							limit,
+							offset,
+							records: records.map((record) => ({
+								id: record.id,
+								generationMode: record.generationMode,
+								poolSize: record.poolSize,
+								blueTeam: record.blueTeam,
+								redTeam: record.redTeam,
+								blueScores: record.blueAnalysis.scores,
+								redScores: record.redAnalysis.scores,
+								summary: record.summaryText,
+								compositionSignature: record.compositionSignature,
+								createdAt: new Date(record.createdAt).toISOString(),
+							})),
+						});
+					} catch (error) {
+						console.error("Error fetching history:", error);
+						return Response.json({ error: "Error fetching history" }, { status: 500 });
 					}
 				},
 			},

@@ -19,9 +19,14 @@ PUT http://localhost:3000/guilds/{{guildId}}/config
 Content-Type: application/json
 
 {
-  "poolSize": 6,
-  "themeId": "{{themeId}}"
+  "poolSize": 3,
+  "themeId": "{{themeId}}",
+  "historyWindow": 2
 }
+
+### Get recent comp analysis history
+GET http://localhost:3000/guilds/{{guildId}}/history
+Content-Type: application/json
 
 ### Reload guild config
 POST http://localhost:3000/guilds/{{guildId}}/config/reload

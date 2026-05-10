@@ -2,7 +2,7 @@ import { createCanvas, loadImage, type Canvas, type CanvasRenderingContext2D } f
 import { readFile } from "fs/promises";
 import { join } from "path";
 import * as championService from "./championService.ts";
-import type { ImageTheme } from "../types/index.ts";
+import type { ImageTheme } from "../entities/index.ts";
 
 const TEAM_CANVAS_WIDTH = 900;
 const DEFAULT_TEAM_COLS = 4;

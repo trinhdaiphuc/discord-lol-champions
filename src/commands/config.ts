@@ -12,7 +12,7 @@ import {
 	RANDOM_THEME_ID,
 	RANDOM_THEME_NAME,
 } from "../services/themeService.ts";
-import type { BotCommand } from "../types/index.ts";
+import type { BotCommand } from "../entities/index.ts";
 
 const themeChoices = getThemeChoicesForCommandSync();
 

@@ -8,8 +8,21 @@ This project is a Discord bot and web server designed to generate League of Lege
 .
 ├── src/
 │   ├── app.ts              # Main entry point
-│   ├── types/              # TypeScript type definitions
-│   │   └── index.ts
+│   ├── entities/           # Domain models (NEW - refactored from types/)
+│   │   ├── index.ts        # Barrel export
+│   │   ├── champion.ts     # Champion-related types
+│   │   ├── config.ts       # Configuration types
+│   │   ├── team.ts         # Team and synergy types
+│   │   ├── analysis.ts     # Analysis persistence types
+│   │   ├── theme.ts        # Theme types
+│   │   └── discord.ts      # Discord bot types
+│   ├── repositories/       # Data access layer (NEW - repository pattern)
+│   │   ├── interfaces/     # Abstract repository contracts
+│   │   │   ├── ICompAnalysisRepository.ts
+│   │   │   └── IGuildConfigRepository.ts
+│   │   └── sqlite/         # SQLite implementations
+│   │       ├── SqliteCompAnalysisRepository.ts
+│   │       └── SqliteGuildConfigRepository.ts
 │   ├── commands/           # Discord slash command definitions
 │   │   ├── ask.ts
 │   │   ├── clear.ts
@@ -17,8 +30,9 @@ This project is a Discord bot and web server designed to generate League of Lege
 │   │   ├── echo.ts
 │   │   ├── g9.ts
 │   │   ├── gen.ts
-│   │   ├── gen-exclude.ts
+│   │   ├── gen-exclude.ts  # Now with autocomplete support
 │   │   ├── gen-role.ts
+│   │   ├── history.ts      # NEW - view composition history
 │   │   ├── ping.ts
 │   │   └── random-team.ts
 │   ├── core/               # Core infrastructure
@@ -30,13 +44,13 @@ This project is a Discord bot and web server designed to generate League of Lege
 │   │   └── championRepository.ts
 │   ├── events/             # Discord event handlers
 │   │   ├── ready.ts
-│   │   └── interactionCreate.ts
+│   │   └── interactionCreate.ts  # Now handles autocomplete interactions
 │   ├── services/           # Business logic
 │   │   ├── aiService.ts
 │   │   ├── championNameService.ts
 │   │   ├── championService.ts
-│   │   ├── channelConfigService.ts
-│   │   ├── compAnalysisHistoryService.ts
+│   │   ├── channelConfigService.ts         # Refactored with DI
+│   │   ├── compAnalysisHistoryService.ts   # Refactored with DI
 │   │   ├── imageService.ts
 │   │   ├── riotApiService.ts
 │   │   ├── synergyAnalysisService.ts
@@ -79,6 +93,7 @@ This project is a Discord bot and web server designed to generate League of Lege
 -   Built with `discord.js` and TypeScript.
 -   **Commands**: Defined in `src/commands/*.ts`. Automatically loaded by `src/app.ts`.
 -   **Events**: Handled in `src/events/*.ts`.
+-   **Autocomplete**: Supported for champion selection in `/gen-exclude` command.
 -   **Registration**: Run `bun run register-commands` to update slash commands.
 
 #### Slash Commands
@@ -87,7 +102,8 @@ This project is a Discord bot and web server designed to generate League of Lege
 |---|---|
 | `/gen` | Generate a random champion team image for the server |
 | `/gen-role` | Generate teams filtered by a specific role |
-| `/gen-exclude` | Generate teams excluding specified champions (comma-separated) |
+| `/gen-exclude` | Generate teams excluding specified champions (autocomplete search + text input) |
+| `/history` | View recent team composition analyses (limit: 1-20) |
 | `/config` | Configure server settings (pool size, history window, theme) |
 | `/clear` | Clear champion team cache for the server |
 | `/ask` | Ask the AI a League of Legends question |
@@ -108,6 +124,7 @@ This project is a Discord bot and web server designed to generate League of Lege
     -   `GET /guilds/:guildId/config`: Read guild configuration.
     -   `PUT /guilds/:guildId/config`: Update guild configuration (poolSize, historyWindow, themeId).
     -   `POST /guilds/:guildId/config/reload`: Reload guild config from persistent storage.
+    -   `GET /guilds/:guildId/history`: Get recent team composition analysis history (with pagination).
 
 ### 3. Image Generation (`src/services/imageService.ts`)
 -   Uses `canvas` (node-canvas) to draw images.
@@ -122,34 +139,70 @@ This project is a Discord bot and web server designed to generate League of Lege
 
 ### 5. Guild Config Service (`src/services/channelConfigService.ts`)
 -   Stores per-guild settings in SQLite (`data/channel-config.sqlite`).
+-   **Architecture**: Uses repository pattern with constructor-based dependency injection.
+-   **Repository**: `IGuildConfigRepository` interface implemented by `SqliteGuildConfigRepository`.
 -   **Settings**:
     -   `poolSize`: Champions per role per side (3–6, default 4).
     -   `historyWindow`: Recent matches to avoid repeating (0–5, default 1).
     -   `themeId`: Active image theme for the guild.
 
-### 6. Data Management (`src/services/championService.ts`)
+### 6. Composition Analysis History Service (`src/services/compAnalysisHistoryService.ts`)
+-   Tracks and stores team composition analyses with synergy scores.
+-   **Architecture**: Uses repository pattern with constructor-based dependency injection.
+-   **Repository**: `ICompAnalysisRepository` interface implemented by `SqliteCompAnalysisRepository`.
+-   **Features**:
+    -   Saves composition analysis with blue/red team synergy scores.
+    -   Retrieves recent analysis history for a guild.
+    -   Finds compositions by signature to avoid duplicates.
+    -   Integrates with `/history` command and `GET /guilds/:guildId/history` endpoint.
+
+### 7. Data Management (`src/services/championService.ts`)
 -   Loads champion data from `champions.json`.
 -   Provides methods to get random champions, filter by role, etc.
 
-### 7. Champion Name Service (`src/services/championNameService.ts`)
+### 8. Champion Name Service (`src/services/championNameService.ts`)
 -   Fuzzy/alias mapping from human-readable champion names to internal champion IDs.
 -   Used by `/gen-exclude` to resolve user-provided exclusion lists.
+-   Supports autocomplete functionality with normalized string matching.
 
-### 8. AI Service (`src/services/aiService.ts`)
+### 9. AI Service (`src/services/aiService.ts`)
 -   Supports both OpenAI and Google Gemini.
 -   **Graceful degradation**: Returns friendly message if AI is not configured.
 
-### 9. Riot API Service (`src/services/riotApiService.ts`)
+### 10. Riot API Service (`src/services/riotApiService.ts`)
 -   Fetches live player stats and match history from Riot Games API.
 -   Requires `RIOT_API_KEY` environment variable.
 
-### 10. Synergy Analysis (`src/services/synergyAnalysisService.ts`)
+### 11. Synergy Analysis (`src/services/synergyAnalysisService.ts`)
 -   Analyzes champion synergies and composition strengths.
 
-### 11. Comp Analysis History (`src/services/compAnalysisHistoryService.ts`)
--   Tracks previously generated compositions to avoid recent repeats (implements the `historyWindow` feature).
+### 12. Repository Layer (`src/repositories/`)
+-   **Architecture**: Abstract interfaces with concrete SQLite implementations.
+-   **Pattern**: Constructor-based dependency injection for testability.
+-   **Interfaces**:
+    -   `ICompAnalysisRepository`: Composition analysis persistence.
+    -   `IGuildConfigRepository`: Guild configuration persistence.
+-   **Implementations**:
+    -   `SqliteCompAnalysisRepository`: SQLite storage for team analyses.
+    -   `SqliteGuildConfigRepository`: SQLite storage for guild settings.
+-   **Benefits**: Easy to swap storage backends (MongoDB, PostgreSQL) without changing business logic.
 
-### 12. Utility Scripts (`src/scripts/`)
+### 13. Entity Layer (`src/entities/`)
+-   **Purpose**: Centralized domain model definitions.
+-   **Files**:
+    -   `champion.ts`: Champion data structures.
+    -   `config.ts`: Configuration types.
+    -   `team.ts`: Team and synergy analysis types.
+    -   `analysis.ts`: Composition analysis persistence types.
+    -   `theme.ts`: Image theme types.
+    -   `discord.ts`: Discord bot command and event types.
+-   **Backward Compatibility**: `src/types/index.ts` re-exports all entities.
+
+### 14. Comp Analysis History (`src/services/compAnalysisHistoryService.ts`)
+-   Tracks previously generated compositions to avoid recent repeats (implements the `historyWindow` feature).
+-   Stores detailed synergy analysis for each generation.
+
+### 15. Utility Scripts (`src/scripts/`)
 
 #### `updateChampions.ts`
 -   **Purpose**: Fetches the latest champion data from Riot's Data Dragon API and updates `champions.json`, `config.json`, and `checksum.json`.
@@ -238,6 +291,9 @@ The Dockerfile uses a multi-stage build with Bun:
 -   **Imports**: Use `.ts` extensions in imports for Bun compatibility.
 -   **Canvas**: The `canvas` package works with Bun but requires native dependencies.
 -   **SQLite**: Guild configs are persisted in `data/channel-config.sqlite` via Bun's native SQLite API.
+-   **Repository Pattern**: Services use constructor-based dependency injection. Default singleton instances provide backward compatibility.
+-   **Autocomplete**: The `/gen-exclude` command uses Discord's autocomplete feature for champion selection. Autocomplete interactions are handled in `src/events/interactionCreate.ts`.
 -   **Themes**: New themes must be added as JSON files in `themes/` and registered in `themes/index.json`.
 -   **Code Style**: Run `bun run fix` before committing to ensure consistent formatting.
 -   **Scripts shortcut**: `bun run update-champions` is the canonical way to refresh champion data (not calling the script path directly).
+-   **Entity Layer**: Domain models are in `src/entities/`. The old `src/types/index.ts` re-exports for backward compatibility.

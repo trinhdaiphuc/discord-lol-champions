@@ -5,3 +5,9 @@ cache
 
 # data
 data
+
+# bun dist
+dist
+
+# bun cache
+.bun/builds
