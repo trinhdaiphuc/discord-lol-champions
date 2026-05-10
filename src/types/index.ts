@@ -8,6 +8,7 @@ import type {
 } from "discord.js";
 
 export interface Champion {
+	key: string;
 	id: string;
 	name: string;
 	title: string;
@@ -49,11 +50,79 @@ export interface Champion {
 		h: number;
 	};
 	tags: string[];
+	mobalytics?: ChampionMobalyticsData;
 	[key: string]: unknown;
 }
 
 export interface ChampionData {
 	[key: string]: Champion;
+}
+
+export interface ChampionDifficultyDescriptor {
+	slug: string;
+	name: string;
+	color: string;
+	level: number;
+}
+
+export interface ChampionAbilityStatValue {
+	slug: string;
+	value: string;
+}
+
+export interface ChampionEnrichedAbility {
+	activationKey: string;
+	name: string;
+	slug: string;
+	riotDesc: string;
+	mobaDesc: string;
+	stats: ChampionAbilityStatValue[];
+	customStats: ChampionAbilityStatValue[];
+	tags: string[];
+	ccTypes: string[];
+}
+
+export interface ChampionAramCombo {
+	sequence: string[];
+	description: string;
+	difficulty: string | null;
+}
+
+export interface ChampionAramBalance {
+	damageDealt: string | null;
+	damageReceived: string | null;
+	otherEffects: string | null;
+}
+
+export interface ChampionMobalyticsAramData {
+	sourceUrl: string;
+	winRate: string | null;
+	pickRate: string | null;
+	tier: string | null;
+	matches: number | null;
+	balance: ChampionAramBalance;
+	combos: ChampionAramCombo[];
+}
+
+export interface ChampionMobalyticsData {
+	slug: string;
+	tags: string[];
+	types: string[];
+	difficulty: ChampionDifficultyDescriptor | null;
+	customDifficulty: ChampionDifficultyDescriptor | null;
+	damageType: number | null;
+	playStyle: number | null;
+	preMobility: number | null;
+	preToughness: number | null;
+	preControl: number | null;
+	preDamage: number | null;
+	abilities: ChampionEnrichedAbility[];
+	abilityTags: string[];
+	ccTypes: string[];
+	hasCc: boolean;
+	hasAoe: boolean;
+	aram: ChampionMobalyticsAramData | null;
+	enrichedAt: string;
 }
 
 export interface Config {

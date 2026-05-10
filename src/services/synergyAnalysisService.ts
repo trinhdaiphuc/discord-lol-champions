@@ -2,6 +2,7 @@ import { readConfig } from "../core/config.ts";
 import { getChampionById, getChampions } from "./championService.ts";
 import type {
 	Champion,
+	ChampionEnrichedAbility,
 	ChampionRoleKey,
 	TeamGenerationMetadata,
 	TeamResult,
@@ -16,25 +17,28 @@ const MAX_METRIC_SCORE = 100;
 const ROLE_COMPLETENESS_WEIGHT = 55;
 const PRIMARY_ROLE_QUALITY_WEIGHT = 45;
 const DAMAGE_BALANCE_TARGET_RATIO = 0.5;
-const DAMAGE_BALANCE_TOLERANCE = 0.18;
-const ENGAGE_BASELINE = 28;
-const ENGAGE_TAG_BONUS = 10;
-const ENGAGE_FRONTLINE_BONUS = 8;
-const CC_BASELINE = 20;
-const CC_CONTROL_TAG_BONUS = 10;
-const CC_MAGE_UTILITY_BONUS = 5;
-const PEEL_BASELINE = 18;
-const PEEL_SUPPORT_BONUS = 11;
-const PEEL_DEFENSE_BONUS = 7;
-const SCALING_BASELINE = 22;
-const SCALING_CARRY_BONUS = 10;
-const SCALING_GROWTH_BONUS = 7;
-const HIGH_DEFENSE_THRESHOLD = 6;
-const HIGH_MAGIC_THRESHOLD = 7;
-const HIGH_ATTACK_THRESHOLD = 7;
+const DAMAGE_BALANCE_TOLERANCE = 0.2;
 const LONG_RANGE_THRESHOLD = 525;
+const HIGH_DEFENSE_THRESHOLD = 6;
 const HIGH_HEALTH_THRESHOLD = 620;
-const HIGH_CC_MOVESPEED_THRESHOLD = 335;
+const MAX_META_WIN_RATE = 60;
+const MIN_META_WIN_RATE = 45;
+const HARD_CC_TYPES = new Set([
+	"stun",
+	"root",
+	"knockup",
+	"pull",
+	"push",
+	"taunt",
+	"fear",
+	"charm",
+	"sleep",
+	"silence",
+	"suppression",
+	"berserk",
+	"polymorph",
+]);
+const SOFT_CC_TYPES = new Set(["slow", "blind", "grounded"]);
 const SUMMARY_METRIC_LABELS: Record<SynergyMetricKey, string> = {
 	engage: "Mở giao tranh",
 	damageBalance: "Cân bằng sát thương",
@@ -50,7 +54,6 @@ const ANSI_RED = "\u001b[31m";
 const ANSI_GREEN = "\u001b[32m";
 const ANSI_YELLOW = "\u001b[33m";
 const ANSI_CYAN = "\u001b[36m";
-const ANSI_WHITE = "\u001b[37m";
 
 interface SideAnalysisInput {
 	side: "blue" | "red";
@@ -66,8 +69,90 @@ interface MatchAnalysisResult {
 	summaryText: string;
 }
 
+interface ChampionCombatProfile {
+	champion: Champion;
+	hardCcTypes: string[];
+	softCcTypes: string[];
+	hardCcAbilities: number;
+	softCcAbilities: number;
+	aoeAbilities: number;
+	aoeCcAbilities: number;
+	engageAbilities: number;
+	peelAbilities: number;
+	healAbilities: number;
+	shieldAbilities: number;
+	regenAbilities: number;
+	allyBuffAbilities: number;
+	armorBuffAbilities: number;
+	resistBuffAbilities: number;
+	cleanseAbilities: number;
+	reviveAbilities: number;
+	hasteAbilities: number;
+	mobilityAbilities: number;
+	womboAbilities: number;
+	damageAmpAbilities: number;
+	executeAbilities: number;
+	magicShare: number;
+	mixedThreat: boolean;
+	frontliner: boolean;
+	ranged: boolean;
+	carry: boolean;
+	growthProfile: boolean;
+	preControl: number;
+	preMobility: number;
+	preToughness: number;
+	preDamage: number;
+	aramTierScore: number;
+	aramWinRateNorm: number;
+	aramDamageEfficiency: number;
+}
+
+interface TeamCombatProfile {
+	champions: ChampionCombatProfile[];
+	teamSize: number;
+	hardCcChampions: number;
+	softCcChampions: number;
+	aoeChampions: number;
+	aoeCcChampions: number;
+	engageChampions: number;
+	peelChampions: number;
+	sustainChampions: number;
+	buffChampions: number;
+	cleanseOrReviveChampions: number;
+	mobilityChampions: number;
+	womboChampions: number;
+	damageAmpChampions: number;
+	executeChampions: number;
+	frontliners: number;
+	rangedChampions: number;
+	carryChampions: number;
+	growthProfiles: number;
+	mixedThreatChampions: number;
+	totalHardCcAbilities: number;
+	totalSoftCcAbilities: number;
+	totalAoeAbilities: number;
+	totalAoeCcAbilities: number;
+	totalPeelAbilities: number;
+	totalEngageAbilities: number;
+	totalSustainAbilities: number;
+	totalBuffAbilities: number;
+	avgPreControl: number;
+	avgPreMobility: number;
+	avgPreToughness: number;
+	avgPreDamage: number;
+	avgMagicShare: number;
+	avgAramTierScore: number;
+	avgAramWinRateNorm: number;
+	avgAramDamageEfficiency: number;
+	uniqueHardCcTypes: Set<string>;
+}
+
 function clampScore(score: number): number {
 	return Math.max(0, Math.min(MAX_METRIC_SCORE, Math.round(score)));
+}
+
+function clamp01(value: number): number {
+	return Math.max(0, Math.min(1, value));
 }
 
 function labelScore(score: number): string {
@@ -103,134 +188,355 @@ function scoreMetric(score: number, evidence: string[]): SynergyMetricScore {
 	};
 }
 
-function calculateEngageScore(champions: Champion[]): SynergyMetricScore {
-	let score = ENGAGE_BASELINE;
-	let engageCount = 0;
-	let frontlineCount = 0;
-	let speedCount = 0;
+function getChampionAbilities(champion: Champion): ChampionEnrichedAbility[] {
+	return champion.mobalytics?.abilities ?? [];
+}
 
-	for (const champion of champions) {
-		if (hasAnyTag(champion, ["Tank", "Fighter", "Assassin"])) {
-			score += ENGAGE_TAG_BONUS;
-			engageCount += 1;
-		}
-		if (champion.info.defense >= HIGH_DEFENSE_THRESHOLD || champion.stats.hp >= HIGH_HEALTH_THRESHOLD) {
-			score += ENGAGE_FRONTLINE_BONUS;
-			frontlineCount += 1;
-		}
-		if (champion.stats.movespeed >= HIGH_CC_MOVESPEED_THRESHOLD) {
-			score += 4;
-			speedCount += 1;
+function abilityHasTag(ability: ChampionEnrichedAbility, tag: string): boolean {
+	return ability.tags.includes(tag);
+}
+
+function parsePercentValue(value: string | null | undefined): number | null {
+	if (!value) {
+		return null;
+	}
+	const match = value.match(/[+-]?\d+(?:\.\d+)?/);
+	return match ? Number.parseFloat(match[0]) : null;
+}
+
+function normalizeFivePointMetric(value: number | null | undefined): number {
+	return clamp01(((value ?? 3) - 1) / 4);
+}
+
+function mapTierScoreToNormalized(tier: string | null | undefined): number {
+	switch (tier?.toUpperCase()) {
+		case "S":
+			return 1;
+		case "A":
+			return 0.86;
+		case "B":
+			return 0.72;
+		case "C":
+			return 0.58;
+		case "D":
+			return 0.44;
+		default:
+			return 0.62;
+	}
+}
+
+function normalizeWinRate(value: string | null | undefined): number {
+	const parsed = parsePercentValue(value);
+	if (parsed === null) {
+		return 0.55;
+	}
+	return clamp01((parsed - MIN_META_WIN_RATE) / (MAX_META_WIN_RATE - MIN_META_WIN_RATE));
+}
+
+function normalizeDamageEfficiency(
+	damageDealt: string | null | undefined,
+	damageReceived: string | null | undefined
+): number {
+	const dealt = parsePercentValue(damageDealt) ?? 0;
+	const received = parsePercentValue(damageReceived) ?? 0;
+	return clamp01(0.5 + (dealt - received) / 40);
+}
+
+function calculateChampionMagicShare(champion: Champion): number {
+	if (typeof champion.mobalytics?.damageType === "number") {
+		return clamp01(champion.mobalytics.damageType / 100);
+	}
+	const total = Math.max(1, champion.info.attack + champion.info.magic);
+	return champion.info.magic / total;
+}
+
+function countAbilitiesWith(
+	abilities: ChampionEnrichedAbility[],
+	predicate: (ability: ChampionEnrichedAbility) => boolean
+): number {
+	return abilities.filter(predicate).length;
+}
+
+function buildChampionCombatProfile(champion: Champion): ChampionCombatProfile {
+	const abilities = getChampionAbilities(champion);
+	const hardCcTypes = new Set<string>();
+	const softCcTypes = new Set<string>();
+
+	for (const ability of abilities) {
+		for (const ccType of ability.ccTypes) {
+			if (HARD_CC_TYPES.has(ccType)) {
+				hardCcTypes.add(ccType);
+			} else if (SOFT_CC_TYPES.has(ccType)) {
+				softCcTypes.add(ccType);
+			}
 		}
 	}
 
+	const hardCcAbilities = countAbilitiesWith(
+		abilities,
+		(ability) => ability.ccTypes.some((ccType) => HARD_CC_TYPES.has(ccType))
+	);
+	const softCcAbilities = countAbilitiesWith(
+		abilities,
+		(ability) =>
+			ability.ccTypes.some((ccType) => SOFT_CC_TYPES.has(ccType)) &&
+			!ability.ccTypes.some((ccType) => HARD_CC_TYPES.has(ccType))
+	);
+	const aoeAbilities = countAbilitiesWith(abilities, (ability) => abilityHasTag(ability, "AOE"));
+	const aoeCcAbilities = countAbilitiesWith(
+		abilities,
+		(ability) => abilityHasTag(ability, "AOE") && ability.ccTypes.length > 0
+	);
+	const engageAbilities = countAbilitiesWith(abilities, (ability) => abilityHasTag(ability, "ENGAGE"));
+	const peelAbilities = countAbilitiesWith(abilities, (ability) => abilityHasTag(ability, "PEEL"));
+	const healAbilities = countAbilitiesWith(abilities, (ability) => abilityHasTag(ability, "HEAL"));
+	const shieldAbilities = countAbilitiesWith(abilities, (ability) => abilityHasTag(ability, "SHIELD"));
+	const regenAbilities = countAbilitiesWith(abilities, (ability) => abilityHasTag(ability, "REGEN"));
+	const allyBuffAbilities = countAbilitiesWith(abilities, (ability) => abilityHasTag(ability, "ALLY_BUFF"));
+	const armorBuffAbilities = countAbilitiesWith(abilities, (ability) =>
+		abilityHasTag(ability, "ARMOR_BUFF")
+	);
+	const resistBuffAbilities = countAbilitiesWith(abilities, (ability) =>
+		abilityHasTag(ability, "RESIST_BUFF")
+	);
+	const cleanseAbilities = countAbilitiesWith(abilities, (ability) => abilityHasTag(ability, "CLEANSE"));
+	const reviveAbilities = countAbilitiesWith(abilities, (ability) => abilityHasTag(ability, "REVIVE"));
+	const hasteAbilities = countAbilitiesWith(abilities, (ability) => abilityHasTag(ability, "HASTE"));
+	const mobilityAbilities = countAbilitiesWith(abilities, (ability) => abilityHasTag(ability, "MOBILITY"));
+	const womboAbilities = countAbilitiesWith(abilities, (ability) => abilityHasTag(ability, "WOMBO"));
+	const damageAmpAbilities = countAbilitiesWith(abilities, (ability) =>
+		abilityHasTag(ability, "DAMAGE_AMP")
+	);
+	const executeAbilities = countAbilitiesWith(abilities, (ability) => abilityHasTag(ability, "EXECUTE"));
+	const magicShare = calculateChampionMagicShare(champion);
+
+	return {
+		champion,
+		hardCcTypes: [...hardCcTypes],
+		softCcTypes: [...softCcTypes],
+		hardCcAbilities,
+		softCcAbilities,
+		aoeAbilities,
+		aoeCcAbilities,
+		engageAbilities,
+		peelAbilities,
+		healAbilities,
+		shieldAbilities,
+		regenAbilities,
+		allyBuffAbilities,
+		armorBuffAbilities,
+		resistBuffAbilities,
+		cleanseAbilities,
+		reviveAbilities,
+		hasteAbilities,
+		mobilityAbilities,
+		womboAbilities,
+		damageAmpAbilities,
+		executeAbilities,
+		magicShare,
+		mixedThreat: magicShare >= 0.35 && magicShare <= 0.65,
+		frontliner:
+			hasAnyTag(champion, ["Tank", "Fighter"]) ||
+			champion.info.defense >= HIGH_DEFENSE_THRESHOLD ||
+			champion.stats.hp >= HIGH_HEALTH_THRESHOLD,
+		ranged: champion.stats.attackrange >= LONG_RANGE_THRESHOLD,
+		carry:
+			hasAnyTag(champion, ["Marksman", "Mage", "Assassin"]) ||
+			champion.info.attack >= 7 ||
+			champion.info.magic >= 7,
+		growthProfile: champion.stats.hpperlevel >= 100 || champion.stats.armorperlevel >= 4,
+		preControl: normalizeFivePointMetric(champion.mobalytics?.preControl),
+		preMobility: normalizeFivePointMetric(champion.mobalytics?.preMobility),
+		preToughness: normalizeFivePointMetric(champion.mobalytics?.preToughness),
+		preDamage: normalizeFivePointMetric(champion.mobalytics?.preDamage),
+		aramTierScore: mapTierScoreToNormalized(champion.mobalytics?.aram?.tier),
+		aramWinRateNorm: normalizeWinRate(champion.mobalytics?.aram?.winRate),
+		aramDamageEfficiency: normalizeDamageEfficiency(
+			champion.mobalytics?.aram?.balance.damageDealt,
+			champion.mobalytics?.aram?.balance.damageReceived
+		),
+	};
+}
+
+function countProfiles(
+	profiles: ChampionCombatProfile[],
+	predicate: (profile: ChampionCombatProfile) => boolean
+): number {
+	return profiles.filter(predicate).length;
+}
+
+function sumProfiles(
+	profiles: ChampionCombatProfile[],
+	selector: (profile: ChampionCombatProfile) => number
+): number {
+	return profiles.reduce((sum, profile) => sum + selector(profile), 0);
+}
+
+function ratio(count: number, total: number): number {
+	return total === 0 ? 0 : count / total;
+}
+
+function buildTeamCombatProfile(champions: Champion[]): TeamCombatProfile {
+	const profiles = champions.map(buildChampionCombatProfile);
+	const teamSize = Math.max(1, profiles.length);
+	const uniqueHardCcTypes = new Set(profiles.flatMap((profile) => profile.hardCcTypes));
+
+	return {
+		champions: profiles,
+		teamSize,
+		hardCcChampions: countProfiles(profiles, (profile) => profile.hardCcAbilities > 0),
+		softCcChampions: countProfiles(profiles, (profile) => profile.softCcAbilities > 0),
+		aoeChampions: countProfiles(profiles, (profile) => profile.aoeAbilities > 0),
+		aoeCcChampions: countProfiles(profiles, (profile) => profile.aoeCcAbilities > 0),
+		engageChampions: countProfiles(profiles, (profile) => profile.engageAbilities > 0),
+		peelChampions: countProfiles(profiles, (profile) => profile.peelAbilities > 0),
+		sustainChampions: countProfiles(
+			profiles,
+			(profile) => profile.healAbilities + profile.shieldAbilities + profile.regenAbilities > 0
+		),
+		buffChampions: countProfiles(
+			profiles,
+			(profile) =>
+				profile.allyBuffAbilities +
+					profile.armorBuffAbilities +
+					profile.resistBuffAbilities +
+					profile.hasteAbilities >
+				0
+		),
+		cleanseOrReviveChampions: countProfiles(
+			profiles,
+			(profile) => profile.cleanseAbilities + profile.reviveAbilities > 0
+		),
+		mobilityChampions: countProfiles(profiles, (profile) => profile.mobilityAbilities > 0),
+		womboChampions: countProfiles(profiles, (profile) => profile.womboAbilities > 0),
+		damageAmpChampions: countProfiles(profiles, (profile) => profile.damageAmpAbilities > 0),
+		executeChampions: countProfiles(profiles, (profile) => profile.executeAbilities > 0),
+		frontliners: countProfiles(profiles, (profile) => profile.frontliner),
+		rangedChampions: countProfiles(profiles, (profile) => profile.ranged),
+		carryChampions: countProfiles(profiles, (profile) => profile.carry),
+		growthProfiles: countProfiles(profiles, (profile) => profile.growthProfile),
+		mixedThreatChampions: countProfiles(profiles, (profile) => profile.mixedThreat),
+		totalHardCcAbilities: sumProfiles(profiles, (profile) => profile.hardCcAbilities),
+		totalSoftCcAbilities: sumProfiles(profiles, (profile) => profile.softCcAbilities),
+		totalAoeAbilities: sumProfiles(profiles, (profile) => profile.aoeAbilities),
+		totalAoeCcAbilities: sumProfiles(profiles, (profile) => profile.aoeCcAbilities),
+		totalPeelAbilities: sumProfiles(profiles, (profile) => profile.peelAbilities),
+		totalEngageAbilities: sumProfiles(profiles, (profile) => profile.engageAbilities),
+		totalSustainAbilities: sumProfiles(
+			profiles,
+			(profile) => profile.healAbilities + profile.shieldAbilities + profile.regenAbilities
+		),
+		totalBuffAbilities: sumProfiles(
+			profiles,
+			(profile) =>
+				profile.allyBuffAbilities +
+				profile.armorBuffAbilities +
+				profile.resistBuffAbilities +
+				profile.cleanseAbilities +
+				profile.reviveAbilities +
+				profile.hasteAbilities
+		),
+		avgPreControl: sumProfiles(profiles, (profile) => profile.preControl) / teamSize,
+		avgPreMobility: sumProfiles(profiles, (profile) => profile.preMobility) / teamSize,
+		avgPreToughness: sumProfiles(profiles, (profile) => profile.preToughness) / teamSize,
+		avgPreDamage: sumProfiles(profiles, (profile) => profile.preDamage) / teamSize,
+		avgMagicShare: sumProfiles(profiles, (profile) => profile.magicShare) / teamSize,
+		avgAramTierScore: sumProfiles(profiles, (profile) => profile.aramTierScore) / teamSize,
+		avgAramWinRateNorm: sumProfiles(profiles, (profile) => profile.aramWinRateNorm) / teamSize,
+		avgAramDamageEfficiency: sumProfiles(profiles, (profile) => profile.aramDamageEfficiency) / teamSize,
+		uniqueHardCcTypes,
+	};
+}
+
+function calculateEngageScore(teamProfile: TeamCombatProfile): SynergyMetricScore {
+	const score =
+		18 +
+		ratio(teamProfile.engageChampions, teamProfile.teamSize) * 24 +
+		ratio(teamProfile.hardCcChampions, teamProfile.teamSize) * 15 +
+		ratio(teamProfile.frontliners, teamProfile.teamSize) * 12 +
+		ratio(teamProfile.mobilityChampions, teamProfile.teamSize) * 8 +
+		ratio(teamProfile.aoeCcChampions, teamProfile.teamSize) * 12 +
+		ratio(teamProfile.womboChampions, teamProfile.teamSize) * 8 +
+		clamp01(teamProfile.totalEngageAbilities / teamProfile.teamSize) * 6 +
+		teamProfile.avgPreMobility * 6 +
+		teamProfile.avgPreControl * 6;
+
 	return scoreMetric(score, [
-		`${engageCount} engage-ready tags`,
-		`${frontlineCount} frontliners`,
-		`${speedCount} fast starters`,
+		`${teamProfile.engageChampions} tướng có công cụ vào combat`,
+		`${teamProfile.hardCcChampions} tướng có khống chế cứng`,
+		`${teamProfile.aoeCcChampions} nguồn mở giao tranh diện rộng`,
 	]);
 }
 
-function calculateDamageBalanceScore(champions: Champion[]): SynergyMetricScore {
-	const attackPower = champions.reduce((sum, champion) => sum + champion.info.attack, 0);
-	const magicPower = champions.reduce((sum, champion) => sum + champion.info.magic, 0);
-	const totalPower = Math.max(1, attackPower + magicPower);
-	const attackRatio = attackPower / totalPower;
-	const ratioDelta = Math.abs(attackRatio - DAMAGE_BALANCE_TARGET_RATIO);
+function calculateDamageBalanceScore(teamProfile: TeamCombatProfile): SynergyMetricScore {
+	const magicShare = teamProfile.avgMagicShare;
+	const attackShare = 1 - magicShare;
+	const ratioDelta = Math.abs(attackShare - DAMAGE_BALANCE_TARGET_RATIO);
 	const normalizedDelta = Math.min(1, ratioDelta / DAMAGE_BALANCE_TOLERANCE);
-	const score = MAX_METRIC_SCORE - normalizedDelta * 55;
+	const mixedThreatBonus = ratio(teamProfile.mixedThreatChampions, teamProfile.teamSize) * 10;
+	const score = 92 - normalizedDelta * 58 + mixedThreatBonus;
 
 	return scoreMetric(score, [
-		`attack share ${Math.round(attackRatio * 100)}%`,
-		`magic share ${Math.round((1 - attackRatio) * 100)}%`,
-		ratioDelta <= 0.08 ? "mixed threats stay honest" : "leans into one damage profile",
+		`sát thương vật lý ${Math.round(attackShare * 100)}%`,
+		`sát thương phép ${Math.round(magicShare * 100)}%`,
+		`${teamProfile.mixedThreatChampions} tướng có profile sát thương hỗn hợp`,
 	]);
 }
 
-function calculateCcScore(champions: Champion[]): SynergyMetricScore {
-	let score = CC_BASELINE;
-	let controlTags = 0;
-	let utilityMages = 0;
-	let longRangeSupports = 0;
-
-	for (const champion of champions) {
-		if (hasAnyTag(champion, ["Tank", "Support", "Fighter"])) {
-			score += CC_CONTROL_TAG_BONUS;
-			controlTags += 1;
-		}
-		if (champion.tags.includes("Mage") && champion.info.magic >= HIGH_MAGIC_THRESHOLD) {
-			score += CC_MAGE_UTILITY_BONUS;
-			utilityMages += 1;
-		}
-		if (
-			champion.stats.attackrange >= LONG_RANGE_THRESHOLD &&
-			hasAnyTag(champion, ["Support", "Mage"])
-		) {
-			score += 4;
-			longRangeSupports += 1;
-		}
-	}
+function calculateCcScore(teamProfile: TeamCombatProfile): SynergyMetricScore {
+	const score =
+		12 +
+		ratio(teamProfile.hardCcChampions, teamProfile.teamSize) * 30 +
+		ratio(teamProfile.softCcChampions, teamProfile.teamSize) * 8 +
+		ratio(teamProfile.aoeCcChampions, teamProfile.teamSize) * 14 +
+		clamp01(teamProfile.totalHardCcAbilities / teamProfile.teamSize) * 8 +
+		clamp01(teamProfile.uniqueHardCcTypes.size / 7) * 14 +
+		ratio(teamProfile.womboChampions, teamProfile.teamSize) * 6 +
+		teamProfile.avgPreControl * 8;
 
 	return scoreMetric(score, [
-		`${controlTags} control-heavy picks`,
-		`${utilityMages} utility mages`,
-		`${longRangeSupports} long-range setup tools`,
+		`${teamProfile.hardCcChampions} tướng có khống chế cứng`,
+		`${teamProfile.uniqueHardCcTypes.size} dạng khống chế cứng khác nhau`,
+		`${teamProfile.aoeCcChampions} kỹ năng CC diện rộng`,
 	]);
 }
 
-function calculatePeelScore(champions: Champion[]): SynergyMetricScore {
-	let score = PEEL_BASELINE;
-	let peelTags = 0;
-	let defensiveCore = 0;
-	let rangedBackline = 0;
-
-	for (const champion of champions) {
-		if (hasAnyTag(champion, ["Support", "Tank"])) {
-			score += PEEL_SUPPORT_BONUS;
-			peelTags += 1;
-		}
-		if (champion.info.defense >= HIGH_DEFENSE_THRESHOLD) {
-			score += PEEL_DEFENSE_BONUS;
-			defensiveCore += 1;
-		}
-		if (champion.stats.attackrange >= LONG_RANGE_THRESHOLD && champion.info.attack >= 5) {
-			score += 4;
-			rangedBackline += 1;
-		}
-	}
+function calculatePeelScore(teamProfile: TeamCombatProfile): SynergyMetricScore {
+	const score =
+		14 +
+		ratio(teamProfile.peelChampions, teamProfile.teamSize) * 20 +
+		ratio(teamProfile.sustainChampions, teamProfile.teamSize) * 18 +
+		ratio(teamProfile.buffChampions, teamProfile.teamSize) * 18 +
+		ratio(teamProfile.cleanseOrReviveChampions, teamProfile.teamSize) * 10 +
+		ratio(teamProfile.frontliners, teamProfile.teamSize) * 10 +
+		clamp01(teamProfile.totalSustainAbilities / teamProfile.teamSize) * 5 +
+		clamp01(teamProfile.totalBuffAbilities / teamProfile.teamSize) * 5 +
+		teamProfile.avgPreToughness * 8;
 
 	return scoreMetric(score, [
-		`${peelTags} peel-oriented tags`,
-		`${defensiveCore} durable protectors`,
-		`${rangedBackline} ranged backline anchors`,
+		`${teamProfile.sustainChampions} tướng có heal/shield/hồi phục`,
+		`${teamProfile.buffChampions} tướng có buff đồng minh`,
+		`${teamProfile.cleanseOrReviveChampions} tướng có giải hiệu ứng hoặc hồi sinh`,
 	]);
 }
 
-function calculateScalingScore(champions: Champion[]): SynergyMetricScore {
-	let score = SCALING_BASELINE;
-	let lateGameCarries = 0;
-	let growthProfiles = 0;
-	let safeRange = 0;
-
-	for (const champion of champions) {
-		if (hasAnyTag(champion, ["Marksman", "Mage", "Assassin"]) || champion.info.attack >= HIGH_ATTACK_THRESHOLD) {
-			score += SCALING_CARRY_BONUS;
-			lateGameCarries += 1;
-		}
-		if (champion.stats.hpperlevel >= 100 || champion.stats.armorperlevel >= 4) {
-			score += SCALING_GROWTH_BONUS;
-			growthProfiles += 1;
-		}
-		if (champion.stats.attackrange >= LONG_RANGE_THRESHOLD) {
-			score += 3;
-			safeRange += 1;
-		}
-	}
+function calculateScalingScore(teamProfile: TeamCombatProfile): SynergyMetricScore {
+	const metaStrength = teamProfile.avgAramTierScore * 0.55 + teamProfile.avgAramWinRateNorm * 0.45;
+	const score =
+		18 +
+		ratio(teamProfile.carryChampions, teamProfile.teamSize) * 16 +
+		ratio(teamProfile.growthProfiles, teamProfile.teamSize) * 12 +
+		ratio(teamProfile.rangedChampions, teamProfile.teamSize) * 8 +
+		ratio(teamProfile.damageAmpChampions + teamProfile.executeChampions, teamProfile.teamSize) * 10 +
+		ratio(teamProfile.aoeChampions, teamProfile.teamSize) * 8 +
+		metaStrength * 18 +
+		teamProfile.avgAramDamageEfficiency * 6 +
+		teamProfile.avgPreDamage * 10;
 
 	return scoreMetric(score, [
-		`${lateGameCarries} scaling carries`,
-		`${growthProfiles} stat-growth picks`,
-		`${safeRange} long-range closers`,
+		`${teamProfile.carryChampions} nguồn sát thương carry`,
+		`${Math.round(metaStrength * 100)}/100 meta ARAM trung bình`,
+		`${teamProfile.damageAmpChampions + teamProfile.executeChampions} công cụ kết liễu hoặc khuếch đại sát thương`,
 	]);
 }
 
@@ -267,13 +573,14 @@ async function calculateLaneStabilityScore(
 
 async function calculateScores(input: SideAnalysisInput): Promise<TeamSynergyScores> {
 	const champions = getTeamChampions(input.team);
+	const teamProfile = buildTeamCombatProfile(champions);
 
 	return {
-		engage: calculateEngageScore(champions),
-		damageBalance: calculateDamageBalanceScore(champions),
-		cc: calculateCcScore(champions),
-		peel: calculatePeelScore(champions),
-		scaling: calculateScalingScore(champions),
+		engage: calculateEngageScore(teamProfile),
+		damageBalance: calculateDamageBalanceScore(teamProfile),
+		cc: calculateCcScore(teamProfile),
+		peel: calculatePeelScore(teamProfile),
+		scaling: calculateScalingScore(teamProfile),
 		laneStability: await calculateLaneStabilityScore(input.rolePools, input.poolSize),
 	};
 }
