@@ -293,37 +293,51 @@
 - Guilds that run tournaments have 30% higher 30-day retention vs non-tournament guilds
 - Tournament participants have 40% higher engagement (messages, commands) than non-participants
 
-## Open Questions
+## Design Decisions (Resolved)
 
-1. **Player registration**: How do we handle player registration for tournaments?
-   - Option A: Players react to tournament creation message to join (first 8 get in)
-   - Option B: Admin specifies player list during creation
-   - Option C: Bot detects voice channel members and auto-registers them
+### Player Registration
+**Decision**: Auto-detect voice channel members
+- Bot detects all members in the voice channel where command is issued
+- Automatically registers them as tournament participants
+- Requires: Command must be issued while in a voice channel
+- Fallback: If not in voice channel, show error message with instructions
+- Seeding: Randomized by default, admin can manually adjust seeds after creation
 
-2. **Match result validation**: What's the best way to prevent false result reporting?
-   - Option A: Require confirmation from both teams (2+ players)
-   - Option B: Admin confirms all results manually
-   - Option C: Integrate with Riot API to auto-detect match results (requires player summoner names)
+### Match Result Validation
+**Decision**: Require confirmation from both teams
+- One player reports result via button (Blue Win / Red Win)
+- Bot requires 1+ confirmation from opposing team before accepting
+- Prevents trolling while keeping friction low
+- Admin can override result via `/tournament override-result` command
+- Timeout: If no confirmation within 5 minutes, bot pings admin for manual confirmation
 
-3. **Parallel matches**: Should bot allow multiple matches in same round to run simultaneously?
-   - Pro: Faster tournament completion
-   - Con: Requires more players online at once, harder to track
-   - Compromise: Allow parallel matches only if 8+ players are registered
+### Parallel Matches
+**Decision**: Sequential matches only (v1)
+- All matches in a round must complete before next round starts
+- Simpler to implement and track
+- Prevents confusion about which match is active
+- Future enhancement: Allow parallel matches for 8+ player tournaments
 
-4. **Tournament persistence**: How long should completed tournaments be stored?
-   - Option A: Forever (until manually deleted)
-   - Option B: 30 days, then auto-archived
-   - Option C: Keep last 100 tournaments per guild, delete oldest
+### Tournament Persistence
+**Decision**: Keep last 100 tournaments per guild, auto-delete oldest
+- Balances storage with historical access
+- 100 tournaments = ~2 years of weekly tournaments
+- Completed tournaments older than 100th are auto-archived (deleted from active DB)
+- Admin can manually delete tournaments via `/tournament delete` command
 
-5. **Bracket visualization**: Should we generate images for all brackets or use text for small ones?
-   - Text pros: Faster, works on all devices, easier to update
-   - Image pros: More visual, easier to understand at a glance
-   - Compromise: Text for 4-player, image for 8+ player brackets
+### Bracket Visualization
+**Decision**: Text for 4-player, image for 8+ player brackets
+- Text-based ASCII tree for 4-player tournaments (fast, mobile-friendly)
+- Generated image for 8-player tournaments (clearer visualization)
+- Images cached to avoid regeneration on every view
+- Bracket updates trigger image regeneration
 
-6. **Team generation in tournaments**: Should teams be persistent across matches or regenerated each time?
-   - Option A: Regenerate teams for each match (more variety)
-   - Option B: Keep same teams throughout tournament (more consistency)
-   - Option C: Let admin choose during tournament creation
+### Team Generation in Tournaments
+**Decision**: Regenerate teams for each match (more variety)
+- Each match generates fresh teams using tournament's configured mode (Random/Draft/Manual)
+- Maintains ARAM's variety and replayability
+- Prevents "same matchup" fatigue across multiple rounds
+- Admin can override and manually set teams via `/tournament set-teams` if needed
 
 ## Technical Notes
 

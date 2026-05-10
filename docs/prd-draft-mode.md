@@ -196,29 +196,41 @@
 - Guilds that use `/draft` have 20% higher 30-day retention vs `/gen`-only guilds
 - Average drafts per active guild per week: 3-5
 
-## Open Questions
+## Design Decisions (Resolved)
 
-1. **Player registration**: How do we identify which Discord users are participating in the draft?
-   - Option A: Players react to initial message to join (up to 10 players)
-   - Option B: Command initiator specifies player count, bot assigns turn order
-   - Option C: Bot detects active voice channel members and auto-registers them
+### Player Registration
+**Decision**: Auto-detect voice channel members
+- Bot detects all members in the voice channel where command is issued
+- Automatically registers them as draft participants
+- Randomizes pick order among detected members
+- Requires: Command must be issued while in a voice channel
+- Fallback: If not in voice channel, show error message with instructions
 
-2. **Pool generation strategy**: Should pool be purely random or weighted by role balance?
-   - Current: Random selection respecting role distribution (2 per role)
-   - Alternative: Ensure at least 1 tank, 1 support, 1 ADC in pool
+### Pool Generation Strategy
+**Decision**: Purely random (current logic)
+- 20 champions selected randomly respecting role distribution (3-6 per role)
+- Maintains ARAM's random spirit
+- May result in unbalanced pools, but that's part of the fun
+- Users can always use `/gen-exclude` to filter out unwanted champions before draft
 
-3. **Pick order fairness**: Should first-pick players get compensation (e.g., extra time, priority in next draft)?
-   - Current: Pure snake draft, no compensation
-   - Alternative: Track pick order history and rotate first-pick privilege
+### Pick Order Fairness
+**Decision**: Pure snake draft, no compensation
+- First-pick advantage is minimal in ARAM context
+- Complexity of tracking history across sessions not worth the benefit
+- Keep it simple and fast
 
-4. **Mobile UX**: How do we ensure dropdown menus work well on mobile Discord?
-   - Need to test with 20+ champion dropdown on iOS/Android
-   - May need to split into role-selection → champion-selection flow
+### Mobile UX
+**Decision**: Single dropdown with all champions
+- Test with 20+ champion dropdown on mobile
+- If performance issues arise, split into role-selection → champion-selection flow in future iteration
+- Discord's native dropdown should handle this reasonably well
 
-5. **Undo mechanism**: Should players be able to undo their pick?
-   - Option A: No undo, picks are final
-   - Option B: Undo within 10 seconds of pick (only current turn)
-   - Option C: Undo requires majority vote from participants
+### Undo Mechanism
+**Decision**: No undo, picks are final
+- Keeps draft moving quickly
+- Prevents analysis paralysis
+- Players have 60 seconds to decide, which is generous
+- If they misclick, they can always dodge in League client
 
 ## Technical Notes
 
