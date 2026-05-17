@@ -8,6 +8,17 @@ import {
 import * as teamService from "../services/teamService.ts";
 import type { BotCommand } from "../entities/index.ts";
 
+const parseExtraUsers = (input: string | null): string[] => {
+	if (!input) {
+		return [];
+	}
+
+	return input
+		.split(",")
+		.map((name) => name.trim())
+		.filter((name) => name.length > 0);
+};
+
 const command: BotCommand = {
 	data: new SlashCommandBuilder()
 		.setName("random-team")
@@ -18,12 +29,19 @@ const command: BotCommand = {
 				.setDescription("The voice channel to get members from")
 				.setRequired(true)
 				.addChannelTypes(ChannelType.GuildVoice)
+		)
+		.addStringOption((option) =>
+			option
+				.setName("extra-users")
+				.setDescription("Names of users not in the channel, separated by commas (,)")
+				.setRequired(false)
 		),
 	authorizedRoles: ["Admin", "Moderator"],
 	async execute(interaction: ChatInputCommandInteraction) {
 		try {
 			const channel = interaction.options.getChannel("channel") as VoiceChannel;
-			const members = channel.members.map((member) => member.displayName);
+			const extraUsers = parseExtraUsers(interaction.options.getString("extra-users"));
+			const members = [...channel.members.map((member) => member.displayName), ...extraUsers];
 
 			const { teamA, teamB } = teamService.createRandomTeams(members);
 
@@ -48,4 +66,3 @@ const command: BotCommand = {
 };
 
 export default command;
-
