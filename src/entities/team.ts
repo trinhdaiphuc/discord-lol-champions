@@ -6,6 +6,7 @@ export type SynergyMetricKey =
 	| "cc"
 	| "peel"
 	| "scaling"
+	| "meta"
 	| "laneStability";
 
 export interface SynergyMetricScore {
@@ -16,6 +17,14 @@ export interface SynergyMetricScore {
 
 export type TeamSynergyScores = Record<SynergyMetricKey, SynergyMetricScore>;
 
+export interface TeamAramStats {
+	avgWinRatePercent: number;
+	avgPickRatePercent: number;
+	avgMatches: number;
+	dominantTier: string;
+	topTierChampions: number;
+}
+
 export interface TeamSynergyAnalysis {
 	side: "blue" | "red";
 	poolSize: number;
@@ -23,6 +32,7 @@ export interface TeamSynergyAnalysis {
 	team: string[];
 	rolePools: Record<ChampionRoleKey, string[]>;
 	scores: TeamSynergyScores;
+	aramStats: TeamAramStats;
 	summaryLine: string;
 	takeaway: string;
 }

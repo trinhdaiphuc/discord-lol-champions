@@ -226,6 +226,7 @@ describe("generateTeams", () => {
 			"cc",
 			"peel",
 			"scaling",
+			"meta",
 			"laneStability",
 		];
 

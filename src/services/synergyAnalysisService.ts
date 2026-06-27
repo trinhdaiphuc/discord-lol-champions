@@ -7,6 +7,7 @@ import type {
 	TeamGenerationMetadata,
 	TeamResult,
 	TeamSideRolePools,
+	TeamAramStats,
 	TeamSynergyAnalysis,
 	TeamSynergyScores,
 	SynergyMetricKey,
@@ -45,6 +46,7 @@ const SUMMARY_METRIC_LABELS: Record<SynergyMetricKey, string> = {
 	cc: "Khống chế",
 	peel: "Bảo kê",
 	scaling: "Thăng tiến",
+	meta: "Sức mạnh meta",
 	laneStability: "Độ ổn định đội hình",
 };
 const ANSI_RESET = "\u001b[0m";
@@ -105,6 +107,11 @@ interface ChampionCombatProfile {
 	aramTierScore: number;
 	aramWinRateNorm: number;
 	aramDamageEfficiency: number;
+	aramWinRatePercent: number | null;
+	aramPickRatePercent: number | null;
+	aramMatches: number | null;
+	aramTier: string | null;
+	isTopTier: boolean;
 }
 
 interface TeamCombatProfile {
@@ -144,6 +151,11 @@ interface TeamCombatProfile {
 	avgAramTierScore: number;
 	avgAramWinRateNorm: number;
 	avgAramDamageEfficiency: number;
+	avgWinRatePercent: number;
+	avgPickRatePercent: number;
+	avgMatches: number;
+	dominantTier: string;
+	topTierChampions: number;
 	uniqueHardCcTypes: Set<string>;
 }
 
@@ -223,6 +235,11 @@ function mapTierScoreToNormalized(tier: string | null | undefined): number {
 		default:
 			return 0.62;
 	}
+}
+
+function isTopTier(tier: string | null | undefined): boolean {
+	const normalized = tier?.toUpperCase();
+	return normalized === "S" || normalized === "A";
 }
 
 function normalizeWinRate(value: string | null | undefined): number {
@@ -355,6 +372,11 @@ function buildChampionCombatProfile(champion: Champion): ChampionCombatProfile {
 			champion.mobalytics?.aram?.balance.damageDealt,
 			champion.mobalytics?.aram?.balance.damageReceived
 		),
+		aramWinRatePercent: parsePercentValue(champion.mobalytics?.aram?.winRate),
+		aramPickRatePercent: parsePercentValue(champion.mobalytics?.aram?.pickRate),
+		aramMatches: champion.mobalytics?.aram?.matches ?? null,
+		aramTier: champion.mobalytics?.aram?.tier ?? null,
+		isTopTier: isTopTier(champion.mobalytics?.aram?.tier),
 	};
 }
 
@@ -374,6 +396,34 @@ function sumProfiles(
 
 function ratio(count: number, total: number): number {
 	return total === 0 ? 0 : count / total;
+}
+
+function averageDefined(values: Array<number | null>): number {
+	const defined = values.filter((value): value is number => value !== null);
+	if (defined.length === 0) {
+		return 0;
+	}
+	return defined.reduce((sum, value) => sum + value, 0) / defined.length;
+}
+
+function mostCommonTier(tiers: Array<string | null>): string {
+	const counts = new Map<string, number>();
+	for (const tier of tiers) {
+		if (!tier) {
+			continue;
+		}
+		const key = tier.toUpperCase();
+		counts.set(key, (counts.get(key) ?? 0) + 1);
+	}
+	let dominant = "-";
+	let best = 0;
+	for (const [tier, count] of counts) {
+		if (count > best) {
+			best = count;
+			dominant = tier;
+		}
+	}
+	return dominant;
 }
 
 function buildTeamCombatProfile(champions: Champion[]): TeamCombatProfile {
@@ -444,6 +494,11 @@ function buildTeamCombatProfile(champions: Champion[]): TeamCombatProfile {
 		avgAramTierScore: sumProfiles(profiles, (profile) => profile.aramTierScore) / teamSize,
 		avgAramWinRateNorm: sumProfiles(profiles, (profile) => profile.aramWinRateNorm) / teamSize,
 		avgAramDamageEfficiency: sumProfiles(profiles, (profile) => profile.aramDamageEfficiency) / teamSize,
+		avgWinRatePercent: averageDefined(profiles.map((profile) => profile.aramWinRatePercent)),
+		avgPickRatePercent: averageDefined(profiles.map((profile) => profile.aramPickRatePercent)),
+		avgMatches: averageDefined(profiles.map((profile) => profile.aramMatches)),
+		dominantTier: mostCommonTier(profiles.map((profile) => profile.aramTier)),
+		topTierChampions: countProfiles(profiles, (profile) => profile.isTopTier),
 		uniqueHardCcTypes,
 	};
 }
@@ -521,22 +576,35 @@ function calculatePeelScore(teamProfile: TeamCombatProfile): SynergyMetricScore 
 }
 
 function calculateScalingScore(teamProfile: TeamCombatProfile): SynergyMetricScore {
-	const metaStrength = teamProfile.avgAramTierScore * 0.55 + teamProfile.avgAramWinRateNorm * 0.45;
 	const score =
-		18 +
-		ratio(teamProfile.carryChampions, teamProfile.teamSize) * 16 +
-		ratio(teamProfile.growthProfiles, teamProfile.teamSize) * 12 +
+		20 +
+		ratio(teamProfile.carryChampions, teamProfile.teamSize) * 22 +
+		ratio(teamProfile.growthProfiles, teamProfile.teamSize) * 16 +
 		ratio(teamProfile.rangedChampions, teamProfile.teamSize) * 8 +
-		ratio(teamProfile.damageAmpChampions + teamProfile.executeChampions, teamProfile.teamSize) * 10 +
-		ratio(teamProfile.aoeChampions, teamProfile.teamSize) * 8 +
-		metaStrength * 18 +
-		teamProfile.avgAramDamageEfficiency * 6 +
-		teamProfile.avgPreDamage * 10;
+		ratio(teamProfile.damageAmpChampions + teamProfile.executeChampions, teamProfile.teamSize) * 16 +
+		ratio(teamProfile.aoeChampions, teamProfile.teamSize) * 10 +
+		teamProfile.avgPreDamage * 16;
 
 	return scoreMetric(score, [
 		`${teamProfile.carryChampions} nguồn sát thương carry`,
-		`${Math.round(metaStrength * 100)}/100 meta ARAM trung bình`,
+		`${teamProfile.growthProfiles} tướng mạnh dần về cuối trận`,
 		`${teamProfile.damageAmpChampions + teamProfile.executeChampions} công cụ kết liễu hoặc khuếch đại sát thương`,
+	]);
+}
+
+function calculateMetaScore(teamProfile: TeamCombatProfile): SynergyMetricScore {
+	const metaStrength = teamProfile.avgAramTierScore * 0.5 + teamProfile.avgAramWinRateNorm * 0.5;
+	const topTierRatio = ratio(teamProfile.topTierChampions, teamProfile.teamSize);
+	const score =
+		10 +
+		metaStrength * 72 +
+		topTierRatio * 12 +
+		teamProfile.avgAramDamageEfficiency * 6;
+
+	return scoreMetric(score, [
+		`Tỉ lệ thắng ARAM trung bình ${teamProfile.avgWinRatePercent.toFixed(1)}%`,
+		`Tier phổ biến ${teamProfile.dominantTier}`,
+		`${teamProfile.topTierChampions} tướng tier S/A`,
 	]);
 }
 
@@ -571,18 +639,31 @@ async function calculateLaneStabilityScore(
 	return scoreMetric(score, evidence);
 }
 
-async function calculateScores(input: SideAnalysisInput): Promise<TeamSynergyScores> {
+async function calculateScores(
+	input: SideAnalysisInput
+): Promise<{ scores: TeamSynergyScores; aramStats: TeamAramStats }> {
 	const champions = getTeamChampions(input.team);
 	const teamProfile = buildTeamCombatProfile(champions);
 
-	return {
+	const scores: TeamSynergyScores = {
 		engage: calculateEngageScore(teamProfile),
 		damageBalance: calculateDamageBalanceScore(teamProfile),
 		cc: calculateCcScore(teamProfile),
 		peel: calculatePeelScore(teamProfile),
 		scaling: calculateScalingScore(teamProfile),
+		meta: calculateMetaScore(teamProfile),
 		laneStability: await calculateLaneStabilityScore(input.rolePools, input.poolSize),
 	};
+
+	const aramStats: TeamAramStats = {
+		avgWinRatePercent: teamProfile.avgWinRatePercent,
+		avgPickRatePercent: teamProfile.avgPickRatePercent,
+		avgMatches: teamProfile.avgMatches,
+		dominantTier: teamProfile.dominantTier,
+		topTierChampions: teamProfile.topTierChampions,
+	};
+
+	return { scores, aramStats };
 }
 
 function findStrongestMetric(scores: TeamSynergyScores): [SynergyMetricKey, SynergyMetricScore] {
@@ -626,10 +707,11 @@ function formatOverallTakeaway(blue: TeamSynergyAnalysis, red: TeamSynergyAnalys
 }
 
 export async function analyzeTeamSide(input: SideAnalysisInput): Promise<TeamSynergyAnalysis> {
-	const scores = await calculateScores(input);
+	const { scores, aramStats } = await calculateScores(input);
 	const summaryLine = formatSideSummaryLine({
 		...input,
 		scores,
+		aramStats,
 		summaryLine: "",
 		takeaway: "",
 	});
@@ -639,6 +721,7 @@ export async function analyzeTeamSide(input: SideAnalysisInput): Promise<TeamSyn
 	return {
 		...input,
 		scores,
+		aramStats,
 		summaryLine,
 		takeaway: `${input.side === "blue" ? "Đội Xanh" : "Đội Đỏ"} mạnh ở ${SUMMARY_METRIC_LABELS[strongestMetricKey]} (${strongestMetric.label}) nhưng vẫn có thể cải thiện ${SUMMARY_METRIC_LABELS[weakestMetricKey]}.`,
 	};
@@ -674,7 +757,7 @@ export function formatCompactSummary(blue: TeamSynergyAnalysis, red: TeamSynergy
 }
 
 export function getRoleOnlyAnalysisNotice(role: string, poolSize: number): string {
-	return `Đây là pool theo riêng role ${role} (${poolSize} tướng mỗi bên), nên bot không hiển thị đủ scorecard 6 chỉ số như đội hình đầy đủ.`;
+	return `Đây là pool theo riêng role ${role} (${poolSize} tướng mỗi bên), nên bot không hiển thị đủ scorecard 7 chỉ số như đội hình đầy đủ.`;
 }
 
 function getAnsiColorForScore(score: number): string {
@@ -695,12 +778,30 @@ function formatDiscordMetricLine(metricKey: SynergyMetricKey, metricScore: Syner
 	return `${SUMMARY_METRIC_LABELS[metricKey]}: ${color}${metricScore.score}/100 ${metricScore.label}${ANSI_RESET}`;
 }
 
+function formatMatchesShort(matches: number): string {
+	if (matches >= 1000) {
+		return `${Math.round(matches / 1000)}k`;
+	}
+	return `${Math.round(matches)}`;
+}
+
+function formatAramStatsLine(stats: TeamAramStats | undefined): string | null {
+	if (!stats) {
+		return null;
+	}
+	return `📈 ARAM: WR ${stats.avgWinRatePercent.toFixed(1)}% · Tier TB ${stats.dominantTier} · Phổ biến ${stats.avgPickRatePercent.toFixed(1)}% · ~${formatMatchesShort(stats.avgMatches)} trận/tướng`;
+}
+
 function formatDiscordSideBlock(analysis: TeamSynergyAnalysis): string {
 	const sideColor = analysis.side === "blue" ? ANSI_BLUE : ANSI_RED;
 	const sideLabel = analysis.side === "blue" ? "ĐỘI XANH" : "ĐỘI ĐỎ";
 	const lines = (Object.entries(analysis.scores) as Array<[SynergyMetricKey, SynergyMetricScore]>).map(
 		([metricKey, metricScore]) => formatDiscordMetricLine(metricKey, metricScore)
 	);
+	const aramLine = formatAramStatsLine(analysis.aramStats);
+	if (aramLine) {
+		lines.push(`${ANSI_CYAN}${aramLine}${ANSI_RESET}`);
+	}
 
 	return [`${ANSI_BOLD}${sideColor}${sideLabel}${ANSI_RESET}`, ...lines].join("\n");
 }
