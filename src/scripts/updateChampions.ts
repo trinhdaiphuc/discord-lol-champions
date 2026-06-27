@@ -1,9 +1,11 @@
 import axios from "axios";
-import { mkdir, writeFile } from "fs/promises";
+import initCycleTLS, { type CycleTLSClient } from "cycletls";
+import { access, mkdir, writeFile } from "fs/promises";
 import { join } from "path";
 import { readConfig, writeConfig } from "../core/config.ts";
 import * as championRepository from "../data/championRepository.ts";
 import * as championService from "../services/championService.ts";
+import { sendTelegramAlert } from "../services/alertService.ts";
 import { toAwait } from "../core/promise.ts";
 import type {
 	Champion,
@@ -28,6 +30,14 @@ const HTML_ENTITY_MAP: Record<string, string> = {
 	"&lt;": "<",
 	"&gt;": ">",
 };
+
+// Mobalytics sits behind Cloudflare, which blocks non-browser clients (axios/fetch)
+// at the TLS-fingerprint layer with a "Just a moment..." challenge regardless of
+// request headers. cycletls impersonates Chrome's JA3 fingerprint to pass it.
+const MOBA_USER_AGENT =
+	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
+const MOBA_JA3 =
+	"771,4865-4866-4867-49195-49199-49196-49200-52393-52392-49171-49172-156-157-47-53,0-23-65281-10-11-35-16-5-13-18-51-45-43-27-17513,29-23-24,0";
 
 const MOBA_HEADERS = {
 	accept: "*/*",
@@ -213,20 +223,34 @@ interface MobalyticsAbilityResponse {
 	customStats?: Array<{ slug: string; value: string }>;
 }
 
-const mobalyticsClient = axios.create({
-	headers: MOBA_HEADERS,
-	timeout: 30_000,
-});
+// cycletls spawns a Go helper process per init. We lazily create a single
+// instance and tear it down via closeMobalyticsClient() so the long-running bot
+// (daily cron) does not leak helper processes between runs.
+let _mobalyticsClient: CycleTLSClient | null = null;
+
+async function getMobalyticsClient(): Promise<CycleTLSClient> {
+	if (!_mobalyticsClient) {
+		_mobalyticsClient = await initCycleTLS();
+	}
+	return _mobalyticsClient;
+}
+
+async function closeMobalyticsClient(): Promise<void> {
+	if (_mobalyticsClient) {
+		await _mobalyticsClient.exit();
+		_mobalyticsClient = null;
+	}
+}
 
 function decodeHtmlEntities(input: string): string {
-	return input.replace(/&nbsp;|&amp;|&quot;|&#39;|&#x27;|&lt;|&gt;/g, (entity) => HTML_ENTITY_MAP[entity] ?? entity);
+	return input.replace(
+		/&nbsp;|&amp;|&quot;|&#39;|&#x27;|&lt;|&gt;/g,
+		(entity) => HTML_ENTITY_MAP[entity] ?? entity
+	);
 }
 
 function normalizeText(input: string): string {
-	return decodeHtmlEntities(input)
-		.replace(/\r/g, "")
-		.replace(/\s+/g, " ")
-		.trim();
+	return decodeHtmlEntities(input).replace(/\r/g, "").replace(/\s+/g, " ").trim();
 }
 
 function htmlToTextLines(html: string): string[] {
@@ -300,8 +324,34 @@ function groupChampionsByRole(champions: ChampionData): Record<string, string[]>
 	return roles;
 }
 
-async function updateChampionImages(champions: ChampionData, version: string): Promise<void> {
-	console.log("Updating champion images...");
+async function imageExists(imagePath: string): Promise<boolean> {
+	try {
+		await access(imagePath);
+		return true;
+	} catch {
+		return false;
+	}
+}
+
+/**
+ * Downloads champion images from Data Dragon.
+ *
+ * When `onlyMissing` is true (default for an unchanged Dragon version) only
+ * images that are not already present on disk are fetched — this keeps the
+ * daily run cheap while still picking up champions added within the same patch
+ * (e.g. a newly released champion). When false (Dragon version changed) every
+ * image is re-checked against its stored checksum so updated splash art is
+ * refreshed.
+ */
+async function updateChampionImages(
+	champions: ChampionData,
+	version: string,
+	options: { onlyMissing?: boolean } = {}
+): Promise<void> {
+	const { onlyMissing = false } = options;
+	console.log(
+		onlyMissing ? "Checking for missing champion images..." : "Updating champion images..."
+	);
 	try {
 		await mkdir(IMAGES_PATH, { recursive: true });
 	} catch {
@@ -310,12 +360,19 @@ async function updateChampionImages(champions: ChampionData, version: string): P
 
 	let totalSuccess = 0;
 	let totalFailed = 0;
+	let totalSkipped = 0;
 
 	for (const championId in champions) {
 		const champion = champions[championId];
 		const championImage = champion.image.full;
 		const championImageUrl = `https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${championImage}`;
 		const imagePath = join(IMAGES_PATH, championImage);
+
+		if (onlyMissing && (await imageExists(imagePath))) {
+			totalSkipped++;
+			continue;
+		}
+
 		try {
 			const response = await axios.get<ArrayBuffer>(championImageUrl, {
 				responseType: "arraybuffer",
@@ -334,7 +391,9 @@ async function updateChampionImages(champions: ChampionData, version: string): P
 			totalFailed++;
 		}
 	}
-	console.log(`Champion images updated. Success: ${totalSuccess}, Failed: ${totalFailed}`);
+	console.log(
+		`Champion images updated. Success: ${totalSuccess}, Failed: ${totalFailed}, Skipped (already present): ${totalSkipped}`
+	);
 }
 
 async function postStaticQuery<TData>(
@@ -342,20 +401,24 @@ async function postStaticQuery<TData>(
 	query: string,
 	variables: Record<string, unknown>
 ): Promise<TData> {
-	const response = await mobalyticsClient.post<{ data: TData }>(
-		MOBA_STATIC_GQL_URL,
-		{
-			operationName,
-			variables,
-			query,
+	const client = await getMobalyticsClient();
+	const response = await client.post(MOBA_STATIC_GQL_URL, {
+		ja3: MOBA_JA3,
+		userAgent: MOBA_USER_AGENT,
+		timeout: 30,
+		headers: {
+			...MOBA_HEADERS,
+			"x-moba-proxy-gql-ops-name": operationName,
 		},
-		{
-			headers: {
-				"x-moba-proxy-gql-ops-name": operationName,
-			},
-		}
-	);
-	return response.data.data;
+		body: JSON.stringify({ operationName, variables, query }),
+	});
+
+	if (response.status < 200 || response.status >= 300) {
+		throw new Error(`Mobalytics GraphQL ${operationName} failed with status ${response.status}`);
+	}
+
+	const payload = (await response.json()) as { data: TData };
+	return payload.data;
 }
 
 async function fetchMobalyticsChampionIndex(): Promise<Map<number, MobalyticsFlatReference>> {
@@ -372,7 +435,9 @@ async function fetchMobalyticsChampionIndex(): Promise<Map<number, MobalyticsFla
 	);
 }
 
-async function fetchChampionStaticData(slug: string): Promise<MobalyticsChampionStaticResponse | null> {
+async function fetchChampionStaticData(
+	slug: string
+): Promise<MobalyticsChampionStaticResponse | null> {
 	try {
 		const data = await postStaticQuery<{
 			championCommonInfo: Array<{ flatData: MobalyticsChampionStaticResponse }>;
@@ -404,17 +469,32 @@ async function fetchAbilityData(abilitySlug: string): Promise<MobalyticsAbilityR
 
 async function fetchAramHtml(slug: string): Promise<string | null> {
 	try {
-		const response = await axios.get<string>(`${MOBA_BASE_URL}/lol/champions/${slug}/aram-builds`, {
-			timeout: 30_000,
+		const client = await getMobalyticsClient();
+		const response = await client.get(`${MOBA_BASE_URL}/lol/champions/${slug}/aram-builds`, {
+			ja3: MOBA_JA3,
+			userAgent: MOBA_USER_AGENT,
+			timeout: 30,
+			headers: {
+				accept: "text/html",
+				"accept-language": "en_us",
+				referer: `${MOBA_BASE_URL}/lol`,
+			},
 		});
-		return response.data;
+
+		if (response.status < 200 || response.status >= 300) {
+			throw new Error(`status ${response.status}`);
+		}
+
+		return await response.text();
 	} catch (error) {
 		console.error(`Failed to fetch ARAM page for ${slug}:`, (error as Error).message);
 		return null;
 	}
 }
 
-function classifyAbilityTags(ability: Pick<ChampionEnrichedAbility, "activationKey" | "name" | "riotDesc" | "mobaDesc">) {
+function classifyAbilityTags(
+	ability: Pick<ChampionEnrichedAbility, "activationKey" | "name" | "riotDesc" | "mobaDesc">
+) {
 	const source = normalizeText(`${ability.riotDesc} ${ability.mobaDesc}`.toLowerCase())
 		.replace(/this ability'?s cooldown is reduced[^.]*\./gi, " ")
 		.replace(/this can happen once per ability cast\./gi, " ");
@@ -483,17 +563,11 @@ function classifyAbilityTags(ability: Pick<ChampionEnrichedAbility, "activationK
 		tags.add("HASTE");
 	}
 
-	if (
-		hasAllyReference &&
-		/\b(armor|armour|bonus armor)\b/i.test(source)
-	) {
+	if (hasAllyReference && /\b(armor|armour|bonus armor)\b/i.test(source)) {
 		tags.add("ARMOR_BUFF");
 	}
 
-	if (
-		hasAllyReference &&
-		/\b(magic resist|mr|resistances?)\b/i.test(source)
-	) {
+	if (hasAllyReference && /\b(magic resist|mr|resistances?)\b/i.test(source)) {
 		tags.add("RESIST_BUFF");
 	}
 
@@ -506,13 +580,19 @@ function classifyAbilityTags(ability: Pick<ChampionEnrichedAbility, "activationK
 		tags.add("ALLY_BUFF");
 	}
 
-	if (/\b(dash(?:es|ed|ing)?|blink(?:s|ed|ing)?|leap(?:s|ed|ing)?|jump(?:s|ed|ing)?|vault(?:s|ed|ing)?|teleport(?:s|ed|ing)?|lunge(?:s|d|ing)?|rush(?:es|ed|ing)?)\b/i.test(source)) {
+	if (
+		/\b(dash(?:es|ed|ing)?|blink(?:s|ed|ing)?|leap(?:s|ed|ing)?|jump(?:s|ed|ing)?|vault(?:s|ed|ing)?|teleport(?:s|ed|ing)?|lunge(?:s|d|ing)?|rush(?:es|ed|ing)?)\b/i.test(
+			source
+		)
+	) {
 		tags.add("MOBILITY");
 	}
 
 	if (
 		tags.has("MOBILITY") ||
-		/\b(knock(?:s|ed)? up|pull(?:s|ed)?|hook|taunt(?:s|ed)?|suppression|fear(?:s|ed)?|charm(?:s|ed)?)\b/i.test(source)
+		/\b(knock(?:s|ed)? up|pull(?:s|ed)?|hook|taunt(?:s|ed)?|suppression|fear(?:s|ed)?|charm(?:s|ed)?)\b/i.test(
+			source
+		)
 	) {
 		tags.add("ENGAGE");
 	}
@@ -536,7 +616,11 @@ function classifyAbilityTags(ability: Pick<ChampionEnrichedAbility, "activationK
 		tags.add("EXECUTE");
 	}
 
-	if (/\b(damage amplification|reduce(?:s|d)? armor|reduce(?:s|d)? magic resist|vulnerable)\b/i.test(source)) {
+	if (
+		/\b(damage amplification|reduce(?:s|d)? armor|reduce(?:s|d)? magic resist|vulnerable)\b/i.test(
+			source
+		)
+	) {
 		tags.add("DAMAGE_AMP");
 	}
 
@@ -564,7 +648,11 @@ function parseMatches(line: string): number | null {
 	return Number.isFinite(parsed) ? parsed : null;
 }
 
-function parseAramDataFromHtml(slug: string, championName: string, html: string): ChampionMobalyticsAramData {
+function parseAramDataFromHtml(
+	slug: string,
+	championName: string,
+	html: string
+): ChampionMobalyticsAramData {
 	const lines = htmlToTextLines(html);
 	const sourceUrl = `${MOBA_BASE_URL}/lol/champions/${slug}/aram-builds`;
 	const headlineIndex = lines.findIndex((line) =>
@@ -602,10 +690,7 @@ function parseAramDataFromHtml(slug: string, championName: string, html: string)
 			}
 
 			const sequence: string[] = [];
-			while (
-				cursor < comboLines.length &&
-				/^(AA|EAA|PASSIVE|Q|W|E|R)$/i.test(comboLines[cursor])
-			) {
+			while (cursor < comboLines.length && /^(AA|EAA|PASSIVE|Q|W|E|R)$/i.test(comboLines[cursor])) {
 				sequence.push(comboLines[cursor].toUpperCase());
 				cursor += 1;
 			}
@@ -616,7 +701,9 @@ function parseAramDataFromHtml(slug: string, championName: string, html: string)
 				combos.push({
 					sequence,
 					description,
-					difficulty: /^(Easy|Medium|Hard)$/i.test(difficultyCandidate) ? difficultyCandidate : null,
+					difficulty: /^(Easy|Medium|Hard)$/i.test(difficultyCandidate)
+						? difficultyCandidate
+						: null,
 				});
 			}
 
@@ -637,10 +724,11 @@ function parseAramDataFromHtml(slug: string, championName: string, html: string)
 		tier,
 		matches,
 		balance: {
-			damageDealt: damageDealtIndex !== -1 ? parsePercentage(lines[damageDealtIndex + 1] ?? "") : null,
+			damageDealt:
+				damageDealtIndex !== -1 ? parsePercentage(lines[damageDealtIndex + 1] ?? "") : null,
 			damageReceived:
 				damageReceivedIndex !== -1 ? parsePercentage(lines[damageReceivedIndex + 1] ?? "") : null,
-			otherEffects: otherEffectsIndex !== -1 ? lines[otherEffectsIndex + 1] ?? null : null,
+			otherEffects: otherEffectsIndex !== -1 ? (lines[otherEffectsIndex + 1] ?? null) : null,
 		},
 		combos,
 	};
@@ -682,7 +770,9 @@ async function enrichChampion(
 	const mobaRef = mobaIndex.get(riotId);
 
 	if (!mobaRef) {
-		console.log(`Mobalytics data not found for champion ${champion.name}, key: ${champion.key}, riotId: ${riotId}`);
+		console.log(
+			`Mobalytics data not found for champion ${champion.name}, key: ${champion.key}, riotId: ${riotId}`
+		);
 		return champion;
 	}
 
@@ -698,7 +788,9 @@ async function enrichChampion(
 			abilityRefs.map(async (abilityRef) => {
 				const abilityData = await fetchAbilityData(abilityRef.slug);
 				if (!abilityData) {
-					console.log(`Mobalytics ability data not found for champion ${champion.name}, abilityRef: ${abilityRef.slug}`);
+					console.log(
+						`Mobalytics ability data not found for champion ${champion.name}, abilityRef: ${abilityRef.slug}`
+					);
 					return null;
 				}
 
@@ -761,6 +853,33 @@ async function enrichChampion(
 			enrichedAt: new Date().toISOString(),
 		},
 	};
+}
+
+/**
+ * Builds a champion set from fresh Data Dragon data while preserving any
+ * previously-enriched Mobalytics fields from the existing champions.json.
+ * Used as a fallback when Mobalytics enrichment fails so that the core
+ * Data Dragon data is always persisted without losing past enrichment.
+ */
+async function buildFallbackChampions(base: ChampionData): Promise<ChampionData> {
+	let existing: ChampionData = {};
+	try {
+		existing = await championRepository.readChampions();
+	} catch (error) {
+		console.error(
+			"Could not read existing champions.json for fallback merge:",
+			(error as Error).message
+		);
+	}
+
+	const result: ChampionData = {};
+	for (const [championId, champion] of Object.entries(base)) {
+		const previousMobalytics = existing[championId]?.mobalytics;
+		result[championId] = previousMobalytics
+			? { ...champion, mobalytics: previousMobalytics }
+			: champion;
+	}
+	return result;
 }
 
 async function enrichChampionsWithMobalytics(champions: ChampionData): Promise<ChampionData> {
@@ -828,21 +947,55 @@ export async function updateChampions(): Promise<void> {
 
 	await writeConfig(newConfig);
 
+	// Mobalytics enrichment is an optional add-on. If it fails we still persist
+	// the core Data Dragon champion data (preserving any prior enrichment) so the
+	// bot keeps working, and we raise a Telegram alert to investigate.
 	console.log("Enriching champions with Mobalytics ARAM and ability data...");
-	const enrichedChampions = await enrichChampionsWithMobalytics(champions);
+	let enrichedChampions: ChampionData;
+	let enrichmentError: Error | null = null;
+	try {
+		enrichedChampions = await enrichChampionsWithMobalytics(champions);
+	} catch (error) {
+		enrichmentError = error as Error;
+		console.error(
+			"Mobalytics enrichment failed; persisting Data Dragon base data:",
+			enrichmentError.message
+		);
+		enrichedChampions = await buildFallbackChampions(champions);
+	} finally {
+		await closeMobalyticsClient();
+	}
 
+	let championsPersisted = true;
 	try {
 		console.log("Writing champions.json file...");
 		await championRepository.writeChampions(enrichedChampions);
 		console.log("Champions data updated successfully.");
 	} catch (error) {
+		championsPersisted = false;
 		console.error("Error writing champions.json file:", error);
+		await sendTelegramAlert(
+			`🚨 <b>discord-lol-champions</b>\nFailed to write champions.json for Dragon version <code>${effectiveVersion}</code>.\n<code>${(error as Error).message}</code>`
+		);
 	}
 
-	await championService.reloadChampions();
+	if (championsPersisted) {
+		await championService.reloadChampions();
+	}
 
+	// Always ensure images exist. On a version change re-check every image
+	// (splash art may have been updated); otherwise only fetch images missing
+	// from disk so newly released champions still get downloaded cheaply.
 	if (versionChanged) {
 		await updateChampionImages(champions, effectiveVersion);
+	} else {
+		await updateChampionImages(champions, effectiveVersion, { onlyMissing: true });
+	}
+
+	if (enrichmentError) {
+		await sendTelegramAlert(
+			`⚠️ <b>discord-lol-champions</b>\nMobalytics enrichment failed for Dragon version <code>${effectiveVersion}</code>. Champion data was saved with Data Dragon base + last known enrichment.\nReason: <code>${enrichmentError.message}</code>`
+		);
 	}
 }
 

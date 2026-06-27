@@ -26,7 +26,7 @@
             "Tank"
         ]
     },
-    "DRAGON_VERSION": "16.9.1",
+    "DRAGON_VERSION": "16.13.1",
     "CHAMPION_ROLES": {
         "Fighter": [
             "Aatrox",
@@ -175,6 +175,7 @@
             "Khazix",
             "Leblanc",
             "LeeSin",
+            "Locke",
             "MasterYi",
             "Naafiri",
             "Nidalee",

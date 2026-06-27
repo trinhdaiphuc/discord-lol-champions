@@ -11,3 +11,5 @@ dist
 
 # bun cache
 .bun/builds
+
+.playwright-mcp
