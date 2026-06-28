@@ -396,6 +396,21 @@ async function updateChampionImages(
 	);
 }
 
+// Reads a short, single-line snippet of a (failed) cycletls response body for
+// diagnostics. Cloudflare/edge rejections (e.g. status 495) return an HTML
+// challenge or error page; capturing it tells us whether we are blocked by IP
+// reputation, a TLS challenge, or something else. Best-effort: never throws.
+async function readResponseBodySnippet(response: {
+	text: () => Promise<string>;
+}): Promise<string> {
+	try {
+		const body = await response.text();
+		return body.replace(/\s+/g, " ").trim().slice(0, 300);
+	} catch {
+		return "";
+	}
+}
+
 async function postStaticQuery<TData>(
 	operationName: string,
 	query: string,
@@ -414,7 +429,11 @@ async function postStaticQuery<TData>(
 	});
 
 	if (response.status < 200 || response.status >= 300) {
-		throw new Error(`Mobalytics GraphQL ${operationName} failed with status ${response.status}`);
+		const diagnosticBody = await readResponseBodySnippet(response);
+		throw new Error(
+			`Mobalytics GraphQL ${operationName} failed with status ${response.status}` +
+				(diagnosticBody ? ` | body: ${diagnosticBody}` : "")
+		);
 	}
 
 	const payload = (await response.json()) as { data: TData };
@@ -482,7 +501,8 @@ async function fetchAramHtml(slug: string): Promise<string | null> {
 		});
 
 		if (response.status < 200 || response.status >= 300) {
-			throw new Error(`status ${response.status}`);
+			const diagnosticBody = await readResponseBodySnippet(response);
+			throw new Error(`status ${response.status}${diagnosticBody ? ` | body: ${diagnosticBody}` : ""}`);
 		}
 
 		return await response.text();

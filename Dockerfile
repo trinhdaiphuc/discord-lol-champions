@@ -5,9 +5,12 @@ FROM oven/bun:1 AS base
 LABEL fly_launch_runtime="Bun"
 WORKDIR /app
 
-# Install runtime dependencies for canvas + fonts
+# Install runtime dependencies for canvas + fonts, plus a shell + CA certs so
+# the container can be exec'd into (e.g. `fly ssh console`) and run scripts.
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
+    bash \
+    ca-certificates \
     libcairo2 \
     libpango-1.0-0 \
     libpangocairo-1.0-0 \

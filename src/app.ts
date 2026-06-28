@@ -7,6 +7,7 @@ import { createClient } from "./core/bot.ts";
 import { createServer } from "./core/server.ts";
 import { readConfig } from "./core/config.ts";
 import * as championService from "./services/championService.ts";
+import { updateChampions } from "./scripts/updateChampions.ts";
 import type { BotCommand, BotEvent, ExtendedClient } from "./entities/index.ts";
 
 async function registerApplicationCommands(client: ExtendedClient): Promise<void> {
@@ -82,6 +83,19 @@ async function main(): Promise<void> {
 	const port = process.env.PORT || 3000;
 	const server = createServer(port);
 	console.log(`✅ Server listening at ${server.url}`);
+
+	// Optional: run the champion update once on startup. Triggered by env flag
+	// so it can be kicked off without a shell (e.g. in containers without exec).
+	// Started after the HTTP server is listening so health checks are not blocked.
+	if (process.env.UPDATE_CHAMPIONS_ON_START === "true") {
+		console.log("UPDATE_CHAMPIONS_ON_START enabled; running champion update on startup...");
+		try {
+			await updateChampions();
+			console.log("Startup champion update finished.");
+		} catch (error) {
+			console.error("Startup champion update failed:", error);
+		}
+	}
 
 	// Graceful shutdown handler
 	const shutdown = async (signal: string) => {
