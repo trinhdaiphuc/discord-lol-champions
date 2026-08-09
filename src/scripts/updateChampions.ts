@@ -49,6 +49,26 @@ const MOBA_HEADERS = {
 	"x-moba-client": "mobalytics-web",
 };
 
+// The ARAM pages are HTML documents behind Cloudflare's managed challenge. The
+// JA3 fingerprint alone is not enough: without a full browser header set (the
+// sec-fetch-* / sec-ch-ua hints a real navigation sends) the bot score sinks
+// and Cloudflare serves a "Just a moment..." 403 on a share of the requests.
+// Measured over 16 pages at concurrency 4: 16/16 with these headers, ~35% with
+// the bare `accept: text/html` set. The GraphQL endpoint is not challenged.
+const MOBA_PAGE_HEADERS = {
+	accept:
+		"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+	"accept-language": "en-US,en;q=0.9",
+	"sec-ch-ua": '"Not/A)Brand";v="8", "Chromium";v="126", "Google Chrome";v="126"',
+	"sec-ch-ua-mobile": "?0",
+	"sec-ch-ua-platform": '"macOS"',
+	"sec-fetch-dest": "document",
+	"sec-fetch-mode": "navigate",
+	"sec-fetch-site": "none",
+	"sec-fetch-user": "?1",
+	"upgrade-insecure-requests": "1",
+};
+
 const ALL_CHAMPIONS_STATIC_QUERY = `
 	query MobalyticsChampionsIndexQuery {
 		champions: queryChampionsV1Contents(top: 250) {
@@ -416,10 +436,11 @@ function sleep(ms: number): Promise<void> {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-// Cloudflare answers bursts with a 403 "Just a moment..." challenge page. The
-// block is transient, so back off and retry before giving up on a champion.
-// ponytail: fixed backoff schedule; make it adaptive only if 403s survive it.
-const RETRY_DELAYS_MS = [3_000, 10_000, 30_000];
+// Safety net for transient failures (a residual Cloudflare challenge, a dropped
+// connection, a 5xx). It is not the fix for the 403s — see MOBA_PAGE_HEADERS —
+// since the challenge is sampled per request, not a rate limit.
+// ponytail: fixed backoff schedule; make it adaptive only if failures survive it.
+const RETRY_DELAYS_MS = [2_000, 5_000, 15_000];
 
 async function withRetry<T>(label: string, operation: () => Promise<T>): Promise<T> {
 	let lastError: Error = new Error(`${label} failed`);
@@ -543,11 +564,7 @@ async function fetchAramHtml(slug: string): Promise<string | null> {
 				ja3: MOBA_JA3,
 				userAgent: MOBA_USER_AGENT,
 				timeout: 30,
-				headers: {
-					accept: "text/html",
-					"accept-language": "en_us",
-					referer: `${MOBA_BASE_URL}/lol`,
-				},
+				headers: MOBA_PAGE_HEADERS,
 			});
 
 			if (response.status < 200 || response.status >= 300) {

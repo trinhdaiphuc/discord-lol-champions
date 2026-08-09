@@ -1,6 +1,6 @@
 {
     "Aatrox": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Aatrox",
         "key": "266",
         "name": "Aatrox",
@@ -228,10 +228,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/aatrox/aram-builds",
-                "winRate": "48.6%",
-                "pickRate": "0.9%",
+                "winRate": "49.8%",
+                "pickRate": "0.6%",
                 "tier": "D",
-                "matches": 10237,
+                "matches": 25850,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": null,
@@ -248,11 +248,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:38.644Z"
+            "enrichedAt": "2026-08-09T14:19:12.558Z"
         }
     },
     "Ahri": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Ahri",
         "key": "103",
         "name": "Ahri",
@@ -471,10 +471,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/ahri/aram-builds",
-                "winRate": "50.8%",
-                "pickRate": "2.0%",
+                "winRate": "51.4%",
+                "pickRate": "2.3%",
                 "tier": "A",
-                "matches": 23815,
+                "matches": 97059,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -511,11 +511,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:38.598Z"
+            "enrichedAt": "2026-08-09T14:19:12.571Z"
         }
     },
     "Akali": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Akali",
         "key": "84",
         "name": "Akali",
@@ -733,10 +733,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/akali/aram-builds",
-                "winRate": "42.1%",
-                "pickRate": "1.1%",
+                "winRate": "42.2%",
+                "pickRate": "0.9%",
                 "tier": "B",
-                "matches": 12901,
+                "matches": 36179,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-10.0%",
@@ -786,11 +786,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:38.534Z"
+            "enrichedAt": "2026-08-09T14:19:12.573Z"
         }
     },
     "Akshan": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Akshan",
         "key": "166",
         "name": "Akshan",
@@ -1003,10 +1003,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/akshan/aram-builds",
-                "winRate": "48.3%",
+                "winRate": "48.1%",
                 "pickRate": "0.9%",
                 "tier": "A",
-                "matches": 10998,
+                "matches": 38204,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-5.0%",
@@ -1052,11 +1052,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:38.593Z"
+            "enrichedAt": "2026-08-09T14:19:12.552Z"
         }
     },
     "Alistar": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Alistar",
         "key": "12",
         "name": "Alistar",
@@ -1087,7 +1087,7 @@
             "hpperlevel": 120,
             "mp": 350,
             "mpperlevel": 40,
-            "movespeed": 330,
+            "movespeed": 335,
             "armor": 40,
             "armorperlevel": 4.7,
             "spellblock": 32,
@@ -1275,10 +1275,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/alistar/aram-builds",
-                "winRate": "51.3%",
-                "pickRate": "1.0%",
+                "winRate": "51.6%",
+                "pickRate": "0.7%",
                 "tier": "B",
-                "matches": 11365,
+                "matches": 30987,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": "+5.0%",
@@ -1317,11 +1317,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:40.379Z"
+            "enrichedAt": "2026-08-09T14:19:13.782Z"
         }
     },
     "Ambessa": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Ambessa",
         "key": "799",
         "name": "Ambessa",
@@ -1550,10 +1550,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/ambessa/aram-builds",
-                "winRate": "47.8%",
-                "pickRate": "0.3%",
+                "winRate": "48.3%",
+                "pickRate": "0.6%",
                 "tier": "D",
-                "matches": 4207,
+                "matches": 25368,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "+5.0%",
@@ -1561,11 +1561,11 @@
                 },
                 "combos": []
             },
-            "enrichedAt": "2026-06-27T13:48:40.455Z"
+            "enrichedAt": "2026-08-09T14:19:13.757Z"
         }
     },
     "Amumu": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Amumu",
         "key": "32",
         "name": "Amumu",
@@ -1775,10 +1775,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/amumu/aram-builds",
-                "winRate": "51.5%",
+                "winRate": "51.9%",
                 "pickRate": "1.0%",
-                "tier": "B",
-                "matches": 11761,
+                "tier": "A",
+                "matches": 41846,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -1819,11 +1819,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:40.417Z"
+            "enrichedAt": "2026-08-09T14:19:13.823Z"
         }
     },
     "Anivia": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Anivia",
         "key": "34",
         "name": "Anivia",
@@ -2033,10 +2033,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/anivia/aram-builds",
-                "winRate": "47.7%",
-                "pickRate": "1.6%",
+                "winRate": "49.0%",
+                "pickRate": "1.4%",
                 "tier": "S",
-                "matches": 19682,
+                "matches": 60832,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": null,
@@ -2076,11 +2076,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:40.516Z"
+            "enrichedAt": "2026-08-09T14:19:13.849Z"
         }
     },
     "Annie": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Annie",
         "key": "1",
         "name": "Annie",
@@ -2157,33 +2157,19 @@
             "preDamage": 5,
             "abilities": [
                 {
-                    "activationKey": "E",
-                    "name": "Molten Shield",
-                    "slug": "AnnieE",
-                    "riotDesc": "Grants Annie or an ally a shield, a burst of Move Speed, and damages enemies who strike her with attacks or spells.",
-                    "mobaDesc": "Wraps Tibbers and herself in an aura, gaining 30-60% (based on level) decaying bonus movement speed, while also reducing damage taken for 3 seconds. Enemies who attack Annie or Tibbers with basic attacks during this time will take magic damage in return.",
-                    "stats": [
-                        {
-                            "slug": "cost",
-                            "value": "60/65/70/75/80"
-                        },
-                        {
-                            "slug": "range",
-                            "value": "800"
-                        },
-                        {
-                            "slug": "cooldown",
-                            "value": "10"
-                        }
-                    ],
+                    "activationKey": "PASSIVE",
+                    "name": "Pyromania",
+                    "slug": "Annie_Passive",
+                    "riotDesc": "",
+                    "mobaDesc": "Annie will gain a stack of Pyromania whenever she casts an ability, up to a maximum of 4 stacks at which she becomes Energized. When Energized, Annie's next damaging ability on an enemy target will consume all her stacks and stun them for 1.25-1.75 seconds (based on level)",
+                    "stats": [],
                     "customStats": [],
                     "tags": [
-                        "SHIELD",
-                        "HASTE",
-                        "ALLY_BUFF",
-                        "PEEL"
+                        "CC"
                     ],
-                    "ccTypes": []
+                    "ccTypes": [
+                        "stun"
+                    ]
                 },
                 {
                     "activationKey": "Q",
@@ -2290,21 +2276,24 @@
                 }
             ],
             "abilityTags": [
+                "CC",
+                "AOE",
                 "SHIELD",
                 "HASTE",
                 "ALLY_BUFF",
-                "PEEL",
-                "AOE"
+                "PEEL"
             ],
-            "ccTypes": [],
-            "hasCc": false,
+            "ccTypes": [
+                "stun"
+            ],
+            "hasCc": true,
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/annie/aram-builds",
-                "winRate": "49.4%",
+                "winRate": "49.2%",
                 "pickRate": "1.2%",
                 "tier": "A",
-                "matches": 14515,
+                "matches": 49543,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": "+5.0%",
@@ -2343,11 +2332,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:42.318Z"
+            "enrichedAt": "2026-08-09T14:19:15.008Z"
         }
     },
     "Aphelios": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Aphelios",
         "key": "523",
         "name": "Aphelios",
@@ -2564,10 +2553,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/aphelios/aram-builds",
-                "winRate": "51.5%",
+                "winRate": "51.6%",
                 "pickRate": "1.1%",
                 "tier": "B",
-                "matches": 12881,
+                "matches": 45168,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -2586,11 +2575,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:42.329Z"
+            "enrichedAt": "2026-08-09T14:19:15.067Z"
         }
     },
     "Ashe": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Ashe",
         "key": "22",
         "name": "Ashe",
@@ -2803,10 +2792,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/ashe/aram-builds",
-                "winRate": "52.2%",
+                "winRate": "52.8%",
                 "pickRate": "2.5%",
                 "tier": "A",
-                "matches": 29609,
+                "matches": 104376,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": null,
@@ -2849,11 +2838,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:42.331Z"
+            "enrichedAt": "2026-08-09T14:19:15.105Z"
         }
     },
     "AurelionSol": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "AurelionSol",
         "key": "136",
         "name": "Aurelion Sol",
@@ -3062,10 +3051,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/aurelionsol/aram-builds",
-                "winRate": "50.5%",
-                "pickRate": "1.5%",
-                "tier": "B",
-                "matches": 17915,
+                "winRate": "52.1%",
+                "pickRate": "1.0%",
+                "tier": "A",
+                "matches": 42776,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -3099,11 +3088,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:42.361Z"
+            "enrichedAt": "2026-08-09T14:19:15.119Z"
         }
     },
     "Aurora": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Aurora",
         "key": "893",
         "name": "Aurora",
@@ -3312,10 +3301,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/aurora/aram-builds",
-                "winRate": "51.1%",
-                "pickRate": "0.8%",
-                "tier": "A",
-                "matches": 9280,
+                "winRate": "50.5%",
+                "pickRate": "1.0%",
+                "tier": "B",
+                "matches": 40691,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -3344,11 +3333,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:44.258Z"
+            "enrichedAt": "2026-08-09T14:19:16.497Z"
         }
     },
     "Azir": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Azir",
         "key": "268",
         "name": "Azir",
@@ -3573,10 +3562,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/azir/aram-builds",
-                "winRate": "47.0%",
-                "pickRate": "0.9%",
+                "winRate": "47.7%",
+                "pickRate": "0.6%",
                 "tier": "A",
-                "matches": 10705,
+                "matches": 24435,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "-5.0%",
@@ -3619,11 +3608,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:44.179Z"
+            "enrichedAt": "2026-08-09T14:19:16.382Z"
         }
     },
     "Bard": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Bard",
         "key": "432",
         "name": "Bard",
@@ -3838,10 +3827,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/bard/aram-builds",
-                "winRate": "46.9%",
-                "pickRate": "1.0%",
+                "winRate": "47.8%",
+                "pickRate": "0.7%",
                 "tier": "B",
-                "matches": 11776,
+                "matches": 28945,
                 "balance": {
                     "damageDealt": "+15.0%",
                     "damageReceived": "-15.0%",
@@ -3868,11 +3857,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:44.447Z"
+            "enrichedAt": "2026-08-09T14:19:16.295Z"
         }
     },
     "Belveth": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Belveth",
         "key": "200",
         "name": "Bel'Veth",
@@ -3898,13 +3887,13 @@
         ],
         "partype": "",
         "stats": {
-            "hp": 610,
-            "hpperlevel": 105,
-            "mp": 60,
+            "hp": 580,
+            "hpperlevel": 110,
+            "mp": 45,
             "mpperlevel": 0,
             "movespeed": 340,
-            "armor": 32,
-            "armorperlevel": 4.7,
+            "armor": 28,
+            "armorperlevel": 5,
             "spellblock": 32,
             "spellblockperlevel": 2.05,
             "attackrange": 150,
@@ -3914,10 +3903,10 @@
             "mpregenperlevel": 0,
             "crit": 0,
             "critperlevel": 0,
-            "attackdamage": 60,
+            "attackdamage": 55,
             "attackdamageperlevel": 0,
             "attackspeedperlevel": 0,
-            "attackspeed": 0.85
+            "attackspeed": 0.67
         },
         "mobalytics": {
             "slug": "belveth",
@@ -3974,7 +3963,7 @@
                         },
                         {
                             "slug": "cooldown",
-                            "value": "1"
+                            "value": "4/3.25/2.5/1.75/1"
                         }
                     ],
                     "customStats": [],
@@ -4033,7 +4022,7 @@
                         },
                         {
                             "slug": "cooldown",
-                            "value": "20/19/18/17/16"
+                            "value": "24/21/18/15/12"
                         }
                     ],
                     "customStats": [],
@@ -4048,7 +4037,7 @@
                     "activationKey": "R",
                     "name": "Endless Banquet",
                     "slug": "BelvethR",
-                    "riotDesc": "Bel'Veth consumes Void coral remnants, transforming into her true form and increasing her max health, attack range, attack speed, and out-of-combat move speed. Consuming the Void coral remnants of a Void epic monster will grant her a longer ultimate duration, as well as the power to summon Void remora.",
+                    "riotDesc": "Bel'Veth consumes Void coral remnants, transforming into her true form and increasing her max health, attack range, and attack speed. Consuming the Void coral remnants of a Void epic monster will grant her the power to summon Void remora.",
                     "mobaDesc": "Passive: Every second attack against the same target deals additional True Damage, stacking infinitely. Takedowns against Epic Monsters and Champions leave behind a piece of Void Coral. Epic Monsters from the Void like Rift Herald and Baron Nashor drop special, voidier Void Coral. Active: Bel’veth consumes a piece of Void Coral and explodes, slowing and dealing True Damage to nearby enemies based on their missing health. Upon consuming Void Coral, Bel’Veth temporarily changes into her True Form. Consuming Void Coral left by Epic Monsters from the Void (Rift Herald and Baron Nashor) grants Bel'Veth her true form for an extended duration and causes minions that die in her presence to be reborn as faithful Voidlings. Voidlings are small minions that will serve Bel’Veth by marching down the lane in which they were spawned. True Form: When Bel’Veth unleashes her True Form, she gains increased max health, out-of-combat move speed, attack range, and total attack speed. While in her True Form, she also gains the ability to dash through walls with Q",
                     "stats": [
                         {
@@ -4098,10 +4087,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/belveth/aram-builds",
-                "winRate": "54.7%",
-                "pickRate": "0.3%",
+                "winRate": "62.5%",
+                "pickRate": "0.5%",
                 "tier": "S",
-                "matches": 3078,
+                "matches": 19130,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-5.0%",
@@ -4135,11 +4124,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:44.204Z"
+            "enrichedAt": "2026-08-09T14:19:16.386Z"
         }
     },
     "Blitzcrank": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Blitzcrank",
         "key": "53",
         "name": "Blitzcrank",
@@ -4354,10 +4343,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/blitzcrank/aram-builds",
-                "winRate": "50.1%",
-                "pickRate": "2.3%",
+                "winRate": "49.8%",
+                "pickRate": "2.1%",
                 "tier": "A",
-                "matches": 27446,
+                "matches": 89325,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -4386,11 +4375,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:46.096Z"
+            "enrichedAt": "2026-08-09T14:19:17.570Z"
         }
     },
     "Brand": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Brand",
         "key": "63",
         "name": "Brand",
@@ -4603,10 +4592,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/brand/aram-builds",
-                "winRate": "52.0%",
+                "winRate": "49.9%",
                 "pickRate": "2.3%",
                 "tier": "S",
-                "matches": 27637,
+                "matches": 99166,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": "+10.0%",
@@ -4633,11 +4622,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:46.078Z"
+            "enrichedAt": "2026-08-09T14:19:17.600Z"
         }
     },
     "Braum": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Braum",
         "key": "201",
         "name": "Braum",
@@ -4864,10 +4853,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/braum/aram-builds",
-                "winRate": "49.1%",
-                "pickRate": "0.9%",
-                "tier": "D",
-                "matches": 10171,
+                "winRate": "50.2%",
+                "pickRate": "0.7%",
+                "tier": "C",
+                "matches": 31789,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -4908,11 +4897,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:46.137Z"
+            "enrichedAt": "2026-08-09T14:19:17.632Z"
         }
     },
     "Briar": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Briar",
         "key": "233",
         "name": "Briar",
@@ -5142,10 +5131,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/briar/aram-builds",
-                "winRate": "52.0%",
-                "pickRate": "0.3%",
-                "tier": "A",
-                "matches": 3080,
+                "winRate": "51.4%",
+                "pickRate": "0.4%",
+                "tier": "B",
+                "matches": 18977,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-5.0%",
@@ -5186,11 +5175,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:46.289Z"
+            "enrichedAt": "2026-08-09T14:19:17.740Z"
         }
     },
     "Caitlyn": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Caitlyn",
         "key": "51",
         "name": "Caitlyn",
@@ -5389,10 +5378,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/caitlyn/aram-builds",
-                "winRate": "51.6%",
+                "winRate": "52.0%",
                 "pickRate": "2.6%",
                 "tier": "C",
-                "matches": 30679,
+                "matches": 110701,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -5422,11 +5411,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:47.966Z"
+            "enrichedAt": "2026-08-09T14:19:18.742Z"
         }
     },
     "Camille": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Camille",
         "key": "164",
         "name": "Camille",
@@ -5650,10 +5639,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/camille/aram-builds",
-                "winRate": "47.6%",
-                "pickRate": "0.3%",
+                "winRate": "46.5%",
+                "pickRate": "0.4%",
                 "tier": "D",
-                "matches": 3017,
+                "matches": 18632,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-5.0%",
@@ -5701,11 +5690,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:47.993Z"
+            "enrichedAt": "2026-08-09T14:19:18.878Z"
         }
     },
     "Cassiopeia": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Cassiopeia",
         "key": "69",
         "name": "Cassiopeia",
@@ -5923,10 +5912,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/cassiopeia/aram-builds",
-                "winRate": "43.9%",
-                "pickRate": "1.0%",
+                "winRate": "44.6%",
+                "pickRate": "0.7%",
                 "tier": "A",
-                "matches": 12691,
+                "matches": 29750,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -5961,11 +5950,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:47.969Z"
+            "enrichedAt": "2026-08-09T14:19:18.881Z"
         }
     },
     "Chogath": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Chogath",
         "key": "31",
         "name": "Cho'Gath",
@@ -6182,10 +6171,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/chogath/aram-builds",
-                "winRate": "50.8%",
+                "winRate": "51.4%",
                 "pickRate": "1.7%",
                 "tier": "A",
-                "matches": 20196,
+                "matches": 73330,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "+10.0%",
@@ -6229,11 +6218,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:48.243Z"
+            "enrichedAt": "2026-08-09T14:19:19.013Z"
         }
     },
     "Corki": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Corki",
         "key": "42",
         "name": "Corki",
@@ -6443,10 +6432,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/corki/aram-builds",
-                "winRate": "48.4%",
-                "pickRate": "1.3%",
+                "winRate": "48.7%",
+                "pickRate": "1.0%",
                 "tier": "D",
-                "matches": 15959,
+                "matches": 41180,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "-10.0%",
@@ -6477,11 +6466,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:49.881Z"
+            "enrichedAt": "2026-08-09T14:19:20.003Z"
         }
     },
     "Darius": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Darius",
         "key": "122",
         "name": "Darius",
@@ -6703,10 +6692,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/darius/aram-builds",
-                "winRate": "50.2%",
+                "winRate": "50.8%",
                 "pickRate": "1.1%",
-                "tier": "C",
-                "matches": 12595,
+                "tier": "B",
+                "matches": 47374,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": null,
@@ -6734,11 +6723,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:49.851Z"
+            "enrichedAt": "2026-08-09T14:19:20.160Z"
         }
     },
     "Diana": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Diana",
         "key": "131",
         "name": "Diana",
@@ -6959,10 +6948,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/diana/aram-builds",
-                "winRate": "49.3%",
+                "winRate": "47.3%",
                 "pickRate": "0.8%",
                 "tier": "A",
-                "matches": 9287,
+                "matches": 32810,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -7011,11 +7000,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:49.816Z"
+            "enrichedAt": "2026-08-09T14:19:22.359Z"
         }
     },
     "Draven": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Draven",
         "key": "119",
         "name": "Draven",
@@ -7224,10 +7213,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/draven/aram-builds",
-                "winRate": "48.1%",
+                "winRate": "48.3%",
                 "pickRate": "1.3%",
                 "tier": "D",
-                "matches": 15258,
+                "matches": 54744,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-5.0%",
@@ -7272,11 +7261,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:50.113Z"
+            "enrichedAt": "2026-08-09T14:19:20.205Z"
         }
     },
     "DrMundo": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "DrMundo",
         "key": "36",
         "name": "Dr. Mundo",
@@ -7493,10 +7482,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/drmundo/aram-builds",
-                "winRate": "53.0%",
-                "pickRate": "0.9%",
-                "tier": "S",
-                "matches": 10896,
+                "winRate": "52.0%",
+                "pickRate": "1.0%",
+                "tier": "A",
+                "matches": 41778,
                 "balance": {
                     "damageDealt": "-10.0%",
                     "damageReceived": "+5.0%",
@@ -7504,11 +7493,11 @@
                 },
                 "combos": []
             },
-            "enrichedAt": "2026-06-27T13:48:51.741Z"
+            "enrichedAt": "2026-08-09T14:19:21.274Z"
         }
     },
     "Ekko": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Ekko",
         "key": "245",
         "name": "Ekko",
@@ -7733,10 +7722,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/ekko/aram-builds",
-                "winRate": "49.3%",
+                "winRate": "50.6%",
                 "pickRate": "1.2%",
                 "tier": "A",
-                "matches": 14055,
+                "matches": 50547,
                 "balance": {
                     "damageDealt": "+10.0%",
                     "damageReceived": null,
@@ -7781,11 +7770,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:51.660Z"
+            "enrichedAt": "2026-08-09T14:19:21.433Z"
         }
     },
     "Elise": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Elise",
         "key": "60",
         "name": "Elise",
@@ -8000,10 +7989,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/elise/aram-builds",
-                "winRate": "47.2%",
-                "pickRate": "0.3%",
+                "winRate": "46.9%",
+                "pickRate": "0.5%",
                 "tier": "D",
-                "matches": 4130,
+                "matches": 22425,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-10.0%",
@@ -8024,11 +8013,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:51.705Z"
+            "enrichedAt": "2026-08-09T14:19:21.701Z"
         }
     },
     "Evelynn": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Evelynn",
         "key": "28",
         "name": "Evelynn",
@@ -8249,10 +8238,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/evelynn/aram-builds",
-                "winRate": "44.6%",
-                "pickRate": "0.4%",
+                "winRate": "47.4%",
+                "pickRate": "0.3%",
                 "tier": "D",
-                "matches": 5205,
+                "matches": 12924,
                 "balance": {
                     "damageDealt": "+10.0%",
                     "damageReceived": "-10.0%",
@@ -8300,11 +8289,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:52.005Z"
+            "enrichedAt": "2026-08-09T14:19:22.764Z"
         }
     },
     "Ezreal": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Ezreal",
         "key": "81",
         "name": "Ezreal",
@@ -8505,10 +8494,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/ezreal/aram-builds",
-                "winRate": "50.4%",
-                "pickRate": "2.6%",
+                "winRate": "50.0%",
+                "pickRate": "2.5%",
                 "tier": "B",
-                "matches": 31423,
+                "matches": 107186,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -8552,11 +8541,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:53.565Z"
+            "enrichedAt": "2026-08-09T14:19:22.694Z"
         }
     },
     "Fiddlesticks": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Fiddlesticks",
         "key": "9",
         "name": "Fiddlesticks",
@@ -8778,10 +8767,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/fiddlesticks/aram-builds",
-                "winRate": "52.7%",
-                "pickRate": "1.1%",
-                "tier": "A",
-                "matches": 12989,
+                "winRate": "51.6%",
+                "pickRate": "1.4%",
+                "tier": "B",
+                "matches": 59506,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": "+5.0%",
@@ -8818,11 +8807,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:53.539Z"
+            "enrichedAt": "2026-08-09T14:19:22.942Z"
         }
     },
     "Fiora": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Fiora",
         "key": "114",
         "name": "Fiora",
@@ -9043,10 +9032,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/fiora/aram-builds",
-                "winRate": "48.7%",
-                "pickRate": "0.4%",
+                "winRate": "48.6%",
+                "pickRate": "0.2%",
                 "tier": "D",
-                "matches": 4369,
+                "matches": 10273,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "-5.0%",
@@ -9088,11 +9077,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:53.552Z"
+            "enrichedAt": "2026-08-09T14:19:23.554Z"
         }
     },
     "Fizz": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Fizz",
         "key": "105",
         "name": "Fizz",
@@ -9306,10 +9295,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/fizz/aram-builds",
-                "winRate": "49.7%",
-                "pickRate": "1.0%",
-                "tier": "S",
-                "matches": 12424,
+                "winRate": "49.5%",
+                "pickRate": "1.3%",
+                "tier": "A",
+                "matches": 55573,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-5.0%",
@@ -9352,11 +9341,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:53.890Z"
+            "enrichedAt": "2026-08-09T14:19:23.965Z"
         }
     },
     "Galio": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Galio",
         "key": "3",
         "name": "Galio",
@@ -9586,10 +9575,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/galio/aram-builds",
-                "winRate": "53.5%",
+                "winRate": "52.4%",
                 "pickRate": "1.3%",
                 "tier": "B",
-                "matches": 15847,
+                "matches": 56202,
                 "balance": {
                     "damageDealt": "-10.0%",
                     "damageReceived": "+5.0%",
@@ -9630,11 +9619,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:55.341Z"
+            "enrichedAt": "2026-08-09T14:19:23.958Z"
         }
     },
     "Gangplank": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Gangplank",
         "key": "41",
         "name": "Gangplank",
@@ -9854,10 +9843,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/gangplank/aram-builds",
-                "winRate": "51.0%",
-                "pickRate": "0.8%",
+                "winRate": "50.8%",
+                "pickRate": "1.2%",
                 "tier": "B",
-                "matches": 9930,
+                "matches": 49549,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -9891,11 +9880,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:55.419Z"
+            "enrichedAt": "2026-08-09T14:19:24.218Z"
         }
     },
     "Garen": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Garen",
         "key": "86",
         "name": "Garen",
@@ -10113,10 +10102,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/garen/aram-builds",
-                "winRate": "52.2%",
+                "winRate": "50.9%",
                 "pickRate": "1.2%",
-                "tier": "A",
-                "matches": 14383,
+                "tier": "B",
+                "matches": 51022,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "-5.0%",
@@ -10156,11 +10145,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:55.407Z"
+            "enrichedAt": "2026-08-09T14:19:24.799Z"
         }
     },
     "Gnar": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Gnar",
         "key": "150",
         "name": "Gnar",
@@ -10390,10 +10379,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/gnar/aram-builds",
-                "winRate": "52.5%",
-                "pickRate": "0.6%",
+                "winRate": "51.8%",
+                "pickRate": "0.9%",
                 "tier": "S",
-                "matches": 7044,
+                "matches": 37650,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-5.0%",
@@ -10412,11 +10401,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:55.744Z"
+            "enrichedAt": "2026-08-09T14:19:25.187Z"
         }
     },
     "Gragas": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Gragas",
         "key": "79",
         "name": "Gragas",
@@ -10630,10 +10619,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/gragas/aram-builds",
-                "winRate": "50.0%",
-                "pickRate": "1.2%",
+                "winRate": "51.5%",
+                "pickRate": "0.9%",
                 "tier": "A",
-                "matches": 14134,
+                "matches": 36853,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "-5.0%",
@@ -10650,11 +10639,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:57.220Z"
+            "enrichedAt": "2026-08-09T14:19:25.255Z"
         }
     },
     "Graves": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Graves",
         "key": "104",
         "name": "Graves",
@@ -10867,9 +10856,9 @@
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/graves/aram-builds",
                 "winRate": "48.2%",
-                "pickRate": "1.2%",
+                "pickRate": "1.4%",
                 "tier": "D",
-                "matches": 14140,
+                "matches": 60195,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -10901,11 +10890,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:57.286Z"
+            "enrichedAt": "2026-08-09T14:19:25.684Z"
         }
     },
     "Gwen": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Gwen",
         "key": "887",
         "name": "Gwen",
@@ -11120,10 +11109,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/gwen/aram-builds",
-                "winRate": "50.1%",
-                "pickRate": "0.6%",
-                "tier": "C",
-                "matches": 7515,
+                "winRate": "51.5%",
+                "pickRate": "0.4%",
+                "tier": "B",
+                "matches": 17203,
                 "balance": {
                     "damageDealt": "+2.0%",
                     "damageReceived": null,
@@ -11143,11 +11132,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:57.355Z"
+            "enrichedAt": "2026-08-09T14:19:26.042Z"
         }
     },
     "Hecarim": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Hecarim",
         "key": "120",
         "name": "Hecarim",
@@ -11370,10 +11359,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/hecarim/aram-builds",
-                "winRate": "48.3%",
+                "winRate": "50.2%",
                 "pickRate": "0.5%",
-                "tier": "D",
-                "matches": 5688,
+                "tier": "C",
+                "matches": 21074,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-10.0%",
@@ -11417,11 +11406,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:57.571Z"
+            "enrichedAt": "2026-08-09T14:19:26.698Z"
         }
     },
     "Heimerdinger": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Heimerdinger",
         "key": "74",
         "name": "Heimerdinger",
@@ -11630,10 +11619,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/heimerdinger/aram-builds",
-                "winRate": "54.4%",
-                "pickRate": "1.6%",
+                "winRate": "53.6%",
+                "pickRate": "1.7%",
                 "tier": "A",
-                "matches": 19546,
+                "matches": 70210,
                 "balance": {
                     "damageDealt": "-10.0%",
                     "damageReceived": "+10.0%",
@@ -11673,11 +11662,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:59.035Z"
+            "enrichedAt": "2026-08-09T14:19:26.531Z"
         }
     },
     "Hwei": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Hwei",
         "key": "910",
         "name": "Hwei",
@@ -11908,10 +11897,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/hwei/aram-builds",
-                "winRate": "52.3%",
-                "pickRate": "1.2%",
-                "tier": "A",
-                "matches": 14611,
+                "winRate": "51.6%",
+                "pickRate": "1.3%",
+                "tier": "S",
+                "matches": 56030,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": null,
@@ -11919,11 +11908,11 @@
                 },
                 "combos": []
             },
-            "enrichedAt": "2026-06-27T13:48:59.076Z"
+            "enrichedAt": "2026-08-09T14:19:26.937Z"
         }
     },
     "Illaoi": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Illaoi",
         "key": "420",
         "name": "Illaoi",
@@ -12141,10 +12130,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/illaoi/aram-builds",
-                "winRate": "51.9%",
-                "pickRate": "0.7%",
+                "winRate": "51.8%",
+                "pickRate": "0.8%",
                 "tier": "A",
-                "matches": 7789,
+                "matches": 34476,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": "-5.0%",
@@ -12188,11 +12177,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:48:59.120Z"
+            "enrichedAt": "2026-08-09T14:19:27.297Z"
         }
     },
     "Irelia": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Irelia",
         "key": "39",
         "name": "Irelia",
@@ -12411,10 +12400,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/irelia/aram-builds",
-                "winRate": "52.1%",
+                "winRate": "52.4%",
                 "pickRate": "0.7%",
                 "tier": "A",
-                "matches": 8435,
+                "matches": 29447,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": null,
@@ -12422,11 +12411,11 @@
                 },
                 "combos": []
             },
-            "enrichedAt": "2026-06-27T13:48:59.420Z"
+            "enrichedAt": "2026-08-09T14:19:27.792Z"
         }
     },
     "Ivern": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Ivern",
         "key": "427",
         "name": "Ivern",
@@ -12652,7 +12641,7 @@
                 "winRate": "50.5%",
                 "pickRate": "0.5%",
                 "tier": "C",
-                "matches": 5591,
+                "matches": 20173,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": null,
@@ -12692,11 +12681,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:00.962Z"
+            "enrichedAt": "2026-08-09T14:19:27.944Z"
         }
     },
     "Janna": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Janna",
         "key": "40",
         "name": "Janna",
@@ -12710,7 +12699,7 @@
         },
         "image": {
             "full": "Janna.png",
-            "sprite": "champion1.png",
+            "sprite": "champion3.png",
             "group": "champion",
             "x": 432,
             "y": 48,
@@ -12917,10 +12906,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/janna/aram-builds",
-                "winRate": "49.8%",
-                "pickRate": "1.2%",
-                "tier": "D",
-                "matches": 13779,
+                "winRate": "50.2%",
+                "pickRate": "0.9%",
+                "tier": "C",
+                "matches": 37624,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": "+5.0%",
@@ -12963,11 +12952,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:00.894Z"
+            "enrichedAt": "2026-08-09T14:19:28.196Z"
         }
     },
     "JarvanIV": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "JarvanIV",
         "key": "59",
         "name": "Jarvan IV",
@@ -12981,7 +12970,7 @@
         },
         "image": {
             "full": "JarvanIV.png",
-            "sprite": "champion1.png",
+            "sprite": "champion3.png",
             "group": "champion",
             "x": 0,
             "y": 96,
@@ -13195,10 +13184,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/jarvaniv/aram-builds",
-                "winRate": "49.2%",
+                "winRate": "49.0%",
                 "pickRate": "1.1%",
                 "tier": "D",
-                "matches": 13059,
+                "matches": 45539,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -13239,11 +13228,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:00.976Z"
+            "enrichedAt": "2026-08-09T14:19:28.557Z"
         }
     },
     "Jax": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Jax",
         "key": "24",
         "name": "Jax",
@@ -13257,7 +13246,7 @@
         },
         "image": {
             "full": "Jax.png",
-            "sprite": "champion1.png",
+            "sprite": "champion3.png",
             "group": "champion",
             "x": 48,
             "y": 96,
@@ -13319,7 +13308,7 @@
             "abilities": [
                 {
                     "activationKey": "PASSIVE",
-                    "name": "Relentless Assault",
+                    "name": "Equipment Mastery",
                     "slug": "Armsmaster_MasterOfArms",
                     "riotDesc": "",
                     "mobaDesc": "Jax's consecutive basic attacks continuously increase his Attack Speed.",
@@ -13440,10 +13429,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/jax/aram-builds",
-                "winRate": "54.2%",
-                "pickRate": "1.2%",
+                "winRate": "54.1%",
+                "pickRate": "0.9%",
                 "tier": "S",
-                "matches": 13990,
+                "matches": 39651,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-3.0%",
@@ -13491,11 +13480,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:01.333Z"
+            "enrichedAt": "2026-08-09T14:19:28.990Z"
         }
     },
     "Jayce": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Jayce",
         "key": "126",
         "name": "Jayce",
@@ -13509,7 +13498,7 @@
         },
         "image": {
             "full": "Jayce.png",
-            "sprite": "champion1.png",
+            "sprite": "champion3.png",
             "group": "champion",
             "x": 96,
             "y": 96,
@@ -13701,10 +13690,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/jayce/aram-builds",
-                "winRate": "46.0%",
-                "pickRate": "1.3%",
+                "winRate": "45.5%",
+                "pickRate": "1.6%",
                 "tier": "D",
-                "matches": 15606,
+                "matches": 70056,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": null,
@@ -13734,11 +13723,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:02.751Z"
+            "enrichedAt": "2026-08-09T14:19:29.216Z"
         }
     },
     "Jhin": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Jhin",
         "key": "202",
         "name": "Jhin",
@@ -13752,7 +13741,7 @@
         },
         "image": {
             "full": "Jhin.png",
-            "sprite": "champion1.png",
+            "sprite": "champion3.png",
             "group": "champion",
             "x": 144,
             "y": 96,
@@ -13959,10 +13948,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/jhin/aram-builds",
-                "winRate": "51.4%",
+                "winRate": "50.8%",
                 "pickRate": "2.7%",
                 "tier": "S",
-                "matches": 31878,
+                "matches": 115595,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": "+5.0%",
@@ -13994,11 +13983,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:02.801Z"
+            "enrichedAt": "2026-08-09T14:19:29.382Z"
         }
     },
     "Jinx": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Jinx",
         "key": "222",
         "name": "Jinx",
@@ -14012,7 +14001,7 @@
         },
         "image": {
             "full": "Jinx.png",
-            "sprite": "champion1.png",
+            "sprite": "champion3.png",
             "group": "champion",
             "x": 192,
             "y": 96,
@@ -14212,10 +14201,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/jinx/aram-builds",
-                "winRate": "53.0%",
-                "pickRate": "2.2%",
+                "winRate": "51.7%",
+                "pickRate": "2.6%",
                 "tier": "A",
-                "matches": 27012,
+                "matches": 108155,
                 "balance": {
                     "damageDealt": "-10.0%",
                     "damageReceived": "+5.0%",
@@ -14262,11 +14251,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:02.850Z"
+            "enrichedAt": "2026-08-09T14:19:29.751Z"
         }
     },
     "Kaisa": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Kaisa",
         "key": "145",
         "name": "Kai'Sa",
@@ -14280,7 +14269,7 @@
         },
         "image": {
             "full": "Kaisa.png",
-            "sprite": "champion1.png",
+            "sprite": "champion3.png",
             "group": "champion",
             "x": 240,
             "y": 96,
@@ -14479,7 +14468,7 @@
                 "winRate": "48.3%",
                 "pickRate": "2.4%",
                 "tier": "S",
-                "matches": 29473,
+                "matches": 102738,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "-10.0%",
@@ -14510,11 +14499,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:03.200Z"
+            "enrichedAt": "2026-08-09T14:19:30.412Z"
         }
     },
     "Kalista": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Kalista",
         "key": "429",
         "name": "Kalista",
@@ -14528,7 +14517,7 @@
         },
         "image": {
             "full": "Kalista.png",
-            "sprite": "champion1.png",
+            "sprite": "champion3.png",
             "group": "champion",
             "x": 288,
             "y": 96,
@@ -14734,10 +14723,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/kalista/aram-builds",
-                "winRate": "54.0%",
-                "pickRate": "1.0%",
+                "winRate": "56.8%",
+                "pickRate": "0.8%",
                 "tier": "S",
-                "matches": 12218,
+                "matches": 35764,
                 "balance": {
                     "damageDealt": "+10.0%",
                     "damageReceived": "-10.0%",
@@ -14745,11 +14734,11 @@
                 },
                 "combos": []
             },
-            "enrichedAt": "2026-06-27T13:49:04.647Z"
+            "enrichedAt": "2026-08-09T14:19:30.453Z"
         }
     },
     "Karma": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Karma",
         "key": "43",
         "name": "Karma",
@@ -14763,7 +14752,7 @@
         },
         "image": {
             "full": "Karma.png",
-            "sprite": "champion1.png",
+            "sprite": "champion3.png",
             "group": "champion",
             "x": 336,
             "y": 96,
@@ -14966,10 +14955,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/karma/aram-builds",
-                "winRate": "47.3%",
-                "pickRate": "1.8%",
+                "winRate": "47.6%",
+                "pickRate": "1.7%",
                 "tier": "A",
-                "matches": 21048,
+                "matches": 74171,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": null,
@@ -15012,11 +15001,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:04.638Z"
+            "enrichedAt": "2026-08-09T14:19:30.645Z"
         }
     },
     "Karthus": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Karthus",
         "key": "30",
         "name": "Karthus",
@@ -15030,7 +15019,7 @@
         },
         "image": {
             "full": "Karthus.png",
-            "sprite": "champion1.png",
+            "sprite": "champion3.png",
             "group": "champion",
             "x": 384,
             "y": 96,
@@ -15128,15 +15117,32 @@
                     "ccTypes": []
                 },
                 {
-                    "activationKey": "PASSIVE",
-                    "name": "Death Defied",
-                    "slug": "Karthus_Passive",
-                    "riotDesc": "",
-                    "mobaDesc": "On dying, Karthus remains active for 7 seconds but is unable to move, auto-attack, cast summoner spells, or use active items. He also becomes untargetable and invulnerable for the duration as well and can use abilities at no cost. His E will be toggled on for the entire duration.",
-                    "stats": [],
+                    "activationKey": "W",
+                    "name": "Wall of Pain",
+                    "slug": "KarthusWallOfPain",
+                    "riotDesc": "Karthus creates a passable screen of leeching energy. Any enemy units that walk through the screen have their Move Speed and Magic Resist reduced for a period.",
+                    "mobaDesc": "Creates a passable wall at the target location and grants vision around its pillars. Any enemy who passes through the wall is slowed and loses magic resistance for the same duration.",
+                    "stats": [
+                        {
+                            "slug": "cost",
+                            "value": "70"
+                        },
+                        {
+                            "slug": "range",
+                            "value": "1000"
+                        },
+                        {
+                            "slug": "cooldown",
+                            "value": "15"
+                        }
+                    ],
                     "customStats": [],
-                    "tags": [],
-                    "ccTypes": []
+                    "tags": [
+                        "CC"
+                    ],
+                    "ccTypes": [
+                        "slow"
+                    ]
                 },
                 {
                     "activationKey": "E",
@@ -15190,17 +15196,20 @@
                 }
             ],
             "abilityTags": [
-                "AOE"
+                "AOE",
+                "CC"
             ],
-            "ccTypes": [],
-            "hasCc": false,
+            "ccTypes": [
+                "slow"
+            ],
+            "hasCc": true,
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/karthus/aram-builds",
-                "winRate": "50.7%",
+                "winRate": "49.2%",
                 "pickRate": "1.2%",
-                "tier": "B",
-                "matches": 14322,
+                "tier": "D",
+                "matches": 51446,
                 "balance": {
                     "damageDealt": "-7.0%",
                     "damageReceived": "+5.0%",
@@ -15231,11 +15240,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:04.671Z"
+            "enrichedAt": "2026-08-09T14:19:30.992Z"
         }
     },
     "Kassadin": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Kassadin",
         "key": "38",
         "name": "Kassadin",
@@ -15249,7 +15258,7 @@
         },
         "image": {
             "full": "Kassadin.png",
-            "sprite": "champion1.png",
+            "sprite": "champion3.png",
             "group": "champion",
             "x": 432,
             "y": 96,
@@ -15450,10 +15459,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/kassadin/aram-builds",
-                "winRate": "46.4%",
-                "pickRate": "0.6%",
+                "winRate": "45.9%",
+                "pickRate": "0.4%",
                 "tier": "A",
-                "matches": 7189,
+                "matches": 17375,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "-5.0%",
@@ -15488,11 +15497,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:05.090Z"
+            "enrichedAt": "2026-08-09T14:19:31.692Z"
         }
     },
     "Katarina": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Katarina",
         "key": "55",
         "name": "Katarina",
@@ -15506,7 +15515,7 @@
         },
         "image": {
             "full": "Katarina.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 0,
             "y": 0,
@@ -15696,10 +15705,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/katarina/aram-builds",
-                "winRate": "44.1%",
-                "pickRate": "0.7%",
+                "winRate": "44.8%",
+                "pickRate": "0.9%",
                 "tier": "S",
-                "matches": 8774,
+                "matches": 36987,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -15719,11 +15728,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:06.477Z"
+            "enrichedAt": "2026-08-09T14:19:31.688Z"
         }
     },
     "Kayle": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Kayle",
         "key": "10",
         "name": "Kayle",
@@ -15737,7 +15746,7 @@
         },
         "image": {
             "full": "Kayle.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 48,
             "y": 0,
@@ -15945,10 +15954,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/kayle/aram-builds",
-                "winRate": "53.7%",
-                "pickRate": "1.4%",
-                "tier": "S",
-                "matches": 16465,
+                "winRate": "52.8%",
+                "pickRate": "1.2%",
+                "tier": "A",
+                "matches": 52192,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": "+10.0%",
@@ -15986,11 +15995,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:06.473Z"
+            "enrichedAt": "2026-08-09T14:19:31.845Z"
         }
     },
     "Kayn": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Kayn",
         "key": "141",
         "name": "Kayn",
@@ -16004,7 +16013,7 @@
         },
         "image": {
             "full": "Kayn.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 96,
             "y": 0,
@@ -16215,10 +16224,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/kayn/aram-builds",
-                "winRate": "47.9%",
-                "pickRate": "0.7%",
+                "winRate": "47.5%",
+                "pickRate": "0.6%",
                 "tier": "D",
-                "matches": 7804,
+                "matches": 24078,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -16257,11 +16266,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:06.470Z"
+            "enrichedAt": "2026-08-09T14:19:32.186Z"
         }
     },
     "Kennen": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Kennen",
         "key": "85",
         "name": "Kennen",
@@ -16275,7 +16284,7 @@
         },
         "image": {
             "full": "Kennen.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 144,
             "y": 0,
@@ -16473,10 +16482,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/kennen/aram-builds",
-                "winRate": "46.7%",
-                "pickRate": "1.1%",
+                "winRate": "46.8%",
+                "pickRate": "0.7%",
                 "tier": "D",
-                "matches": 13298,
+                "matches": 29774,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -16516,11 +16525,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:06.966Z"
+            "enrichedAt": "2026-08-09T14:19:33.120Z"
         }
     },
     "Khazix": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Khazix",
         "key": "121",
         "name": "Kha'Zix",
@@ -16534,7 +16543,7 @@
         },
         "image": {
             "full": "Khazix.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 192,
             "y": 0,
@@ -16745,10 +16754,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/khazix/aram-builds",
-                "winRate": "40.9%",
-                "pickRate": "0.9%",
+                "winRate": "42.3%",
+                "pickRate": "0.6%",
                 "tier": "D",
-                "matches": 10680,
+                "matches": 26628,
                 "balance": {
                     "damageDealt": "+10.0%",
                     "damageReceived": "-10.0%",
@@ -16776,11 +16785,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:08.352Z"
+            "enrichedAt": "2026-08-09T14:19:32.931Z"
         }
     },
     "Kindred": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Kindred",
         "key": "203",
         "name": "Kindred",
@@ -16794,7 +16803,7 @@
         },
         "image": {
             "full": "Kindred.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 240,
             "y": 0,
@@ -16991,10 +17000,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/kindred/aram-builds",
-                "winRate": "51.2%",
+                "winRate": "52.8%",
                 "pickRate": "1.1%",
-                "tier": "B",
-                "matches": 12780,
+                "tier": "A",
+                "matches": 48303,
                 "balance": {
                     "damageDealt": "+10.0%",
                     "damageReceived": "-10.0%",
@@ -17047,11 +17056,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:08.294Z"
+            "enrichedAt": "2026-08-09T14:19:33.123Z"
         }
     },
     "Kled": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Kled",
         "key": "240",
         "name": "Kled",
@@ -17065,7 +17074,7 @@
         },
         "image": {
             "full": "Kled.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 288,
             "y": 0,
@@ -17272,10 +17281,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/kled/aram-builds",
-                "winRate": "50.5%",
-                "pickRate": "0.2%",
-                "tier": "C",
-                "matches": 2723,
+                "winRate": "51.6%",
+                "pickRate": "0.3%",
+                "tier": "B",
+                "matches": 11087,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": null,
@@ -17325,11 +17334,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:08.308Z"
+            "enrichedAt": "2026-08-09T14:19:33.440Z"
         }
     },
     "KogMaw": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "KogMaw",
         "key": "96",
         "name": "Kog'Maw",
@@ -17343,7 +17352,7 @@
         },
         "image": {
             "full": "KogMaw.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 336,
             "y": 0,
@@ -17536,10 +17545,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/kogmaw/aram-builds",
-                "winRate": "52.0%",
-                "pickRate": "1.2%",
+                "winRate": "51.0%",
+                "pickRate": "1.7%",
                 "tier": "B",
-                "matches": 14309,
+                "matches": 71117,
                 "balance": {
                     "damageDealt": "-8.0%",
                     "damageReceived": "+10.0%",
@@ -17582,11 +17591,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:08.764Z"
+            "enrichedAt": "2026-08-09T14:19:34.163Z"
         }
     },
     "KSante": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "KSante",
         "key": "897",
         "name": "K'Sante",
@@ -17600,7 +17609,7 @@
         },
         "image": {
             "full": "KSante.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 384,
             "y": 0,
@@ -17813,10 +17822,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/ksante/aram-builds",
-                "winRate": "44.2%",
-                "pickRate": "0.2%",
+                "winRate": "43.9%",
+                "pickRate": "0.4%",
                 "tier": "D",
-                "matches": 2982,
+                "matches": 16963,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": null,
@@ -17841,11 +17850,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:10.175Z"
+            "enrichedAt": "2026-08-09T14:19:34.376Z"
         }
     },
     "Leblanc": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Leblanc",
         "key": "7",
         "name": "LeBlanc",
@@ -17859,7 +17868,7 @@
         },
         "image": {
             "full": "Leblanc.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 432,
             "y": 0,
@@ -18054,10 +18063,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/leblanc/aram-builds",
-                "winRate": "42.3%",
-                "pickRate": "1.4%",
+                "winRate": "44.3%",
+                "pickRate": "1.3%",
                 "tier": "A",
-                "matches": 17149,
+                "matches": 56627,
                 "balance": {
                     "damageDealt": "+10.0%",
                     "damageReceived": "-10.0%",
@@ -18086,11 +18095,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:10.157Z"
+            "enrichedAt": "2026-08-09T14:19:34.330Z"
         }
     },
     "LeeSin": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "LeeSin",
         "key": "64",
         "name": "Lee Sin",
@@ -18104,7 +18113,7 @@
         },
         "image": {
             "full": "LeeSin.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 0,
             "y": 48,
@@ -18301,10 +18310,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/leesin/aram-builds",
-                "winRate": "45.2%",
-                "pickRate": "1.2%",
+                "winRate": "45.3%",
+                "pickRate": "1.5%",
                 "tier": "D",
-                "matches": 14800,
+                "matches": 62432,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-5.0%",
@@ -18329,11 +18338,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:10.178Z"
+            "enrichedAt": "2026-08-09T14:19:34.697Z"
         }
     },
     "Leona": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Leona",
         "key": "89",
         "name": "Leona",
@@ -18347,7 +18356,7 @@
         },
         "image": {
             "full": "Leona.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 48,
             "y": 48,
@@ -18558,10 +18567,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/leona/aram-builds",
-                "winRate": "52.2%",
+                "winRate": "52.1%",
                 "pickRate": "1.0%",
                 "tier": "A",
-                "matches": 11670,
+                "matches": 41938,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": "+5.0%",
@@ -18589,11 +18598,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:10.597Z"
+            "enrichedAt": "2026-08-09T14:19:35.412Z"
         }
     },
     "Lillia": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Lillia",
         "key": "876",
         "name": "Lillia",
@@ -18607,7 +18616,7 @@
         },
         "image": {
             "full": "Lillia.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 96,
             "y": 48,
@@ -18813,10 +18822,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/lillia/aram-builds",
-                "winRate": "48.3%",
-                "pickRate": "0.7%",
+                "winRate": "47.1%",
+                "pickRate": "1.1%",
                 "tier": "D",
-                "matches": 9010,
+                "matches": 45150,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": "+5.0%",
@@ -18859,11 +18868,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:12.051Z"
+            "enrichedAt": "2026-08-09T14:19:35.538Z"
         }
     },
     "Lissandra": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Lissandra",
         "key": "127",
         "name": "Lissandra",
@@ -18877,7 +18886,7 @@
         },
         "image": {
             "full": "Lissandra.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 144,
             "y": 48,
@@ -19085,10 +19094,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/lissandra/aram-builds",
-                "winRate": "51.3%",
-                "pickRate": "1.3%",
-                "tier": "A",
-                "matches": 15847,
+                "winRate": "51.0%",
+                "pickRate": "0.9%",
+                "tier": "S",
+                "matches": 38196,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": "+5.0%",
@@ -19131,11 +19140,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:12.085Z"
+            "enrichedAt": "2026-08-09T14:19:35.627Z"
         }
     },
     "Locke": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Locke",
         "key": "805",
         "name": "Locke",
@@ -19149,7 +19158,7 @@
         },
         "image": {
             "full": "Locke.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 192,
             "y": 48,
@@ -19162,7 +19171,7 @@
         ],
         "partype": "Mana",
         "stats": {
-            "hp": 655,
+            "hp": 620,
             "hpperlevel": 109,
             "mp": 280,
             "mpperlevel": 70,
@@ -19209,14 +19218,12 @@
                 {
                     "activationKey": "PASSIVE",
                     "name": "Silver Stake",
-                    "slug": "Locke_Passive.Locke",
-                    "riotDesc": "Locke's attacks deal additional magic damage On-Hit, increased based on enemy missing Health.",
-                    "mobaDesc": "Locke's attacks deal additional magic damage On-Hit, increased based on enemy missing Health.",
+                    "slug": "Locke_Passive",
+                    "riotDesc": "",
+                    "mobaDesc": "",
                     "stats": [],
                     "customStats": [],
-                    "tags": [
-                        "EXECUTE"
-                    ],
+                    "tags": [],
                     "ccTypes": []
                 },
                 {
@@ -19335,7 +19342,6 @@
                 }
             ],
             "abilityTags": [
-                "EXECUTE",
                 "CC",
                 "AOE",
                 "HEAL",
@@ -19352,10 +19358,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/locke/aram-builds",
-                "winRate": "32.6%",
-                "pickRate": "1.2%",
-                "tier": "B",
-                "matches": 14487,
+                "winRate": "33.1%",
+                "pickRate": "0.9%",
+                "tier": "A",
+                "matches": 39939,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -19363,11 +19369,11 @@
                 },
                 "combos": []
             },
-            "enrichedAt": "2026-06-27T13:49:12.037Z"
+            "enrichedAt": "2026-08-09T14:19:35.963Z"
         }
     },
     "Lucian": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Lucian",
         "key": "236",
         "name": "Lucian",
@@ -19381,7 +19387,7 @@
         },
         "image": {
             "full": "Lucian.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 240,
             "y": 48,
@@ -19572,10 +19578,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/lucian/aram-builds",
-                "winRate": "46.7%",
-                "pickRate": "2.2%",
+                "winRate": "47.6%",
+                "pickRate": "1.9%",
                 "tier": "A",
-                "matches": 26606,
+                "matches": 80537,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-5.0%",
@@ -19620,11 +19626,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:12.403Z"
+            "enrichedAt": "2026-08-09T14:19:36.700Z"
         }
     },
     "Lulu": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Lulu",
         "key": "117",
         "name": "Lulu",
@@ -19638,7 +19644,7 @@
         },
         "image": {
             "full": "Lulu.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 288,
             "y": 48,
@@ -19856,10 +19862,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/lulu/aram-builds",
-                "winRate": "47.5%",
+                "winRate": "47.1%",
                 "pickRate": "1.2%",
                 "tier": "A",
-                "matches": 14760,
+                "matches": 52513,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -19898,11 +19904,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:13.897Z"
+            "enrichedAt": "2026-08-09T14:19:36.691Z"
         }
     },
     "Lux": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Lux",
         "key": "99",
         "name": "Lux",
@@ -19916,7 +19922,7 @@
         },
         "image": {
             "full": "Lux.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 336,
             "y": 48,
@@ -20115,7 +20121,7 @@
                 "winRate": "52.7%",
                 "pickRate": "2.6%",
                 "tier": "A",
-                "matches": 30828,
+                "matches": 109854,
                 "balance": {
                     "damageDealt": "-10.0%",
                     "damageReceived": "+10.0%",
@@ -20154,11 +20160,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:13.917Z"
+            "enrichedAt": "2026-08-09T14:19:36.882Z"
         }
     },
     "Malphite": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Malphite",
         "key": "54",
         "name": "Malphite",
@@ -20172,7 +20178,7 @@
         },
         "image": {
             "full": "Malphite.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 384,
             "y": 48,
@@ -20370,10 +20376,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/malphite/aram-builds",
-                "winRate": "50.0%",
-                "pickRate": "1.9%",
+                "winRate": "49.3%",
+                "pickRate": "1.8%",
                 "tier": "B",
-                "matches": 22324,
+                "matches": 77300,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -20416,11 +20422,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:13.932Z"
+            "enrichedAt": "2026-08-09T14:19:37.210Z"
         }
     },
     "Malzahar": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Malzahar",
         "key": "90",
         "name": "Malzahar",
@@ -20434,7 +20440,7 @@
         },
         "image": {
             "full": "Malzahar.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 432,
             "y": 48,
@@ -20627,10 +20633,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/malzahar/aram-builds",
-                "winRate": "52.2%",
-                "pickRate": "1.3%",
+                "winRate": "50.1%",
+                "pickRate": "1.8%",
                 "tier": "A",
-                "matches": 15750,
+                "matches": 76429,
                 "balance": {
                     "damageDealt": "-10.0%",
                     "damageReceived": "+10.0%",
@@ -20669,11 +20675,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:14.236Z"
+            "enrichedAt": "2026-08-09T14:19:37.984Z"
         }
     },
     "Maokai": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Maokai",
         "key": "57",
         "name": "Maokai",
@@ -20687,7 +20693,7 @@
         },
         "image": {
             "full": "Maokai.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 0,
             "y": 96,
@@ -20902,10 +20908,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/maokai/aram-builds",
-                "winRate": "52.8%",
+                "winRate": "50.4%",
                 "pickRate": "1.3%",
                 "tier": "B",
-                "matches": 15902,
+                "matches": 55784,
                 "balance": {
                     "damageDealt": "-15.0%",
                     "damageReceived": "+10.0%",
@@ -20952,11 +20958,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:15.810Z"
+            "enrichedAt": "2026-08-09T14:19:37.971Z"
         }
     },
     "MasterYi": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "MasterYi",
         "key": "11",
         "name": "Master Yi",
@@ -20970,7 +20976,7 @@
         },
         "image": {
             "full": "MasterYi.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 48,
             "y": 96,
@@ -21033,30 +21039,14 @@
             "preDamage": 5,
             "abilities": [
                 {
-                    "activationKey": "Q",
-                    "name": "Alpha Strike",
-                    "slug": "AlphaStrike",
-                    "riotDesc": "Master Yi teleports across the battlefield with blinding speed, dealing physical damage to multiple units in his path, while simultaneously becoming untargetable. Alpha Strike can critically strike and deals bonus physical damage to monsters. Basic attacks reduce Alpha Strike's cooldown.",
-                    "mobaDesc": "Vanishes for a while, and strikes up to 4 targets before re-appearing again. He will re-appear if there are no more targets to attack and will deal physical damage to each target. If there are no targets nearby, he may strike the same enemies again, dealing 25% damage instantly.",
-                    "stats": [
-                        {
-                            "slug": "cost",
-                            "value": "50/55/60/65/70"
-                        },
-                        {
-                            "slug": "range",
-                            "value": "600"
-                        },
-                        {
-                            "slug": "cooldown",
-                            "value": "20/19.5/19/18.5/18"
-                        }
-                    ],
+                    "activationKey": "PASSIVE",
+                    "name": "Double Strike",
+                    "slug": "MasterYi_Passive1",
+                    "riotDesc": "",
+                    "mobaDesc": "Gains a stack for every auto-attack within 4 seconds of each other. At 3 stacks, Master Yi's next auto-attack consumes the stacks to strike twice. The second attack deals 50% AD damage.",
+                    "stats": [],
                     "customStats": [],
-                    "tags": [
-                        "MOBILITY",
-                        "ENGAGE"
-                    ],
+                    "tags": [],
                     "ccTypes": []
                 },
                 {
@@ -21185,10 +21175,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/masteryi/aram-builds",
-                "winRate": "52.9%",
+                "winRate": "53.0%",
                 "pickRate": "1.2%",
-                "tier": "A",
-                "matches": 14423,
+                "tier": "S",
+                "matches": 51798,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -21218,11 +21208,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:15.732Z"
+            "enrichedAt": "2026-08-09T14:19:38.107Z"
         }
     },
     "Mel": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Mel",
         "key": "800",
         "name": "Mel",
@@ -21236,7 +21226,7 @@
         },
         "image": {
             "full": "Mel.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 96,
             "y": 96,
@@ -21434,10 +21424,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/mel/aram-builds",
-                "winRate": "46.1%",
-                "pickRate": "1.8%",
+                "winRate": "46.7%",
+                "pickRate": "2.3%",
                 "tier": "B",
-                "matches": 20985,
+                "matches": 97251,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -21471,11 +21461,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:15.834Z"
+            "enrichedAt": "2026-08-09T14:19:38.403Z"
         }
     },
     "Milio": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Milio",
         "key": "902",
         "name": "Milio",
@@ -21489,7 +21479,7 @@
         },
         "image": {
             "full": "Milio.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 144,
             "y": 96,
@@ -21699,9 +21689,9 @@
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/milio/aram-builds",
                 "winRate": "51.1%",
-                "pickRate": "0.7%",
+                "pickRate": "1.0%",
                 "tier": "B",
-                "matches": 8159,
+                "matches": 43157,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -21744,11 +21734,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:16.049Z"
+            "enrichedAt": "2026-08-09T14:19:39.497Z"
         }
     },
     "MissFortune": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "MissFortune",
         "key": "21",
         "name": "Miss Fortune",
@@ -21762,7 +21752,7 @@
         },
         "image": {
             "full": "MissFortune.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 192,
             "y": 96,
@@ -21954,10 +21944,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/missfortune/aram-builds",
-                "winRate": "51.4%",
+                "winRate": "50.8%",
                 "pickRate": "2.7%",
                 "tier": "A",
-                "matches": 32668,
+                "matches": 115648,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": "+5.0%",
@@ -21994,11 +21984,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:17.632Z"
+            "enrichedAt": "2026-08-09T14:19:39.225Z"
         }
     },
     "MonkeyKing": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "MonkeyKing",
         "key": "62",
         "name": "Wukong",
@@ -22012,7 +22002,7 @@
         },
         "image": {
             "full": "MonkeyKing.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 240,
             "y": 96,
@@ -22219,10 +22209,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/monkeyking/aram-builds",
-                "winRate": "54.3%",
+                "winRate": "53.9%",
                 "pickRate": "1.1%",
                 "tier": "S",
-                "matches": 12679,
+                "matches": 45055,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -22261,11 +22251,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:17.710Z"
+            "enrichedAt": "2026-08-09T14:19:39.429Z"
         }
     },
     "Mordekaiser": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Mordekaiser",
         "key": "82",
         "name": "Mordekaiser",
@@ -22279,7 +22269,7 @@
         },
         "image": {
             "full": "Mordekaiser.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 288,
             "y": 96,
@@ -22427,7 +22417,7 @@
                         },
                         {
                             "slug": "cooldown",
-                            "value": "18/16/14/12/10"
+                            "value": "16/14/12/10/8"
                         }
                     ],
                     "customStats": [],
@@ -22490,10 +22480,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/mordekaiser/aram-builds",
-                "winRate": "53.2%",
-                "pickRate": "1.4%",
+                "winRate": "53.9%",
+                "pickRate": "1.5%",
                 "tier": "S",
-                "matches": 17000,
+                "matches": 64176,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": "+2.0%",
@@ -22532,11 +22522,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:17.681Z"
+            "enrichedAt": "2026-08-09T14:19:39.710Z"
         }
     },
     "Morgana": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Morgana",
         "key": "25",
         "name": "Morgana",
@@ -22550,7 +22540,7 @@
         },
         "image": {
             "full": "Morgana.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 336,
             "y": 96,
@@ -22762,10 +22752,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/morgana/aram-builds",
-                "winRate": "51.3%",
+                "winRate": "50.7%",
                 "pickRate": "2.6%",
                 "tier": "A",
-                "matches": 31278,
+                "matches": 109732,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": "+10.0%",
@@ -22811,11 +22801,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:17.960Z"
+            "enrichedAt": "2026-08-09T14:19:40.438Z"
         }
     },
     "Naafiri": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Naafiri",
         "key": "950",
         "name": "Naafiri",
@@ -22829,7 +22819,7 @@
         },
         "image": {
             "full": "Naafiri.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 384,
             "y": 96,
@@ -23030,10 +23020,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/naafiri/aram-builds",
-                "winRate": "44.2%",
-                "pickRate": "0.7%",
-                "tier": "S",
-                "matches": 8389,
+                "winRate": "43.4%",
+                "pickRate": "0.4%",
+                "tier": "B",
+                "matches": 18591,
                 "balance": {
                     "damageDealt": "+10.0%",
                     "damageReceived": null,
@@ -23084,11 +23074,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:19.548Z"
+            "enrichedAt": "2026-08-09T14:19:40.635Z"
         }
     },
     "Nami": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Nami",
         "key": "267",
         "name": "Nami",
@@ -23102,7 +23092,7 @@
         },
         "image": {
             "full": "Nami.png",
-            "sprite": "champion2.png",
+            "sprite": "champion4.png",
             "group": "champion",
             "x": 432,
             "y": 96,
@@ -23315,10 +23305,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/nami/aram-builds",
-                "winRate": "50.8%",
-                "pickRate": "1.0%",
+                "winRate": "50.7%",
+                "pickRate": "1.1%",
                 "tier": "A",
-                "matches": 11813,
+                "matches": 49276,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "+5.0%",
@@ -23348,11 +23338,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:19.480Z"
+            "enrichedAt": "2026-08-09T14:19:40.766Z"
         }
     },
     "Nasus": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Nasus",
         "key": "75",
         "name": "Nasus",
@@ -23366,7 +23356,7 @@
         },
         "image": {
             "full": "Nasus.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 0,
             "y": 0,
@@ -23555,10 +23545,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/nasus/aram-builds",
-                "winRate": "50.2%",
-                "pickRate": "0.8%",
-                "tier": "C",
-                "matches": 10111,
+                "winRate": "49.1%",
+                "pickRate": "0.9%",
+                "tier": "D",
+                "matches": 36778,
                 "balance": {
                     "damageDealt": "-10.0%",
                     "damageReceived": "+5.0%",
@@ -23598,11 +23588,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:19.500Z"
+            "enrichedAt": "2026-08-09T14:19:40.935Z"
         }
     },
     "Nautilus": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Nautilus",
         "key": "111",
         "name": "Nautilus",
@@ -23616,7 +23606,7 @@
         },
         "image": {
             "full": "Nautilus.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 48,
             "y": 0,
@@ -23829,10 +23819,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/nautilus/aram-builds",
-                "winRate": "52.4%",
-                "pickRate": "1.3%",
+                "winRate": "51.8%",
+                "pickRate": "1.7%",
                 "tier": "B",
-                "matches": 15192,
+                "matches": 70274,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": "+10.0%",
@@ -23872,11 +23862,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:19.800Z"
+            "enrichedAt": "2026-08-09T14:19:41.729Z"
         }
     },
     "Neeko": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Neeko",
         "key": "518",
         "name": "Neeko",
@@ -23890,7 +23880,7 @@
         },
         "image": {
             "full": "Neeko.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 96,
             "y": 0,
@@ -24096,10 +24086,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/neeko/aram-builds",
-                "winRate": "50.3%",
-                "pickRate": "1.4%",
+                "winRate": "50.5%",
+                "pickRate": "1.7%",
                 "tier": "C",
-                "matches": 17343,
+                "matches": 71750,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -24142,11 +24132,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:21.361Z"
+            "enrichedAt": "2026-08-09T14:19:41.937Z"
         }
     },
     "Nidalee": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Nidalee",
         "key": "76",
         "name": "Nidalee",
@@ -24160,7 +24150,7 @@
         },
         "image": {
             "full": "Nidalee.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 144,
             "y": 0,
@@ -24359,10 +24349,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/nidalee/aram-builds",
-                "winRate": "49.8%",
-                "pickRate": "2.3%",
+                "winRate": "50.5%",
+                "pickRate": "1.8%",
                 "tier": "S",
-                "matches": 27418,
+                "matches": 76943,
                 "balance": {
                     "damageDealt": "+10.0%",
                     "damageReceived": null,
@@ -24382,11 +24372,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:21.372Z"
+            "enrichedAt": "2026-08-09T14:19:42.044Z"
         }
     },
     "Nilah": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Nilah",
         "key": "895",
         "name": "Nilah",
@@ -24400,7 +24390,7 @@
         },
         "image": {
             "full": "Nilah.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 192,
             "y": 0,
@@ -24594,10 +24584,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/nilah/aram-builds",
-                "winRate": "48.7%",
-                "pickRate": "0.3%",
+                "winRate": "48.5%",
+                "pickRate": "0.4%",
                 "tier": "D",
-                "matches": 3077,
+                "matches": 15269,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -24633,11 +24623,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:21.407Z"
+            "enrichedAt": "2026-08-09T14:19:42.197Z"
         }
     },
     "Nocturne": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Nocturne",
         "key": "56",
         "name": "Nocturne",
@@ -24651,7 +24641,7 @@
         },
         "image": {
             "full": "Nocturne.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 240,
             "y": 0,
@@ -24863,10 +24853,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/nocturne/aram-builds",
-                "winRate": "47.0%",
-                "pickRate": "0.7%",
+                "winRate": "47.2%",
+                "pickRate": "0.5%",
                 "tier": "D",
-                "matches": 8717,
+                "matches": 21269,
                 "balance": {
                     "damageDealt": "+10.0%",
                     "damageReceived": "-10.0%",
@@ -24914,11 +24904,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:21.613Z"
+            "enrichedAt": "2026-08-09T14:19:43.089Z"
         }
     },
     "Nunu": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Nunu",
         "key": "20",
         "name": "Nunu & Willump",
@@ -24932,7 +24922,7 @@
         },
         "image": {
             "full": "Nunu.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 288,
             "y": 0,
@@ -25151,10 +25141,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/nunu/aram-builds",
-                "winRate": "46.3%",
+                "winRate": "47.2%",
                 "pickRate": "0.8%",
                 "tier": "D",
-                "matches": 9128,
+                "matches": 32671,
                 "balance": {
                     "damageDealt": "+10.0%",
                     "damageReceived": "-10.0%",
@@ -25205,11 +25195,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:23.288Z"
+            "enrichedAt": "2026-08-09T14:19:43.192Z"
         }
     },
     "Olaf": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Olaf",
         "key": "2",
         "name": "Olaf",
@@ -25223,7 +25213,7 @@
         },
         "image": {
             "full": "Olaf.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 336,
             "y": 0,
@@ -25427,10 +25417,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/olaf/aram-builds",
-                "winRate": "53.0%",
+                "winRate": "52.7%",
                 "pickRate": "0.6%",
                 "tier": "A",
-                "matches": 6922,
+                "matches": 25381,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": null,
@@ -25478,11 +25468,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:23.257Z"
+            "enrichedAt": "2026-08-09T14:19:43.449Z"
         }
     },
     "Orianna": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Orianna",
         "key": "61",
         "name": "Orianna",
@@ -25496,7 +25486,7 @@
         },
         "image": {
             "full": "Orianna.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 384,
             "y": 0,
@@ -25707,10 +25697,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/orianna/aram-builds",
-                "winRate": "48.4%",
-                "pickRate": "1.6%",
+                "winRate": "48.5%",
+                "pickRate": "1.2%",
                 "tier": "A",
-                "matches": 18616,
+                "matches": 49618,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -25737,11 +25727,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:23.311Z"
+            "enrichedAt": "2026-08-09T14:19:43.659Z"
         }
     },
     "Ornn": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Ornn",
         "key": "516",
         "name": "Ornn",
@@ -25755,7 +25745,7 @@
         },
         "image": {
             "full": "Ornn.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 432,
             "y": 0,
@@ -25971,10 +25961,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/ornn/aram-builds",
-                "winRate": "52.1%",
-                "pickRate": "0.6%",
+                "winRate": "50.4%",
+                "pickRate": "0.7%",
                 "tier": "B",
-                "matches": 6772,
+                "matches": 30388,
                 "balance": {
                     "damageDealt": "-10.0%",
                     "damageReceived": "+5.0%",
@@ -26014,11 +26004,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:23.493Z"
+            "enrichedAt": "2026-08-09T14:19:44.384Z"
         }
     },
     "Pantheon": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Pantheon",
         "key": "80",
         "name": "Pantheon",
@@ -26032,7 +26022,7 @@
         },
         "image": {
             "full": "Pantheon.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 0,
             "y": 48,
@@ -26239,10 +26229,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/pantheon/aram-builds",
-                "winRate": "49.7%",
-                "pickRate": "1.4%",
-                "tier": "D",
-                "matches": 16417,
+                "winRate": "50.6%",
+                "pickRate": "1.1%",
+                "tier": "C",
+                "matches": 47346,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -26285,11 +26275,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:25.120Z"
+            "enrichedAt": "2026-08-09T14:19:44.398Z"
         }
     },
     "Poppy": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Poppy",
         "key": "78",
         "name": "Poppy",
@@ -26303,7 +26293,7 @@
         },
         "image": {
             "full": "Poppy.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 48,
             "y": 48,
@@ -26526,10 +26516,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/poppy/aram-builds",
-                "winRate": "49.8%",
+                "winRate": "51.2%",
                 "pickRate": "0.6%",
-                "tier": "D",
-                "matches": 7405,
+                "tier": "B",
+                "matches": 27030,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -26572,11 +26562,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:25.125Z"
+            "enrichedAt": "2026-08-09T14:19:44.626Z"
         }
     },
     "Pyke": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Pyke",
         "key": "555",
         "name": "Pyke",
@@ -26590,7 +26580,7 @@
         },
         "image": {
             "full": "Pyke.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 96,
             "y": 48,
@@ -26799,10 +26789,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/pyke/aram-builds",
-                "winRate": "44.6%",
+                "winRate": "44.4%",
                 "pickRate": "1.6%",
                 "tier": "B",
-                "matches": 18725,
+                "matches": 67559,
                 "balance": {
                     "damageDealt": "+10.0%",
                     "damageReceived": "-10.0%",
@@ -26845,11 +26835,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:24.831Z"
+            "enrichedAt": "2026-08-09T14:19:44.873Z"
         }
     },
     "Qiyana": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Qiyana",
         "key": "246",
         "name": "Qiyana",
@@ -26863,7 +26853,7 @@
         },
         "image": {
             "full": "Qiyana.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 144,
             "y": 48,
@@ -27072,10 +27062,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/qiyana/aram-builds",
-                "winRate": "45.0%",
-                "pickRate": "0.4%",
+                "winRate": "44.6%",
+                "pickRate": "0.5%",
                 "tier": "B",
-                "matches": 4857,
+                "matches": 21940,
                 "balance": {
                     "damageDealt": "+15.0%",
                     "damageReceived": "-10.0%",
@@ -27113,11 +27103,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:25.336Z"
+            "enrichedAt": "2026-08-09T14:19:45.652Z"
         }
     },
     "Quinn": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Quinn",
         "key": "133",
         "name": "Quinn",
@@ -27131,7 +27121,7 @@
         },
         "image": {
             "full": "Quinn.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 192,
             "y": 48,
@@ -27332,10 +27322,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/quinn/aram-builds",
-                "winRate": "46.8%",
-                "pickRate": "0.8%",
+                "winRate": "48.3%",
+                "pickRate": "1.2%",
                 "tier": "D",
-                "matches": 9539,
+                "matches": 51609,
                 "balance": {
                     "damageDealt": "+10.0%",
                     "damageReceived": "-10.0%",
@@ -27381,11 +27371,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:26.660Z"
+            "enrichedAt": "2026-08-09T14:19:45.642Z"
         }
     },
     "Rakan": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Rakan",
         "key": "497",
         "name": "Rakan",
@@ -27399,7 +27389,7 @@
         },
         "image": {
             "full": "Rakan.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 240,
             "y": 48,
@@ -27614,10 +27604,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/rakan/aram-builds",
-                "winRate": "49.7%",
+                "winRate": "50.1%",
                 "pickRate": "0.7%",
-                "tier": "D",
-                "matches": 8401,
+                "tier": "C",
+                "matches": 29060,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "-5.0%",
@@ -27657,11 +27647,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:27.053Z"
+            "enrichedAt": "2026-08-09T14:19:45.936Z"
         }
     },
     "Rammus": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Rammus",
         "key": "33",
         "name": "Rammus",
@@ -27675,7 +27665,7 @@
         },
         "image": {
             "full": "Rammus.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 288,
             "y": 48,
@@ -27884,10 +27874,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/rammus/aram-builds",
-                "winRate": "48.5%",
-                "pickRate": "0.5%",
+                "winRate": "48.7%",
+                "pickRate": "0.4%",
                 "tier": "D",
-                "matches": 5897,
+                "matches": 18073,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -27895,11 +27885,11 @@
                 },
                 "combos": []
             },
-            "enrichedAt": "2026-06-27T13:49:27.019Z"
+            "enrichedAt": "2026-08-09T14:19:46.205Z"
         }
     },
     "RekSai": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "RekSai",
         "key": "421",
         "name": "Rek'Sai",
@@ -27913,7 +27903,7 @@
         },
         "image": {
             "full": "RekSai.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 336,
             "y": 48,
@@ -28116,10 +28106,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/reksai/aram-builds",
-                "winRate": "50.6%",
+                "winRate": "50.9%",
                 "pickRate": "0.2%",
-                "tier": "C",
-                "matches": 1822,
+                "tier": "B",
+                "matches": 10144,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-10.0%",
@@ -28167,11 +28157,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:27.237Z"
+            "enrichedAt": "2026-08-09T14:19:46.942Z"
         }
     },
     "Rell": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Rell",
         "key": "526",
         "name": "Rell",
@@ -28185,7 +28175,7 @@
         },
         "image": {
             "full": "Rell.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 384,
             "y": 48,
@@ -28406,10 +28396,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/rell/aram-builds",
-                "winRate": "53.0%",
-                "pickRate": "0.6%",
-                "tier": "A",
-                "matches": 6864,
+                "winRate": "53.1%",
+                "pickRate": "0.4%",
+                "tier": "S",
+                "matches": 15222,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": null,
@@ -28417,11 +28407,11 @@
                 },
                 "combos": []
             },
-            "enrichedAt": "2026-06-27T13:49:28.465Z"
+            "enrichedAt": "2026-08-09T14:19:46.933Z"
         }
     },
     "Renata": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Renata",
         "key": "888",
         "name": "Renata Glasc",
@@ -28435,7 +28425,7 @@
         },
         "image": {
             "full": "Renata.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 432,
             "y": 48,
@@ -28646,10 +28636,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/renata/aram-builds",
-                "winRate": "50.3%",
+                "winRate": "50.1%",
                 "pickRate": "0.9%",
                 "tier": "C",
-                "matches": 10638,
+                "matches": 36711,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": "+5.0%",
@@ -28692,11 +28682,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:28.910Z"
+            "enrichedAt": "2026-08-09T14:19:47.217Z"
         }
     },
     "Renekton": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Renekton",
         "key": "58",
         "name": "Renekton",
@@ -28710,7 +28700,7 @@
         },
         "image": {
             "full": "Renekton.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 0,
             "y": 96,
@@ -28912,10 +28902,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/renekton/aram-builds",
-                "winRate": "51.6%",
-                "pickRate": "0.5%",
-                "tier": "B",
-                "matches": 6339,
+                "winRate": "52.7%",
+                "pickRate": "0.8%",
+                "tier": "A",
+                "matches": 34878,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -28943,11 +28933,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:28.924Z"
+            "enrichedAt": "2026-08-09T14:19:47.360Z"
         }
     },
     "Rengar": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Rengar",
         "key": "107",
         "name": "Rengar",
@@ -28961,7 +28951,7 @@
         },
         "image": {
             "full": "Rengar.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 48,
             "y": 96,
@@ -29167,10 +29157,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/rengar/aram-builds",
-                "winRate": "45.1%",
-                "pickRate": "0.6%",
+                "winRate": "46.1%",
+                "pickRate": "0.5%",
                 "tier": "D",
-                "matches": 7712,
+                "matches": 20083,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-8.0%",
@@ -29191,11 +29181,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:29.072Z"
+            "enrichedAt": "2026-08-09T14:19:48.878Z"
         }
     },
     "Riven": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Riven",
         "key": "92",
         "name": "Riven",
@@ -29209,7 +29199,7 @@
         },
         "image": {
             "full": "Riven.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 96,
             "y": 96,
@@ -29412,10 +29402,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/riven/aram-builds",
-                "winRate": "48.9%",
+                "winRate": "47.2%",
                 "pickRate": "0.5%",
                 "tier": "D",
-                "matches": 5718,
+                "matches": 23204,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-8.0%",
@@ -29448,11 +29438,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:30.303Z"
+            "enrichedAt": "2026-08-09T14:19:48.365Z"
         }
     },
     "Rumble": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Rumble",
         "key": "68",
         "name": "Rumble",
@@ -29466,7 +29456,7 @@
         },
         "image": {
             "full": "Rumble.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 144,
             "y": 96,
@@ -29673,10 +29663,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/rumble/aram-builds",
-                "winRate": "51.1%",
-                "pickRate": "0.9%",
+                "winRate": "51.0%",
+                "pickRate": "1.2%",
                 "tier": "B",
-                "matches": 10790,
+                "matches": 52355,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -29710,11 +29700,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:30.824Z"
+            "enrichedAt": "2026-08-09T14:19:48.666Z"
         }
     },
     "Ryze": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Ryze",
         "key": "13",
         "name": "Ryze",
@@ -29728,7 +29718,7 @@
         },
         "image": {
             "full": "Ryze.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 192,
             "y": 96,
@@ -29929,10 +29919,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/ryze/aram-builds",
-                "winRate": "48.0%",
+                "winRate": "48.1%",
                 "pickRate": "1.1%",
                 "tier": "B",
-                "matches": 13332,
+                "matches": 47254,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-5.0%",
@@ -29970,11 +29960,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:30.799Z"
+            "enrichedAt": "2026-08-09T14:19:48.646Z"
         }
     },
     "Samira": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Samira",
         "key": "360",
         "name": "Samira",
@@ -29988,7 +29978,7 @@
         },
         "image": {
             "full": "Samira.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 240,
             "y": 96,
@@ -30191,10 +30181,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/samira/aram-builds",
-                "winRate": "50.8%",
+                "winRate": "51.2%",
                 "pickRate": "1.2%",
                 "tier": "B",
-                "matches": 14960,
+                "matches": 51690,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -30202,11 +30192,11 @@
                 },
                 "combos": []
             },
-            "enrichedAt": "2026-06-27T13:49:30.965Z"
+            "enrichedAt": "2026-08-09T14:19:49.580Z"
         }
     },
     "Sejuani": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Sejuani",
         "key": "113",
         "name": "Sejuani",
@@ -30220,7 +30210,7 @@
         },
         "image": {
             "full": "Sejuani.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 288,
             "y": 96,
@@ -30428,10 +30418,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/sejuani/aram-builds",
-                "winRate": "51.9%",
+                "winRate": "51.8%",
                 "pickRate": "0.5%",
                 "tier": "A",
-                "matches": 6285,
+                "matches": 23037,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -30480,11 +30470,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:32.189Z"
+            "enrichedAt": "2026-08-09T14:19:49.915Z"
         }
     },
     "Senna": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Senna",
         "key": "235",
         "name": "Senna",
@@ -30498,7 +30488,7 @@
         },
         "image": {
             "full": "Senna.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 336,
             "y": 96,
@@ -30704,10 +30694,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/senna/aram-builds",
-                "winRate": "50.7%",
-                "pickRate": "1.8%",
+                "winRate": "48.8%",
+                "pickRate": "2.2%",
                 "tier": "A",
-                "matches": 21415,
+                "matches": 91329,
                 "balance": {
                     "damageDealt": "-8.0%",
                     "damageReceived": "+5.0%",
@@ -30746,11 +30736,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:32.653Z"
+            "enrichedAt": "2026-08-09T14:19:49.900Z"
         }
     },
     "Seraphine": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Seraphine",
         "key": "147",
         "name": "Seraphine",
@@ -30764,7 +30754,7 @@
         },
         "image": {
             "full": "Seraphine.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 384,
             "y": 96,
@@ -30982,10 +30972,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/seraphine/aram-builds",
-                "winRate": "52.8%",
-                "pickRate": "2.1%",
+                "winRate": "51.3%",
+                "pickRate": "1.7%",
                 "tier": "S",
-                "matches": 25716,
+                "matches": 74147,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "+20.0%",
@@ -31009,11 +30999,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:32.659Z"
+            "enrichedAt": "2026-08-09T14:19:50.294Z"
         }
     },
     "Sett": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Sett",
         "key": "875",
         "name": "Sett",
@@ -31027,7 +31017,7 @@
         },
         "image": {
             "full": "Sett.png",
-            "sprite": "champion3.png",
+            "sprite": "champion5.png",
             "group": "champion",
             "x": 432,
             "y": 96,
@@ -31239,10 +31229,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/sett/aram-builds",
-                "winRate": "51.9%",
-                "pickRate": "1.2%",
+                "winRate": "52.4%",
+                "pickRate": "1.1%",
                 "tier": "A",
-                "matches": 14195,
+                "matches": 44857,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "+10.0%",
@@ -31290,11 +31280,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:32.803Z"
+            "enrichedAt": "2026-08-09T14:19:50.839Z"
         }
     },
     "Shaco": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Shaco",
         "key": "35",
         "name": "Shaco",
@@ -31308,7 +31298,7 @@
         },
         "image": {
             "full": "Shaco.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 0,
             "y": 0,
@@ -31507,10 +31497,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/shaco/aram-builds",
-                "winRate": "48.7%",
-                "pickRate": "1.5%",
+                "winRate": "48.8%",
+                "pickRate": "1.6%",
                 "tier": "D",
-                "matches": 17837,
+                "matches": 66233,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": null,
@@ -31556,11 +31546,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:34.052Z"
+            "enrichedAt": "2026-08-09T14:19:51.167Z"
         }
     },
     "Shen": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Shen",
         "key": "98",
         "name": "Shen",
@@ -31574,7 +31564,7 @@
         },
         "image": {
             "full": "Shen.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 48,
             "y": 0,
@@ -31777,10 +31767,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/shen/aram-builds",
-                "winRate": "52.2%",
-                "pickRate": "1.0%",
+                "winRate": "52.0%",
+                "pickRate": "0.8%",
                 "tier": "A",
-                "matches": 12375,
+                "matches": 33648,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": "+5.0%",
@@ -31817,11 +31807,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:34.535Z"
+            "enrichedAt": "2026-08-09T14:19:51.086Z"
         }
     },
     "Shyvana": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Shyvana",
         "key": "102",
         "name": "Shyvana",
@@ -31835,7 +31825,7 @@
         },
         "image": {
             "full": "Shyvana.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 96,
             "y": 0,
@@ -31900,7 +31890,7 @@
                 {
                     "activationKey": "PASSIVE",
                     "name": "Scalemail",
-                    "slug": "Shyvana_Passive.Shyvana_Rework",
+                    "slug": "Shyvana_Passive",
                     "riotDesc": "",
                     "mobaDesc": "",
                     "stats": [],
@@ -32031,10 +32021,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/shyvana/aram-builds",
-                "winRate": "50.6%",
-                "pickRate": "0.4%",
-                "tier": "C",
-                "matches": 5389,
+                "winRate": "48.8%",
+                "pickRate": "0.5%",
+                "tier": "D",
+                "matches": 21395,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "-5.0%",
@@ -32077,11 +32067,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:34.472Z"
+            "enrichedAt": "2026-08-09T14:19:51.559Z"
         }
     },
     "Singed": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Singed",
         "key": "27",
         "name": "Singed",
@@ -32095,7 +32085,7 @@
         },
         "image": {
             "full": "Singed.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 144,
             "y": 0,
@@ -32296,10 +32286,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/singed/aram-builds",
-                "winRate": "51.2%",
-                "pickRate": "0.9%",
-                "tier": "B",
-                "matches": 10504,
+                "winRate": "51.7%",
+                "pickRate": "0.8%",
+                "tier": "A",
+                "matches": 32254,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "+8.0%",
@@ -32341,11 +32331,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:34.740Z"
+            "enrichedAt": "2026-08-09T14:19:52.121Z"
         }
     },
     "Sion": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Sion",
         "key": "14",
         "name": "Sion",
@@ -32359,7 +32349,7 @@
         },
         "image": {
             "full": "Sion.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 192,
             "y": 0,
@@ -32575,10 +32565,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/sion/aram-builds",
-                "winRate": "54.8%",
-                "pickRate": "1.0%",
-                "tier": "S",
-                "matches": 11686,
+                "winRate": "52.7%",
+                "pickRate": "0.7%",
+                "tier": "A",
+                "matches": 28974,
                 "balance": {
                     "damageDealt": "-10.0%",
                     "damageReceived": "+10.0%",
@@ -32612,11 +32602,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:35.924Z"
+            "enrichedAt": "2026-08-09T14:19:52.363Z"
         }
     },
     "Sivir": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Sivir",
         "key": "15",
         "name": "Sivir",
@@ -32630,7 +32620,7 @@
         },
         "image": {
             "full": "Sivir.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 240,
             "y": 0,
@@ -32822,10 +32812,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/sivir/aram-builds",
-                "winRate": "49.5%",
-                "pickRate": "1.6%",
+                "winRate": "49.6%",
+                "pickRate": "1.5%",
                 "tier": "S",
-                "matches": 18852,
+                "matches": 65370,
                 "balance": {
                     "damageDealt": "-7.0%",
                     "damageReceived": "+5.0%",
@@ -32864,11 +32854,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:36.322Z"
+            "enrichedAt": "2026-08-09T14:19:52.421Z"
         }
     },
     "Skarner": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Skarner",
         "key": "72",
         "name": "Skarner",
@@ -32882,7 +32872,7 @@
         },
         "image": {
             "full": "Skarner.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 288,
             "y": 0,
@@ -33082,10 +33072,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/skarner/aram-builds",
-                "winRate": "48.6%",
+                "winRate": "48.3%",
                 "pickRate": "0.4%",
                 "tier": "D",
-                "matches": 4484,
+                "matches": 16246,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -33105,11 +33095,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:36.390Z"
+            "enrichedAt": "2026-08-09T14:19:52.779Z"
         }
     },
     "Smolder": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Smolder",
         "key": "901",
         "name": "Smolder",
@@ -33123,7 +33113,7 @@
         },
         "image": {
             "full": "Smolder.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 336,
             "y": 0,
@@ -33307,10 +33297,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/smolder/aram-builds",
-                "winRate": "45.0%",
-                "pickRate": "1.9%",
+                "winRate": "44.8%",
+                "pickRate": "1.3%",
                 "tier": "D",
-                "matches": 22681,
+                "matches": 55749,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "+2.0%",
@@ -33345,11 +33335,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:36.622Z"
+            "enrichedAt": "2026-08-09T14:19:53.363Z"
         }
     },
     "Sona": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Sona",
         "key": "37",
         "name": "Sona",
@@ -33363,7 +33353,7 @@
         },
         "image": {
             "full": "Sona.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 384,
             "y": 0,
@@ -33567,10 +33557,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/sona/aram-builds",
-                "winRate": "53.8%",
+                "winRate": "52.6%",
                 "pickRate": "1.1%",
-                "tier": "S",
-                "matches": 12947,
+                "tier": "A",
+                "matches": 44764,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -33607,11 +33597,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:37.772Z"
+            "enrichedAt": "2026-08-09T14:19:53.614Z"
         }
     },
     "Soraka": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Soraka",
         "key": "16",
         "name": "Soraka",
@@ -33625,7 +33615,7 @@
         },
         "image": {
             "full": "Soraka.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 432,
             "y": 0,
@@ -33836,10 +33826,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/soraka/aram-builds",
-                "winRate": "50.7%",
-                "pickRate": "1.1%",
-                "tier": "B",
-                "matches": 12592,
+                "winRate": "50.5%",
+                "pickRate": "1.0%",
+                "tier": "C",
+                "matches": 44385,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -33876,11 +33866,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:38.218Z"
+            "enrichedAt": "2026-08-09T14:19:53.638Z"
         }
     },
     "Swain": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Swain",
         "key": "50",
         "name": "Swain",
@@ -33894,7 +33884,7 @@
         },
         "image": {
             "full": "Swain.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 0,
             "y": 48,
@@ -34110,10 +34100,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/swain/aram-builds",
-                "winRate": "50.7%",
-                "pickRate": "1.6%",
+                "winRate": "50.4%",
+                "pickRate": "1.4%",
                 "tier": "A",
-                "matches": 18596,
+                "matches": 59883,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": "+15.0%",
@@ -34144,11 +34134,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:38.223Z"
+            "enrichedAt": "2026-08-09T14:19:53.967Z"
         }
     },
     "Sylas": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Sylas",
         "key": "517",
         "name": "Sylas",
@@ -34162,7 +34152,7 @@
         },
         "image": {
             "full": "Sylas.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 48,
             "y": 48,
@@ -34368,10 +34358,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/sylas/aram-builds",
-                "winRate": "48.5%",
-                "pickRate": "1.1%",
+                "winRate": "48.2%",
+                "pickRate": "1.5%",
                 "tier": "B",
-                "matches": 13301,
+                "matches": 62055,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": null,
@@ -34408,11 +34398,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:38.436Z"
+            "enrichedAt": "2026-08-09T14:19:54.643Z"
         }
     },
     "Syndra": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Syndra",
         "key": "134",
         "name": "Syndra",
@@ -34426,7 +34416,7 @@
         },
         "image": {
             "full": "Syndra.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 96,
             "y": 48,
@@ -34619,10 +34609,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/syndra/aram-builds",
-                "winRate": "50.7%",
-                "pickRate": "1.1%",
+                "winRate": "50.3%",
+                "pickRate": "1.6%",
                 "tier": "A",
-                "matches": 13177,
+                "matches": 68280,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": null,
@@ -34668,11 +34658,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:39.698Z"
+            "enrichedAt": "2026-08-09T14:19:54.823Z"
         }
     },
     "TahmKench": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "TahmKench",
         "key": "223",
         "name": "Tahm Kench",
@@ -34686,7 +34676,7 @@
         },
         "image": {
             "full": "TahmKench.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 144,
             "y": 48,
@@ -34891,10 +34881,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/tahmkench/aram-builds",
-                "winRate": "50.8%",
-                "pickRate": "0.8%",
+                "winRate": "50.9%",
+                "pickRate": "0.9%",
                 "tier": "B",
-                "matches": 9216,
+                "matches": 38709,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "+5.0%",
@@ -34943,11 +34933,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:40.057Z"
+            "enrichedAt": "2026-08-09T14:19:54.777Z"
         }
     },
     "Taliyah": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Taliyah",
         "key": "163",
         "name": "Taliyah",
@@ -34961,7 +34951,7 @@
         },
         "image": {
             "full": "Taliyah.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 192,
             "y": 48,
@@ -35164,10 +35154,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/taliyah/aram-builds",
-                "winRate": "45.8%",
-                "pickRate": "0.9%",
+                "winRate": "46.7%",
+                "pickRate": "0.8%",
                 "tier": "B",
-                "matches": 11415,
+                "matches": 31981,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -35175,11 +35165,11 @@
                 },
                 "combos": []
             },
-            "enrichedAt": "2026-06-27T13:49:40.094Z"
+            "enrichedAt": "2026-08-09T14:19:55.109Z"
         }
     },
     "Talon": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Talon",
         "key": "91",
         "name": "Talon",
@@ -35193,7 +35183,7 @@
         },
         "image": {
             "full": "Talon.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 240,
             "y": 48,
@@ -35394,10 +35384,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/talon/aram-builds",
-                "winRate": "47.0%",
+                "winRate": "47.6%",
                 "pickRate": "0.8%",
                 "tier": "A",
-                "matches": 9622,
+                "matches": 32581,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-5.0%",
@@ -35436,11 +35426,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:40.333Z"
+            "enrichedAt": "2026-08-09T14:19:55.859Z"
         }
     },
     "Taric": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Taric",
         "key": "44",
         "name": "Taric",
@@ -35454,7 +35444,7 @@
         },
         "image": {
             "full": "Taric.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 288,
             "y": 48,
@@ -35653,10 +35643,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/taric/aram-builds",
-                "winRate": "50.8%",
+                "winRate": "51.5%",
                 "pickRate": "0.4%",
                 "tier": "B",
-                "matches": 5378,
+                "matches": 16289,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "+10.0%",
@@ -35705,11 +35695,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:41.618Z"
+            "enrichedAt": "2026-08-09T14:19:56.191Z"
         }
     },
     "Teemo": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Teemo",
         "key": "17",
         "name": "Teemo",
@@ -35723,7 +35713,7 @@
         },
         "image": {
             "full": "Teemo.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 336,
             "y": 48,
@@ -35907,10 +35897,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/teemo/aram-builds",
-                "winRate": "50.4%",
-                "pickRate": "2.0%",
-                "tier": "C",
-                "matches": 23815,
+                "winRate": "48.8%",
+                "pickRate": "1.9%",
+                "tier": "D",
+                "matches": 82322,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": "+10.0%",
@@ -35951,11 +35941,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:41.957Z"
+            "enrichedAt": "2026-08-09T14:19:56.174Z"
         }
     },
     "Thresh": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Thresh",
         "key": "412",
         "name": "Thresh",
@@ -35969,7 +35959,7 @@
         },
         "image": {
             "full": "Thresh.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 384,
             "y": 48,
@@ -36177,10 +36167,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/thresh/aram-builds",
-                "winRate": "50.6%",
-                "pickRate": "1.9%",
+                "winRate": "51.2%",
+                "pickRate": "1.6%",
                 "tier": "A",
-                "matches": 22423,
+                "matches": 67918,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "+5.0%",
@@ -36218,11 +36208,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:41.970Z"
+            "enrichedAt": "2026-08-09T14:19:56.310Z"
         }
     },
     "Tristana": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Tristana",
         "key": "18",
         "name": "Tristana",
@@ -36236,7 +36226,7 @@
         },
         "image": {
             "full": "Tristana.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 432,
             "y": 48,
@@ -36430,10 +36420,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/tristana/aram-builds",
-                "winRate": "51.4%",
+                "winRate": "52.0%",
                 "pickRate": "2.1%",
                 "tier": "S",
-                "matches": 24968,
+                "matches": 88586,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-5.0%",
@@ -36480,11 +36470,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:42.209Z"
+            "enrichedAt": "2026-08-09T14:19:57.133Z"
         }
     },
     "Trundle": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Trundle",
         "key": "48",
         "name": "Trundle",
@@ -36498,7 +36488,7 @@
         },
         "image": {
             "full": "Trundle.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 0,
             "y": 96,
@@ -36699,10 +36689,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/trundle/aram-builds",
-                "winRate": "52.2%",
-                "pickRate": "0.5%",
-                "tier": "A",
-                "matches": 6128,
+                "winRate": "51.6%",
+                "pickRate": "0.8%",
+                "tier": "B",
+                "matches": 32729,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "+5.0%",
@@ -36746,11 +36736,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:43.450Z"
+            "enrichedAt": "2026-08-09T14:19:57.417Z"
         }
     },
     "Tryndamere": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Tryndamere",
         "key": "23",
         "name": "Tryndamere",
@@ -36764,7 +36754,7 @@
         },
         "image": {
             "full": "Tryndamere.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 48,
             "y": 96,
@@ -36960,10 +36950,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/tryndamere/aram-builds",
-                "winRate": "53.3%",
-                "pickRate": "0.7%",
+                "winRate": "54.7%",
+                "pickRate": "0.5%",
                 "tier": "S",
-                "matches": 9005,
+                "matches": 23076,
                 "balance": {
                     "damageDealt": "+10.0%",
                     "damageReceived": "-10.0%",
@@ -37006,11 +36996,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:43.871Z"
+            "enrichedAt": "2026-08-09T14:19:57.468Z"
         }
     },
     "TwistedFate": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "TwistedFate",
         "key": "4",
         "name": "Twisted Fate",
@@ -37024,7 +37014,7 @@
         },
         "image": {
             "full": "TwistedFate.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 96,
             "y": 96,
@@ -37220,10 +37210,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/twistedfate/aram-builds",
-                "winRate": "52.4%",
-                "pickRate": "1.4%",
-                "tier": "A",
-                "matches": 16791,
+                "winRate": "51.8%",
+                "pickRate": "1.6%",
+                "tier": "S",
+                "matches": 67054,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -37267,11 +37257,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:43.878Z"
+            "enrichedAt": "2026-08-09T14:19:57.569Z"
         }
     },
     "Twitch": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Twitch",
         "key": "29",
         "name": "Twitch",
@@ -37285,7 +37275,7 @@
         },
         "image": {
             "full": "Twitch.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 144,
             "y": 96,
@@ -37480,10 +37470,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/twitch/aram-builds",
-                "winRate": "50.0%",
-                "pickRate": "2.0%",
+                "winRate": "50.3%",
+                "pickRate": "1.9%",
                 "tier": "C",
-                "matches": 23344,
+                "matches": 81999,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "-5.0%",
@@ -37491,11 +37481,11 @@
                 },
                 "combos": []
             },
-            "enrichedAt": "2026-06-27T13:49:44.182Z"
+            "enrichedAt": "2026-08-09T14:19:58.407Z"
         }
     },
     "Udyr": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Udyr",
         "key": "77",
         "name": "Udyr",
@@ -37509,7 +37499,7 @@
         },
         "image": {
             "full": "Udyr.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 192,
             "y": 96,
@@ -37710,10 +37700,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/udyr/aram-builds",
-                "winRate": "47.2%",
+                "winRate": "48.5%",
                 "pickRate": "0.3%",
                 "tier": "D",
-                "matches": 4172,
+                "matches": 14846,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -37721,11 +37711,11 @@
                 },
                 "combos": []
             },
-            "enrichedAt": "2026-06-27T13:49:45.309Z"
+            "enrichedAt": "2026-08-09T14:19:58.608Z"
         }
     },
     "Urgot": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Urgot",
         "key": "6",
         "name": "Urgot",
@@ -37739,7 +37729,7 @@
         },
         "image": {
             "full": "Urgot.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 240,
             "y": 96,
@@ -37956,10 +37946,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/urgot/aram-builds",
-                "winRate": "50.9%",
-                "pickRate": "0.7%",
+                "winRate": "51.6%",
+                "pickRate": "0.5%",
                 "tier": "B",
-                "matches": 8777,
+                "matches": 20734,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "+5.0%",
@@ -37967,11 +37957,11 @@
                 },
                 "combos": []
             },
-            "enrichedAt": "2026-06-27T13:49:45.958Z"
+            "enrichedAt": "2026-08-09T14:19:58.881Z"
         }
     },
     "Varus": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Varus",
         "key": "110",
         "name": "Varus",
@@ -37985,7 +37975,7 @@
         },
         "image": {
             "full": "Varus.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 288,
             "y": 96,
@@ -38185,10 +38175,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/varus/aram-builds",
-                "winRate": "48.5%",
+                "winRate": "48.6%",
                 "pickRate": "2.4%",
                 "tier": "D",
-                "matches": 29061,
+                "matches": 102685,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -38228,11 +38218,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:45.807Z"
+            "enrichedAt": "2026-08-09T14:19:58.726Z"
         }
     },
     "Vayne": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Vayne",
         "key": "67",
         "name": "Vayne",
@@ -38246,7 +38236,7 @@
         },
         "image": {
             "full": "Vayne.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 336,
             "y": 96,
@@ -38430,10 +38420,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/vayne/aram-builds",
-                "winRate": "49.9%",
+                "winRate": "49.0%",
                 "pickRate": "1.9%",
                 "tier": "B",
-                "matches": 22783,
+                "matches": 80568,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "-5.0%",
@@ -38473,11 +38463,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:45.933Z"
+            "enrichedAt": "2026-08-09T14:19:59.582Z"
         }
     },
     "Veigar": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Veigar",
         "key": "45",
         "name": "Veigar",
@@ -38491,7 +38481,7 @@
         },
         "image": {
             "full": "Veigar.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 384,
             "y": 96,
@@ -38682,10 +38672,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/veigar/aram-builds",
-                "winRate": "50.3%",
-                "pickRate": "2.0%",
+                "winRate": "49.4%",
+                "pickRate": "2.2%",
                 "tier": "A",
-                "matches": 24153,
+                "matches": 94837,
                 "balance": {
                     "damageDealt": "-7.0%",
                     "damageReceived": "+10.0%",
@@ -38713,11 +38703,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:47.136Z"
+            "enrichedAt": "2026-08-09T14:19:59.759Z"
         }
     },
     "Velkoz": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Velkoz",
         "key": "161",
         "name": "Vel'Koz",
@@ -38731,7 +38721,7 @@
         },
         "image": {
             "full": "Velkoz.png",
-            "sprite": "champion4.png",
+            "sprite": "champion6.png",
             "group": "champion",
             "x": 432,
             "y": 96,
@@ -38924,10 +38914,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/velkoz/aram-builds",
-                "winRate": "53.2%",
+                "winRate": "52.6%",
                 "pickRate": "2.2%",
                 "tier": "B",
-                "matches": 26197,
+                "matches": 93520,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": "+5.0%",
@@ -38966,11 +38956,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:47.637Z"
+            "enrichedAt": "2026-08-09T14:19:59.955Z"
         }
     },
     "Vex": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Vex",
         "key": "711",
         "name": "Vex",
@@ -38984,7 +38974,7 @@
         },
         "image": {
             "full": "Vex.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 0,
             "y": 0,
@@ -39194,10 +39184,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/vex/aram-builds",
-                "winRate": "51.1%",
-                "pickRate": "1.0%",
+                "winRate": "50.6%",
+                "pickRate": "1.2%",
                 "tier": "A",
-                "matches": 11897,
+                "matches": 49368,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": null,
@@ -39228,11 +39218,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:47.788Z"
+            "enrichedAt": "2026-08-09T14:20:00.016Z"
         }
     },
     "Vi": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Vi",
         "key": "254",
         "name": "Vi",
@@ -39246,7 +39236,7 @@
         },
         "image": {
             "full": "Vi.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 48,
             "y": 0,
@@ -39452,10 +39442,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/vi/aram-builds",
-                "winRate": "51.9%",
+                "winRate": "51.1%",
                 "pickRate": "1.0%",
-                "tier": "A",
-                "matches": 11888,
+                "tier": "B",
+                "matches": 41961,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-5.0%",
@@ -39507,11 +39497,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:47.823Z"
+            "enrichedAt": "2026-08-09T14:20:00.869Z"
         }
     },
     "Viego": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Viego",
         "key": "234",
         "name": "Viego",
@@ -39525,7 +39515,7 @@
         },
         "image": {
             "full": "Viego.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 96,
             "y": 0,
@@ -39734,10 +39724,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/viego/aram-builds",
-                "winRate": "49.6%",
-                "pickRate": "0.9%",
+                "winRate": "50.4%",
+                "pickRate": "0.6%",
                 "tier": "A",
-                "matches": 11028,
+                "matches": 27460,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": null,
@@ -39768,11 +39758,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:49.048Z"
+            "enrichedAt": "2026-08-09T14:20:00.897Z"
         }
     },
     "Viktor": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Viktor",
         "key": "112",
         "name": "Viktor",
@@ -39786,7 +39776,7 @@
         },
         "image": {
             "full": "Viktor.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 144,
             "y": 0,
@@ -39980,10 +39970,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/viktor/aram-builds",
-                "winRate": "54.6%",
-                "pickRate": "1.5%",
+                "winRate": "54.7%",
+                "pickRate": "1.3%",
                 "tier": "A",
-                "matches": 18125,
+                "matches": 57019,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": "+5.0%",
@@ -40015,11 +40005,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:49.519Z"
+            "enrichedAt": "2026-08-09T14:20:01.167Z"
         }
     },
     "Vladimir": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Vladimir",
         "key": "8",
         "name": "Vladimir",
@@ -40033,7 +40023,7 @@
         },
         "image": {
             "full": "Vladimir.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 192,
             "y": 0,
@@ -40240,10 +40230,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/vladimir/aram-builds",
-                "winRate": "45.5%",
+                "winRate": "44.9%",
                 "pickRate": "0.7%",
                 "tier": "S",
-                "matches": 8674,
+                "matches": 31258,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "+5.0%",
@@ -40278,11 +40268,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:49.660Z"
+            "enrichedAt": "2026-08-09T14:20:01.223Z"
         }
     },
     "Volibear": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Volibear",
         "key": "106",
         "name": "Volibear",
@@ -40296,7 +40286,7 @@
         },
         "image": {
             "full": "Volibear.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 240,
             "y": 0,
@@ -40386,7 +40376,7 @@
                         },
                         {
                             "slug": "cooldown",
-                            "value": "14/13/12/11/10"
+                            "value": "12/11.5/11/10.5/10"
                         }
                     ],
                     "customStats": [],
@@ -40509,10 +40499,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/volibear/aram-builds",
-                "winRate": "50.8%",
+                "winRate": "50.5%",
                 "pickRate": "0.9%",
-                "tier": "B",
-                "matches": 10392,
+                "tier": "C",
+                "matches": 37719,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -40559,11 +40549,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:49.666Z"
+            "enrichedAt": "2026-08-09T14:20:02.136Z"
         }
     },
     "Warwick": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Warwick",
         "key": "19",
         "name": "Warwick",
@@ -40577,7 +40567,7 @@
         },
         "image": {
             "full": "Warwick.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 288,
             "y": 0,
@@ -40789,10 +40779,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/warwick/aram-builds",
-                "winRate": "51.0%",
+                "winRate": "51.2%",
                 "pickRate": "0.6%",
                 "tier": "B",
-                "matches": 6796,
+                "matches": 24296,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-5.0%",
@@ -40834,11 +40824,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:50.881Z"
+            "enrichedAt": "2026-08-09T14:20:02.148Z"
         }
     },
     "Xayah": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Xayah",
         "key": "498",
         "name": "Xayah",
@@ -40852,7 +40842,7 @@
         },
         "image": {
             "full": "Xayah.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 336,
             "y": 0,
@@ -41059,10 +41049,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/xayah/aram-builds",
-                "winRate": "52.1%",
-                "pickRate": "1.4%",
+                "winRate": "52.8%",
+                "pickRate": "1.9%",
                 "tier": "B",
-                "matches": 16601,
+                "matches": 78666,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": null,
@@ -41099,11 +41089,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:51.407Z"
+            "enrichedAt": "2026-08-09T14:20:02.383Z"
         }
     },
     "Xerath": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Xerath",
         "key": "101",
         "name": "Xerath",
@@ -41117,7 +41107,7 @@
         },
         "image": {
             "full": "Xerath.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 384,
             "y": 0,
@@ -41313,10 +41303,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/xerath/aram-builds",
-                "winRate": "51.6%",
-                "pickRate": "2.0%",
+                "winRate": "50.8%",
+                "pickRate": "2.3%",
                 "tier": "A",
-                "matches": 23847,
+                "matches": 96439,
                 "balance": {
                     "damageDealt": "-7.0%",
                     "damageReceived": "+5.0%",
@@ -41351,11 +41341,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:51.848Z"
+            "enrichedAt": "2026-08-09T14:20:02.459Z"
         }
     },
     "XinZhao": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "XinZhao",
         "key": "5",
         "name": "Xin Zhao",
@@ -41369,7 +41359,7 @@
         },
         "image": {
             "full": "XinZhao.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 432,
             "y": 0,
@@ -41576,10 +41566,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/xinzhao/aram-builds",
-                "winRate": "55.6%",
-                "pickRate": "0.7%",
+                "winRate": "53.7%",
+                "pickRate": "0.8%",
                 "tier": "S",
-                "matches": 8441,
+                "matches": 34276,
                 "balance": {
                     "damageDealt": "-5.0%",
                     "damageReceived": null,
@@ -41615,11 +41605,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:51.556Z"
+            "enrichedAt": "2026-08-09T14:20:03.398Z"
         }
     },
     "Yasuo": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Yasuo",
         "key": "157",
         "name": "Yasuo",
@@ -41633,7 +41623,7 @@
         },
         "image": {
             "full": "Yasuo.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 0,
             "y": 48,
@@ -41839,10 +41829,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/yasuo/aram-builds",
-                "winRate": "52.8%",
-                "pickRate": "1.4%",
+                "winRate": "52.3%",
+                "pickRate": "1.5%",
                 "tier": "A",
-                "matches": 17306,
+                "matches": 62145,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -41868,11 +41858,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:52.760Z"
+            "enrichedAt": "2026-08-09T14:20:03.407Z"
         }
     },
     "Yone": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Yone",
         "key": "777",
         "name": "Yone",
@@ -41886,7 +41876,7 @@
         },
         "image": {
             "full": "Yone.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 48,
             "y": 48,
@@ -42107,10 +42097,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/yone/aram-builds",
-                "winRate": "51.2%",
-                "pickRate": "1.5%",
+                "winRate": "52.0%",
+                "pickRate": "1.1%",
                 "tier": "A",
-                "matches": 17930,
+                "matches": 48976,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-3.0%",
@@ -42118,11 +42108,11 @@
                 },
                 "combos": []
             },
-            "enrichedAt": "2026-06-27T13:49:53.273Z"
+            "enrichedAt": "2026-08-09T14:20:03.579Z"
         }
     },
     "Yorick": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Yorick",
         "key": "83",
         "name": "Yorick",
@@ -42136,7 +42126,7 @@
         },
         "image": {
             "full": "Yorick.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 96,
             "y": 48,
@@ -42341,10 +42331,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/yorick/aram-builds",
-                "winRate": "55.5%",
+                "winRate": "53.7%",
                 "pickRate": "0.5%",
                 "tier": "S",
-                "matches": 5566,
+                "matches": 19502,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -42384,11 +42374,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:53.379Z"
+            "enrichedAt": "2026-08-09T14:20:03.673Z"
         }
     },
     "Yunara": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Yunara",
         "key": "804",
         "name": "Yunara",
@@ -42402,7 +42392,7 @@
         },
         "image": {
             "full": "Yunara.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 144,
             "y": 48,
@@ -42593,10 +42583,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/yunara/aram-builds",
-                "winRate": "45.3%",
-                "pickRate": "1.4%",
+                "winRate": "47.1%",
+                "pickRate": "1.5%",
                 "tier": "D",
-                "matches": 17203,
+                "matches": 61890,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -42657,11 +42647,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:53.730Z"
+            "enrichedAt": "2026-08-09T14:20:04.673Z"
         }
     },
     "Yuumi": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Yuumi",
         "key": "350",
         "name": "Yuumi",
@@ -42675,7 +42665,7 @@
         },
         "image": {
             "full": "Yuumi.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 192,
             "y": 48,
@@ -42891,10 +42881,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/yuumi/aram-builds",
-                "winRate": "47.0%",
+                "winRate": "46.6%",
                 "pickRate": "0.7%",
                 "tier": "D",
-                "matches": 8434,
+                "matches": 29651,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -42933,11 +42923,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:54.678Z"
+            "enrichedAt": "2026-08-09T14:20:04.669Z"
         }
     },
     "Zaahen": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Zaahen",
         "key": "904",
         "name": "Zaahen",
@@ -42951,7 +42941,7 @@
         },
         "image": {
             "full": "Zaahen.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 240,
             "y": 48,
@@ -43161,10 +43151,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/zaahen/aram-builds",
-                "winRate": "55.7%",
-                "pickRate": "0.7%",
+                "winRate": "54.6%",
+                "pickRate": "0.5%",
                 "tier": "S",
-                "matches": 8574,
+                "matches": 22164,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": null,
@@ -43172,11 +43162,11 @@
                 },
                 "combos": []
             },
-            "enrichedAt": "2026-06-27T13:49:55.090Z"
+            "enrichedAt": "2026-08-09T14:20:04.887Z"
         }
     },
     "Zac": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Zac",
         "key": "154",
         "name": "Zac",
@@ -43190,7 +43180,7 @@
         },
         "image": {
             "full": "Zac.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 288,
             "y": 48,
@@ -43209,7 +43199,7 @@
             "mpperlevel": 0,
             "movespeed": 340,
             "armor": 33,
-            "armorperlevel": 4.7,
+            "armorperlevel": 5.2,
             "spellblock": 32,
             "spellblockperlevel": 2.05,
             "attackrange": 175,
@@ -43334,7 +43324,7 @@
                         },
                         {
                             "slug": "cooldown",
-                            "value": "22/19/16/13/10"
+                            "value": "21/18/15/12/9"
                         }
                     ],
                     "customStats": [],
@@ -43389,10 +43379,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/zac/aram-builds",
-                "winRate": "47.3%",
-                "pickRate": "0.7%",
+                "winRate": "48.1%",
+                "pickRate": "0.4%",
                 "tier": "D",
-                "matches": 8318,
+                "matches": 18410,
                 "balance": {
                     "damageDealt": null,
                     "damageReceived": "-4.0%",
@@ -43437,11 +43427,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:55.227Z"
+            "enrichedAt": "2026-08-09T14:20:04.901Z"
         }
     },
     "Zed": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Zed",
         "key": "238",
         "name": "Zed",
@@ -43455,7 +43445,7 @@
         },
         "image": {
             "full": "Zed.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 336,
             "y": 48,
@@ -43649,10 +43639,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/zed/aram-builds",
-                "winRate": "44.2%",
-                "pickRate": "1.5%",
+                "winRate": "45.0%",
+                "pickRate": "1.2%",
                 "tier": "B",
-                "matches": 17656,
+                "matches": 49720,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-5.0%",
@@ -43679,11 +43669,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:55.538Z"
+            "enrichedAt": "2026-08-09T14:20:05.834Z"
         }
     },
     "Zeri": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Zeri",
         "key": "221",
         "name": "Zeri",
@@ -43697,7 +43687,7 @@
         },
         "image": {
             "full": "Zeri.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 384,
             "y": 48,
@@ -43886,10 +43876,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/zeri/aram-builds",
-                "winRate": "44.7%",
-                "pickRate": "0.9%",
+                "winRate": "46.7%",
+                "pickRate": "0.7%",
                 "tier": "D",
-                "matches": 11135,
+                "matches": 31430,
                 "balance": {
                     "damageDealt": "+10.0%",
                     "damageReceived": "-5.0%",
@@ -43911,11 +43901,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:56.531Z"
+            "enrichedAt": "2026-08-09T14:20:05.896Z"
         }
     },
     "Ziggs": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Ziggs",
         "key": "115",
         "name": "Ziggs",
@@ -43929,7 +43919,7 @@
         },
         "image": {
             "full": "Ziggs.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 432,
             "y": 48,
@@ -44123,10 +44113,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/ziggs/aram-builds",
-                "winRate": "52.3%",
-                "pickRate": "2.2%",
+                "winRate": "51.4%",
+                "pickRate": "2.3%",
                 "tier": "S",
-                "matches": 26406,
+                "matches": 96473,
                 "balance": {
                     "damageDealt": "-13.0%",
                     "damageReceived": "+20.0%",
@@ -44154,11 +44144,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:56.981Z"
+            "enrichedAt": "2026-08-09T14:20:06.125Z"
         }
     },
     "Zilean": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Zilean",
         "key": "26",
         "name": "Zilean",
@@ -44172,7 +44162,7 @@
         },
         "image": {
             "full": "Zilean.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 0,
             "y": 96,
@@ -44380,10 +44370,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/zilean/aram-builds",
-                "winRate": "47.9%",
-                "pickRate": "1.1%",
+                "winRate": "48.6%",
+                "pickRate": "1.5%",
                 "tier": "A",
-                "matches": 12777,
+                "matches": 62354,
                 "balance": {
                     "damageDealt": "+5.0%",
                     "damageReceived": "-5.0%",
@@ -44414,11 +44404,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:57.125Z"
+            "enrichedAt": "2026-08-09T14:20:06.320Z"
         }
     },
     "Zoe": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Zoe",
         "key": "142",
         "name": "Zoe",
@@ -44432,7 +44422,7 @@
         },
         "image": {
             "full": "Zoe.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 48,
             "y": 96,
@@ -44624,10 +44614,10 @@
             "hasAoe": false,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/zoe/aram-builds",
-                "winRate": "49.0%",
-                "pickRate": "1.1%",
+                "winRate": "49.6%",
+                "pickRate": "1.4%",
                 "tier": "A",
-                "matches": 12999,
+                "matches": 58031,
                 "balance": {
                     "damageDealt": "+10.0%",
                     "damageReceived": "-5.0%",
@@ -44666,11 +44656,11 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:57.482Z"
+            "enrichedAt": "2026-08-09T14:20:07.104Z"
         }
     },
     "Zyra": {
-        "version": "16.13.1",
+        "version": "16.15.1",
         "id": "Zyra",
         "key": "143",
         "name": "Zyra",
@@ -44684,7 +44674,7 @@
         },
         "image": {
             "full": "Zyra.png",
-            "sprite": "champion5.png",
+            "sprite": "champion7.png",
             "group": "champion",
             "x": 96,
             "y": 96,
@@ -44884,10 +44874,10 @@
             "hasAoe": true,
             "aram": {
                 "sourceUrl": "https://mobalytics.gg/lol/champions/zyra/aram-builds",
-                "winRate": "54.0%",
-                "pickRate": "1.3%",
+                "winRate": "51.6%",
+                "pickRate": "1.5%",
                 "tier": "A",
-                "matches": 15715,
+                "matches": 65545,
                 "balance": {
                     "damageDealt": "-10.0%",
                     "damageReceived": "+5.0%",
@@ -44927,7 +44917,7 @@
                     }
                 ]
             },
-            "enrichedAt": "2026-06-27T13:49:58.481Z"
+            "enrichedAt": "2026-08-09T14:20:07.069Z"
         }
     }
 }
